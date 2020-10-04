@@ -177,9 +177,11 @@ rule clean_pairs:
         clean12 = "/share/Data/ychi/repo/clean12/{sample}.c12.pairs.gz",
         clean123 = "/share/Data/ychi/repo/clean123/{sample}.c123.pairs.gz",
         clean13 = "/share/Data/ychi/repo/clean13/{sample}.c13.pairs.gz"
+    log: "/share/Data/ychi/repo/log/{sample}.clean.log"
     threads: 8
     resources:
         nodes = 8
+    message: "clean_pairs : {wildcards.sample} : {resources} cores"
     shell:
         """
         set +u
@@ -187,10 +189,10 @@ rule clean_pairs:
         conda activate hires
         set -u
 
-        python {hires} clean_leg -t {threads} {input.pairs} -o {output.clean1}
-        python {hires} clean_isolated -t {threads} -o {output.clean12} {output.clean1} 
-        python {hires} clean_splicing -r {input.exon_index} -o {output.clean123} {output.clean12} 
-        python {hires} clean_splicing -r {input.exon_index} -o {output.clean13} {output.clean1} 
+        python {hires} clean_leg -t {threads} {input.pairs} -o {output.clean1} >> {log}
+        python {hires} clean_isolated -t {threads} -o {output.clean12} {output.clean1} >> {log}
+        python {hires} clean_splicing -r {input.exon_index} -o {output.clean123} {output.clean12} >> {log}
+        python {hires} clean_splicing -r {input.exon_index} -o {output.clean13} {output.clean1} >> {log}
 
         set +u
         conda deactivate
