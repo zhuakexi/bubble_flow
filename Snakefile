@@ -94,7 +94,7 @@ rule extract_umi:
         set -u
         umi_tools extract -p {params.pattern} -I {input.RNA_R2} -S {output.umi2} --read2-in={input.RNA_R1} --read2-out={output.umi1}
         gunzip --force -c {output.umi1} > {output.unzip_umi1}
-        sed {params.extra} {output.unzip_umi1} > {output.umi_by_cell}
+        sed 's/_/_{wildcards.sample}_/' {output.unzip_umi1} > {output.umi_by_cell}
         set +u
         conda deactivate 
         set -u
