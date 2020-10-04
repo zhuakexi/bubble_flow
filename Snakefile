@@ -16,6 +16,7 @@ sex = "female"
 
 
 # --------- working rules ---------
+## --------- DNA branch ----------
 
 #split DNA and RNA        
 rule split:
@@ -350,6 +351,16 @@ rule vis:
         #dirty workaround for stupid snakemake input/output
         #need better vis or better out file syntax
         #goal: no loop in shell scripts
+## --------- RNA branch ---------
+rule rna_merge:
+    input:
+        expand("/share/Data/ychi/repo/RNA_all/umi.{sample}.rna.R1.fq", sample=SAMPLES)
+    output:
+        rnaAll="RNA_all/rnaAll.fq",
+    shell:
+    """
+        cat {input} > {output.rnaAll}
+    """
 
 
 # --------- pseudo rules to ease command line using---------
@@ -404,3 +415,6 @@ rule do_align3d:
 rule do_vis:
     input:
         expand(rules.vis.output, sample=SAMPLES)
+rule do_rna_merge:
+    input:
+        rules.rna_merge.output
