@@ -84,8 +84,7 @@ rule extract_umi:
     resources:
         nodes = 1
     params:
-        pattern=r"NNNNNNNN",
-        extra=r"'s/_/_{wildcards.sample}_/'"
+        pattern=r"NNNNNNNN"
     shell: 
         """
         set +u
