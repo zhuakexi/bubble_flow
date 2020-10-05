@@ -12,8 +12,11 @@ hickit = "/share/home/ychi/software/hickit/hickit"
 k8 = "/share/home/ychi/software/hickit/k8"
 js = "/share/home/ychi/software/hickit/hickit.js"
 hires = "/share/home/ychi/software/hires-utils/hires.py"
+star_index = "/share/home/ychi/software/star_index"
+annotations = "/share/home/ychi/software/gencode.v33.primary_assembly.annotation.gtf"
 sex = "female"
 
+localrules: rna_merge
 
 # --------- working rules ---------
 ## --------- DNA branch ----------
@@ -352,16 +355,85 @@ rule vis:
         #need better vis or better out file syntax
         #goal: no loop in shell scripts
 ## --------- RNA branch ---------
-rule rna_merge:
+rule merge_rna:
     input:
         expand("/share/Data/ychi/repo/RNA_all/umi.{sample}.rna.R1.fq", sample=SAMPLES)
     output:
-        rnaAll="RNA_all/rnaAll.fq",
+        "/share/Data/ychi/repo/RNA_all/rnaAll.fq",
+    message: "rna_merging: {SAMPLES}"
     shell:
-    """
-        cat {input} > {output.rnaAll}
-    """
+        """
+        cat {input} > {output}
+        """
 
+
+rule star_mapping:
+    input:
+        rules.merge_rna.output
+    output:
+        "/share/Data/ychi/repo/star/Aligned.sortedByCoord.out.bam"
+    threads: 10
+    message: "star mapping on {threads} cores."
+    shell:
+        """
+        set +u
+        source /share/home/ychi/miniconda3/bin/activate
+        conda activate hires
+        set -u
+        STAR --runThreadN {threads} \
+        --genomeDir {star_index} \
+        --readFilesIn {input} \
+        --outFileNamePrefix /share/Data/ychi/repo/star/ \
+        --outSAMtype BAM Unsorted SortedByCoordinate --outReadsUnmapped Fastx
+        set +u
+        conda deactivate
+        set =u
+        """
+
+rule count:
+    input:
+        bamIn = rules.star_mapping.output
+    output:
+        exon_count_matrix = "/share/Data/ychi/repo/counts/counts.exon.tsv",
+        gene_count_matrix = "/share/Data/ychi/repo/counts/counts.gene.tsv",
+        gene_assigned = "/share/Data/ychi/repo/feature_gene/gene_assigned",
+        exon_assigned = "/share/Data/ychi/repo/feature_exon/exon_assigned",
+        gene_sam_sort = "/share/Data/ychi/repo/feature_gene/samsort.bam",
+        gene_tsv = "/share/Data/ychi/repo/counts/counts.gene.tsv.gz",
+        exon_sam_sort = "/share/Data/ychi/repo/feature_exon/samsort.bam",
+        exon_tsv = "/share/Data/ychi/repo/counts/counts.exon.tsv.gz"
+    params:
+        r"--per-gene --per-cell --gene-tag=XT --wide-format-cell-counts --assigned-status-tag=XS"
+    shell:
+        """
+        set +u
+        source /share/home/ychi/miniconda3/bin/activate
+        conda activate hires
+        set -u
+         
+        #featureCounts by gene
+        featureCounts -a {annotations} -o {output.gene_assigned} -R BAM {rules.star_mapping.output} -T 4 -Q 30 -t gene -g gene_name
+        #featureCounts by exon
+        featureCounts -a {annotations} -o {output.exon_assigned} -R BAM {rules.star_mapping.output} -T 4 -Q 30 -g gene_name
+        
+        #OUTPUT count_matix by gene
+        samtools sort /share/Data/ychi/repo/feature_gene/Aligned.sortedByCoord.out.bam.featureCounts.bam -o {output.gene_sam_sort}
+        samtools index {output.gene_sam_sort}
+        umi_tools count {params} -I {output.gene_sam_sort} -S {output.gene_tsv}
+        
+        #gunzip -f {output.gene_tsv}
+
+        #OUTPUT count_matix by exon
+        samtools sort /share/Data/ychi/repo/feature_exon/Aligned.sortedByCoord.out.bam.featureCounts.bam -o {output.exon_sam_sort}
+        samtools index {output.exon_sam_sort}
+        umi_tools count {params} -I {output.exon_sam_sort} -S {output.exon_tsv}
+        
+        #gunzip -f {output.exon_tsv}
+        
+        set +u
+        conda deactivate
+        set -u
+        """
 
 # --------- pseudo rules to ease command line using---------
 
@@ -415,6 +487,12 @@ rule do_align3d:
 rule do_vis:
     input:
         expand(rules.vis.output, sample=SAMPLES)
-rule do_rna_merge:
+rule do_merge_rna:
     input:
-        rules.rna_merge.output
+        rules.merge_rna.output
+rule do_star:
+    input:
+        rules.star_mapping.output
+rule do_count:
+    input:
+        rules.count.output
