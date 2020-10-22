@@ -1,0 +1,78 @@
+# bubble_flow: the hires pipeline            
+# author CY                   
+# date 2020/9/22                   
+
+import os
+import pandas
+
+configfile: "config/config.yaml"
+SAMPLES = pandas.read_table("config/cell_list.tsv").iloc[:,0]
+
+## --------- DNA branch ----------
+include: "rules/split.smk"
+include: "rules/cut_round2.smk"
+include: "rules/extract_umi.smk"
+include: "rules/bwa_map.smk"
+include: "rules/sam2seg.smk"
+include: "rules/seg2pairs.smk"
+include: "rules/clean_pairs.smk"
+include: "rules/impute.smk"
+include: "rules/build.smk"
+include: "rules/pairs2cons.smk"
+include: "rules/clean3d.smk"
+include: "rules/align3d.smk"
+include: "rules/vis.smk"
+## --------- RNA branch ---------
+include: "rules/merge_rna.smk"
+include: "rules/star_mapping.smk"
+include: "rules/count.smk"
+
+rule do_split:
+    input:
+        expand(rules.split.output, sample=SAMPLES)
+rule do_cut_round2:
+    input:
+        expand(rules.cut_round2.output, sample=SAMPLES)
+rule do_extract_umi:
+    input:
+        #expand(rules.extract_umi.output, sample=SAMPLES) #expand accept iterate and replace them all.
+        expand("/share/Data/ychi/repo/umi/umi.{sample}.rna.R1.fq.gz", sample=SAMPLES),
+        expand("/share/Data/ychi/repo/umi/umi.{sample}.rna.R2.fq.gz", sample=SAMPLES),
+        expand("/share/Data/ychi/repo/RNA_all/umi.{sample}.rna.R1.fq", sample=SAMPLES)
+
+rule do_bwa:
+    input:
+        expand("/share/Data/ychi/repo/sam/{sample}.aln.sam.gz", sample=SAMPLES) 
+rule do_sam2seg:
+    input:
+        expand(rules.sam2seg.output, sample=SAMPLES)
+rule do_seg2pairs:
+    input:
+        expand(rules.seg2pairs.output, sample=SAMPLES)
+rule do_clean_pairs:
+    input:
+        expand(rules.clean_pairs.output, sample=SAMPLES)
+rule do_impute:
+    input:
+        expand(rules.impute.output, sample=SAMPLES)
+rule do_build:
+    input:
+        expand(rules.build.output, sample=SAMPLES, rep=list(range(1,6)))
+rule do_clean3d:
+    input:
+        expand(rules.clean3d.output, sample=SAMPLES, rep=list(range(1,6)))
+rule do_align3d:
+    input:
+        expand(rules.align3d.output, sample=SAMPLES)
+rule do_vis:
+    input:
+        expand(rules.vis.output, sample=SAMPLES)
+rule do_merge_rna:
+    input:
+        rules.merge_rna.output
+rule do_star:
+    input:
+        rules.star_mapping.output
+rule do_count:
+    input:
+        rules.count.output
