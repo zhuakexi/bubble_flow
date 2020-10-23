@@ -1,25 +1,16 @@
+import os
 rule bwa_map:
     input:
-        ref_genome="/share/Data/ychi/genome/bwa_index/GRCh38/genome.fa",
-        DNA1 = "/share/Data/ychi/repo/dna/{sample}.dna.R1.fq.gz",
-        DNA2 = "/share/Data/ychi/repo/dna/{sample}.dna.R2.fq.gz",
+        ref_genome = os.path.join(config["reference"]["bwa_index"], "genome.fa"),
+        DNA_R1 = rules.split.output.DNA_R1,
+        DNA_R2 = rules.split.output.DNA_R2
     output:
-        aln = protected("/share/Data/ychi/repo/sam/{sample}.aln.sam.gz")
-    threads: 12
-    resources:
-        nodes = 12
-    params:
-        extra=r"-R '@RG\tID:{sample}\tPL:ILLUMINA\tSM:{sample}'",
+        protected( os.path.join(config["dirs"]["sam"], "{sample}.aln.sam.gz"))
+    threads: 8
+    resources: nodes = 8
+    params: extra=r"-R '@RG\tID:{sample}\tPL:ILLUMINA\tSM:{sample}'"
+    conda: "workflow/envs/dna_tools.yaml"
     shell:
         """
-        set +u
-        source /share/home/ychi/miniconda3/bin/activate
-        conda activate hires
-        set -u
-
-        bwa mem -5SP -t{threads} {params.extra} {input.ref_genome} {input.DNA1} {input.DNA2} | gzip > {output.aln}
-
-        set +u
-        conda deactivate
-        set -u
+        bwa mem -5SP -t{threads} {params.extra} {input.ref_genome} {input.DNA1} {input.DNA2} | gzip > {output}
         """
