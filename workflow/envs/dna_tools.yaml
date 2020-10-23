@@ -11,4 +11,3 @@ dependencies:
   - libgomp=9.3.0=h5dbcf3e_17
   - perl=5.30.3=h516909a_1
   - zlib=1.2.11=h516909a_1010
-prefix: /share/home/ychi/miniconda3/envs/dna_tools

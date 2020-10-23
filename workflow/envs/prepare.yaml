@@ -29,4 +29,3 @@ dependencies:
   - xopen=0.9.0=py38h32f6830_1
   - xz=5.2.5=h516909a_1
   - zlib=1.2.11=h516909a_1010
-prefix: /share/home/ychi/miniconda3/envs/prepare
