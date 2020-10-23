@@ -1,19 +1,22 @@
 #split DNA and RNA
+tp1 = os.path.join(config["dirs"]["dna"], "{{sample}}.{}.{}.gz")
+tp2 = os.path.join(config["dirs"]["rna"], "{{sample}}.{}.{}.gz")
 rule split:
     input:
         expand( os.path.join(config["dirs"]["raw"],"{{sample}}/{{sample}}_{R}.fq.gz"), R=["R1", "R2"] ) 
     output:
-        DNA_R1 = os.path.join(config["dirs"]["dna"], "{sample}.dna.R1.gz"),
-        DNA_R2 = os.path.join(config["dirs"]["dna"], "{sample}.dna.R2.gz"),
-        RNA_R1 = os.path.join(config["dirs"]["dna"], "{sample}.rna.R1.gz"),
-        RNA_R2 = os.path.join(config["dirs"]["dna"], "{sample}.rna.R2.gz")
+        DNA_R1 = tp1.format("dna", "R1"),
+        DNA_R2 = tp1.format("dna", "R2"),
+        RNA_R1 = tp2.format("rna", "R1"),
+        RNA_R2 = tp2.format("rna", "R2")
     threads: 8
     resources:
         nodes = 8 
     params:
+        # rna specific adapter
         adapter=r"XGGTTGAGGTAGTATTGCGCAATG;o=20"
     conda:
-        "workflow/envs/cutadapt.yaml"
+        "workflow/envs/prepare.yaml"
     shell:
         """
         cutadapt -G '{params.adapter}' -j {threads} \
