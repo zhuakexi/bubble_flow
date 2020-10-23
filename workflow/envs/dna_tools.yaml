@@ -1,0 +1,14 @@
+name: dna_tools
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=1_gnu
+  - bwa=0.7.17=hed695b0_7
+  - libgcc-ng=9.3.0=h5dbcf3e_17
+  - libgomp=9.3.0=h5dbcf3e_17
+  - perl=5.30.3=h516909a_1
+  - zlib=1.2.11=h516909a_1010
+prefix: /share/home/ychi/miniconda3/envs/dna_tools
