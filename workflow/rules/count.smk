@@ -10,7 +10,7 @@ rule count:
         exon_count_matrix = "/share/Data/ychi/repo/counts/counts.exon.tsv.gz"
     params:
         r"--per-gene --per-cell --gene-tag=XT --wide-format-cell-counts --assigned-status-tag=XS"
-    conda: "workflow/envs/rna_tools.yaml"
+    conda: "../envs/rna_tools.yaml"
     shell:
         """         
         #featureCounts by gene

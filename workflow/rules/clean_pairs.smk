@@ -7,7 +7,7 @@ rule clean1:
     resources: nodes = 8
     conda: "../envs/hires.yaml"
     message: "clean_pairs_stage1 : {wildcards.sample} : {resources} cores."
-    shell: "python {hires} clean_leg -t {threads} -o {output} {input}  >> {log}"
+    shell: "python {hires} clean_leg -t {threads} -o {output} {input}  1>> {log}"
 
 rule clean12:
     input: rules.clean1.output
@@ -17,7 +17,7 @@ rule clean12:
     resources: nodes = 8
     conda: "../envs/hires.yaml"
     message: "clean_pairs_stage2 : {wildcards.sample} : {resources} cores."
-    shell: "python {hires} clean_isolated -t {threads} -o {output} {input} >> {log}"
+    shell: "python {hires} clean_isolated -t {threads} -o {output} {input} 1>> {log}"
 
 rule clean123:
     input: 
@@ -29,4 +29,4 @@ rule clean123:
     resources: nodes = 8
     conda: "../envs/hires.yaml"
     message: "clean_pairs_stage3 : {wildcards.sample} : {resources} cores."
-    shell: "python {hires} clean_splicing -r {input.exon_index} -o {output} {input.sequence} >> {log}"
+    shell: "python {hires} clean_splicing -r {input.exon_index} -o {output} {input.sequence} 1>> {log}"

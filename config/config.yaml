@@ -4,6 +4,9 @@ software:
   js: /share/home/ychi/software/hickit/hickit.js
   hires: /share/home/ychi/software/hires-utils/hires.py
   hires_index: /share/home/ychi/software/hires-utils/bin_10k_FULL_index
+  dip-c: /share/home/ychi/software/dip-c/dip-c
+  pairs2con: /share/home/ychi/software/dip-c/scripts/hickit_pairs_to_con.sh
+  impute2con: /share/home/ychi/software/dip-c/scripts/hickit_impute_pairs_to_con.sh
 reference:
   bwa: /share/home/ychi/software/bwa_index/GRCh38
   snp: /share/home/ychi/software/snp_file/gm12878/NA12878.phased_SNP.tsv
@@ -26,7 +29,8 @@ dirs:
   pairs_c1: /share/Data/ychi/repo/300s1/pairs_c1
   pairs_c12: /share/Data/ychi/repo/300s1/pairs_c12
   pairs_c123: /share/Data/ychi/repo/300s1/pairs_c123
-  pairs_dip: /share/Data/ychi/repo/300s1/pairs_dip
+  impute: /share/Data/ychi/repo/300s1/impute
+  3dg: /share/Data/ychi/repo/300s1/3dg
   #for part
   merged_rna: /share/Data/ychi/repo/300s1/merged_rna
   star_mapped: /share/Data/ychi/repo/300s1/star_mapped

@@ -9,7 +9,4 @@ rule merge_rna:
     output:
         os.path.join(config["dirs"]["merged_rna"], "all.rna.fq")
     message: "rna_merging: %d cells." % len(RNA_SAMPLES)
-    shell:
-        """
-        cat {input} > {output}
-        """
+    shell: "cat {input} > {output}"

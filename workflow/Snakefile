@@ -76,6 +76,7 @@ rule do_align3d:
 rule do_vis:
     input:
         expand(rules.vis.output, sample=SAMPLES)
+'''
 rule do_merge_rna:
     input:
         rules.merge_rna.output
@@ -85,4 +86,3 @@ rule do_star:
 rule do_count:
     input:
         rules.count.output
-'''
