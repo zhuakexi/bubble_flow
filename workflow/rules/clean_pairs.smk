@@ -1,30 +1,32 @@
-rule clean_pairs:
-    input: 
-        pairs = rules.seg2pairs.output.pairs,
-        exon_index = "/share/home/ychi/software/hires-utils/bin_10k_FULL_index"
-    output: 
-        clean1= "/share/Data/ychi/repo/clean1/{sample}.c1.pairs.gz",
-        clean12 = "/share/Data/ychi/repo/clean12/{sample}.c12.pairs.gz",
-        clean123 = "/share/Data/ychi/repo/clean123/{sample}.c123.pairs.gz",
-        clean13 = "/share/Data/ychi/repo/clean13/{sample}.c13.pairs.gz"
-    log: "/share/Data/ychi/repo/log/{sample}.clean.log"
+hires = config["software"]["hires"]
+rule clean1:
+    input: rules.seg2pairs.output,
+    output: os.path.join(config["dirs"]["pairs_c1"], "{sample}.c1.pairs.gz")
+    log: rules.seg2pairs.log
     threads: 8
-    resources:
-        nodes = 8
-    message: "clean_pairs : {wildcards.sample} : {resources} cores"
-    shell:
-        """
-        set +u
-        source /share/home/ychi/miniconda3/bin/activate
-        conda activate hires
-        set -u
+    resources: nodes = 8
+    conda: "workflow/envs/hires.yaml"
+    message: "clean_pairs_stage1 : {wildcards.sample} : {resources} cores."
+    shell: "python {hires} clean_leg -t {threads} -o {output} {input}  >> {log}"
 
-        python {hires} clean_leg -t {threads} {input.pairs} -o {output.clean1} >> {log}
-        python {hires} clean_isolated -t {threads} -o {output.clean12} {output.clean1} >> {log}
-        python {hires} clean_splicing -r {input.exon_index} -o {output.clean123} {output.clean12} >> {log}
-        python {hires} clean_splicing -r {input.exon_index} -o {output.clean13} {output.clean1} >> {log}
+rule clean12:
+    input: rules.clean1.output
+    output: os.path.join(config["dirs"]["pairs_c12"], "{sample}.c12.pairs.gz")
+    log: rules.clean1.log
+    threads: 8
+    resources: nodes = 8
+    conda: "workflow/envs/hires.yaml"
+    message: "clean_pairs_stage2 : {wildcards.sample} : {resources} cores."
+    shell: "python {hires} clean_isolated -t {threads} -o {output} {input} >> {log}"
 
-        set +u
-        conda deactivate
-        set -u
-        """
+rule clean123:
+    input: 
+        sequence = rules.clean12.output,
+        exon_index = config["reference"]["hires_index"]
+    output: os.path.join(config["dirs"]["pairs_c123"], "{sample}.c123.pairs.gz")
+    log: rules.clean12.log
+    threads: 8
+    resources: nodes = 8
+    conda: "workflow/envs/hires.yaml"
+    message: "clean_pairs_stage3 : {wildcards.sample} : {resources} cores."
+    shell: "python {hires} clean_splicing -r {input.exon_index} -o {output} {input.sequence} >> {log}"
