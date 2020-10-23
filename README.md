@@ -60,3 +60,8 @@ On cluster(slurm version):
 snakemake --cluster "sbatch --cpus-per-task={threads}" --jobs $MAX_TASK_NUM --resources nodes=$MAX_CORE_NUM All
 ```
 
+Using "do_$RULE" to execute step by step
+```
+snakemake --cores $CHOOSE_THREADS --use_conda do_$RULE
+```
+
