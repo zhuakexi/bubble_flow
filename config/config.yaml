@@ -14,6 +14,7 @@ sex: female
 logs: /share/Data/ychi/repo/300s1/logs
 dirs:
   #for all
+  raw: /share/Data/ychi/raw
   dna: /share/Data/ychi/repo/300s1/dna
   rna: /share/Data/ychi/repo/300s1/rna
   rna_c: /share/Data/ychi/repo/300s1/rna_c
