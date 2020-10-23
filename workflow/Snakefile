@@ -85,4 +85,4 @@ rule do_star:
         rules.star_mapping.output
 rule do_count:
     input:
-        rules.count.output
+        rules.matrix_count.output
