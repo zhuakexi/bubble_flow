@@ -1,22 +1,18 @@
 rule star_mapping:
     input:
-        rules.merge_rna.output
+        sequence = rules.merge_rna.output,
+        index = config["reference"]["star_index"]
     output:
-        "/share/Data/ychi/repo/star/Aligned.sortedByCoord.out.bam"
+        touch( os.path.join(config["dirs"]["star_mapped"], "Aligned.sortedByCoord.out.bam.dummy") )
     threads: 10
     message: "star mapping on {threads} cores."
+    conda: "workflow/envs/rna_tools.yaml"
     shell:
+        # file name prefix need "/"
         """
-        set +u
-        source /share/home/ychi/miniconda3/bin/activate
-        conda activate hires
-        set -u
         STAR --runThreadN {threads} \
-        --genomeDir {star_index} \
-        --readFilesIn {input} \
-        --outFileNamePrefix /share/Data/ychi/repo/star/ \
+        --genomeDir {input.index} \
+        --readFilesIn {input.sequence} \
+        --outFileNamePrefix {config[dirs][star_mapped]}/ \
         --outSAMtype BAM Unsorted SortedByCoordinate --outReadsUnmapped Fastx
-        set +u
-        conda deactivate
-        set =u
         """
