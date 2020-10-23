@@ -9,7 +9,6 @@ rule cut_round2:
     threads: 12
     resources:
         nodes = 12
-        
     params:
         adapter=r"XNNNNNNNNTTTTTTTTTTTTTTT;o=18"
     shell:"""

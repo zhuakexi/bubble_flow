@@ -16,7 +16,7 @@ rule split:
         # rna specific adapter
         adapter=r"XGGTTGAGGTAGTATTGCGCAATG;o=20"
     conda:
-        "workflow/envs/prepare.yaml"
+        "../envs/prepare.yaml"
     shell:
         """
         cutadapt -G '{params.adapter}' -j {threads} \

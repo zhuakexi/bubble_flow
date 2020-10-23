@@ -1,8 +1,5 @@
 # merge reads
 # for round 1 analysis rna_cell_list = cell_list
-import pandas
-RNA_SAMPLES = pandas.read_tsv("config/rna_cell_list.tsv").iloc[:,0]
-
 # io heavy 
 localrules: merge_rna
 

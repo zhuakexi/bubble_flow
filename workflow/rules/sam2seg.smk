@@ -2,7 +2,7 @@ k8 = config["software"]["k8"]
 js = config["software"]["js"]
 rule sam2seg:
     input:
-        snp = os.path.join(config["reference"]["snp"], "NA12878.phased_SNP.tsv"),
+        snp = config["reference"]["snp"],
         aln = os.path.join(config["dirs"]["sam"], "{sample}.aln.sam.gz"),
         par = os.path.join(config["reference"]["par"])
     output: os.path.join(config["dirs"]["seg"], "{sample}.seg.gz")

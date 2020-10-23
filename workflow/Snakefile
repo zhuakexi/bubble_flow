@@ -3,13 +3,12 @@
 # date 2020/9/22                   
 
 import os
-# snake depend on pandas
 import pandas
 
 configfile: "config/config.yaml"
 # cell_list: column 0 as name of samples
-SAMPLES = config["dirs"]["raw"] + pandas.read_table("config/cell_list.tsv").iloc[:,0]
-SAMPLES = list(SAMPLES)
+SAMPLES = list(pandas.read_table("config/cell_list.tsv", header=None).iloc[:,0])
+sex = config["sex"]
 ## --------- DNA branch ----------
 include: "rules/split.smk"
 include: "rules/cut_round2.smk"
@@ -18,13 +17,14 @@ include: "rules/bwa_map.smk"
 include: "rules/sam2seg.smk"
 include: "rules/seg2pairs.smk"
 include: "rules/clean_pairs.smk"
-include: "rules/impute.smk"
-include: "rules/build.smk"
-include: "rules/pairs2cons.smk"
-include: "rules/clean3d.smk"
-include: "rules/align3d.smk"
-include: "rules/vis.smk"
+#include: "rules/impute.smk"
+#include: "rules/build.smk"
+#include: "rules/pairs2cons.smk"
+#include: "rules/clean3d.smk"
+#include: "rules/align3d.smk"
+#include: "rules/vis.smk"
 ## --------- RNA branch ---------
+RNA_SAMPLES = list(pandas.read_table("config/rna_cell_list.tsv", header=None).iloc[:,0])
 include: "rules/merge_rna.smk"
 include: "rules/star_mapping.smk"
 include: "rules/count.smk"
@@ -51,9 +51,16 @@ rule do_sam2seg:
 rule do_seg2pairs:
     input:
         expand(rules.seg2pairs.output, sample=SAMPLES)
-rule do_clean_pairs:
+rule do_clean1:
     input:
-        expand(rules.clean_pairs.output, sample=SAMPLES)
+        expand(rules.clean1.output, sample=SAMPLES)
+rule do_clean12:
+    input:
+        expand(rules.clean12.output, sample=SAMPLES)
+rule do_clean123:
+    input:
+        expand(rules.clean123.output, sample=SAMPLES)
+'''
 rule do_impute:
     input:
         expand(rules.impute.output, sample=SAMPLES)
@@ -78,3 +85,4 @@ rule do_star:
 rule do_count:
     input:
         rules.count.output
+'''

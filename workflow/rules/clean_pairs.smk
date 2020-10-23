@@ -5,7 +5,7 @@ rule clean1:
     log: rules.seg2pairs.log
     threads: 8
     resources: nodes = 8
-    conda: "workflow/envs/hires.yaml"
+    conda: "../envs/hires.yaml"
     message: "clean_pairs_stage1 : {wildcards.sample} : {resources} cores."
     shell: "python {hires} clean_leg -t {threads} -o {output} {input}  >> {log}"
 
@@ -15,18 +15,18 @@ rule clean12:
     log: rules.clean1.log
     threads: 8
     resources: nodes = 8
-    conda: "workflow/envs/hires.yaml"
+    conda: "../envs/hires.yaml"
     message: "clean_pairs_stage2 : {wildcards.sample} : {resources} cores."
     shell: "python {hires} clean_isolated -t {threads} -o {output} {input} >> {log}"
 
 rule clean123:
     input: 
         sequence = rules.clean12.output,
-        exon_index = config["reference"]["hires_index"]
+        exon_index = config["software"]["hires_index"]
     output: os.path.join(config["dirs"]["pairs_c123"], "{sample}.c123.pairs.gz")
     log: rules.clean12.log
     threads: 8
     resources: nodes = 8
-    conda: "workflow/envs/hires.yaml"
+    conda: "../envs/hires.yaml"
     message: "clean_pairs_stage3 : {wildcards.sample} : {resources} cores."
     shell: "python {hires} clean_splicing -r {input.exon_index} -o {output} {input.sequence} >> {log}"

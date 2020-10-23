@@ -1,7 +1,7 @@
 hickit = config["software"]["hickit"]
 rule seg2pairs:
     input:
-        rules.sam2seg.output.seg
+        rules.sam2seg.output
     output:
         os.path.join(config["dirs"]["pairs_0"], "{sample}.pairs.gz")
     log: rules.sam2seg.log
