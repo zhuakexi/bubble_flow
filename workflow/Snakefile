@@ -3,11 +3,13 @@
 # date 2020/9/22                   
 
 import os
+# snake depend on pandas
 import pandas
 
 configfile: "config/config.yaml"
-SAMPLES = pandas.read_table("config/cell_list.tsv").iloc[:,0]
-
+# cell_list: column 0 as name of samples
+SAMPLES = config["dirs"]["raw"] + pandas.read_table("config/cell_list.tsv").iloc[:,0]
+SAMPLES = list(SAMPLES)
 ## --------- DNA branch ----------
 include: "rules/split.smk"
 include: "rules/cut_round2.smk"
