@@ -34,4 +34,7 @@ dirs:
   #for part
   merged_rna: /share/Data/ychi/repo/300s1/merged_rna
   star_mapped: /share/Data/ychi/repo/300s1/star_mapped
+  count_gene: /share/Data/ychi/repo/300s1/count_gene
+  count_exon: /share/Data/ychi/repo/300s1/count_exon
+  count_matrix: /share/Data/ychi/repo/300s1/count_matrix
 
