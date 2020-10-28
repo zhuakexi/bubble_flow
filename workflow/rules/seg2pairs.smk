@@ -28,6 +28,7 @@ rule raw_pairs:
         """        
         {hickit} --dup-dist=0 -i {input} -o - 2> {log} | gzip >> {output}
         """
+# qualitive statistic of experiments 
 rule pairs_info:
     input: 
         pairs_log = rules.seg2pairs.log,
@@ -40,8 +41,9 @@ rule pairs_info:
         comment = r'^#',
         intra = r'{sum++;if($2==$4){intra++}}END{print intra*100/sum}',
         phased = r'{sum+=2;if($8!="."){phased++};if($9!="."){phased++}}END{print phased*100/sum}'
+    threads: 1
     resources: nodes=1
-    message: "pairs_info : {wildcards.sample}"
+    message: "pairs_info : {wildcards.sample} : {threads} cores"
     shell:
         """
         dup_line=$(grep {params.dedup} {input.pairs_log}) # extract critic line in log
