@@ -8,7 +8,10 @@ import pandas
 configfile: "config/config.yaml"
 # cell_list: column 0 as name of samples
 SAMPLES = list(pandas.read_table("config/cell_list.tsv", header=None).iloc[:,0])
+# sex of sample
 sex = config["sex"]
+# whether snp files are valid, "on" or "off"
+snp = config["snp"]
 ## --------- DNA branch ----------
 include: "rules/split.smk"
 include: "rules/cut_round2.smk"
