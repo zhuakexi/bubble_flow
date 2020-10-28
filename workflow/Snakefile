@@ -40,14 +40,12 @@ rule do_cut_round2:
         expand(rules.cut_round2.output, sample=SAMPLES)
 rule do_extract_umi:
     input:
-        #expand(rules.extract_umi.output, sample=SAMPLES) #expand accept iterate and replace them all.
-        expand("/share/Data/ychi/repo/umi/umi.{sample}.rna.R1.fq.gz", sample=SAMPLES),
-        expand("/share/Data/ychi/repo/umi/umi.{sample}.rna.R2.fq.gz", sample=SAMPLES),
-        expand("/share/Data/ychi/repo/RNA_all/umi.{sample}.rna.R1.fq", sample=SAMPLES)
+        expand(rules.extract_umi.output, sample=SAMPLES),
+        expand(rules.extrac_cell_name.output, sample=SAMPLES)
 
 rule do_bwa:
     input:
-        expand("/share/Data/ychi/repo/sam/{sample}.aln.sam.gz", sample=SAMPLES) 
+        expand(rules.bwa_map.output, sample=SAMPLES) 
 rule do_sam2seg:
     input:
         expand(rules.sam2seg.output, sample=SAMPLES)
