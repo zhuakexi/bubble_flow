@@ -63,6 +63,9 @@ rule do_clean12:
 rule do_clean123:
     input:
         expand(rules.clean123.output, sample=SAMPLES)
+rule do_pairs_info:
+    input:
+        expand(rules.pairs_info.output, sample=SAMPLES)
 '''
 rule do_impute:
     input:
