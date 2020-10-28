@@ -20,7 +20,7 @@ include: "rules/bwa_map.smk"
 include: "rules/sam2seg.smk"
 include: "rules/seg2pairs.smk"
 include: "rules/clean_pairs.smk"
-#include: "rules/impute.smk"
+include: "rules/impute.smk"
 #include: "rules/build.smk"
 #include: "rules/pairs2cons.smk"
 #include: "rules/clean3d.smk"
@@ -66,10 +66,10 @@ rule do_clean123:
 rule do_pairs_info:
     input:
         expand(rules.pairs_info.output, sample=SAMPLES)
-'''
 rule do_impute:
     input:
         expand(rules.impute.output, sample=SAMPLES)
+''''
 rule do_build:
     input:
         expand(rules.build.output, sample=SAMPLES, rep=list(range(1,6)))
