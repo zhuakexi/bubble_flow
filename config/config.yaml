@@ -13,13 +13,13 @@ reference:
   par: /share/home/ychi/software/GRCh38.chrY.PAR.bed
   star: /share/home/ychi/software/star_index
   annotation: /share/home/ychi/software/gencode.v33.primary_assembly.annotation.gtf
-snp: using #or anything else
-sex: female
+snp: blank #using or anything else
+sex: male
 #logs: /share/Data/ychi/repo/300s1/logs
 logs: /share/Data/ychi/repo/300s1/logs/{{sample}}/{}
 dirs:
   #for all
-  raw: /share/Data/ychi/raw
+  raw: /share/Data/ychi/raw/300s1/Rawdata
   dna: /share/Data/ychi/repo/300s1/dna
   rna: /share/Data/ychi/repo/300s1/rna
   rna_c: /share/Data/ychi/repo/300s1/rna_c
