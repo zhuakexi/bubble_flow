@@ -1,13 +1,14 @@
 import os
 hickit = config["software"]["hickit"]
 rule impute:
-    input: rules.clean_123.output
+    input: rules.clean123.output
     output:
         impute_pairs = os.path.join(config["dirs"]["impute"], "{sample}.impute.pairs.gz"),
         impute_val = os.path.join(config["dirs"]["impute"], "{sample}.impute.val")
+    threads: 1
     resources: nodes = 1
     log: config["logs"].format("impute.log")
-    message: "impute: {sample}"
+    message: "impute: {wildcards.sample} : {threads} cores"
     shell:
         """
         # impute phases
