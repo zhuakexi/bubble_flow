@@ -13,14 +13,28 @@ rule sam2seg:
     message: "sam2seg : {wildcards.sample} : {threads} cores"
     shell:
         """
-        if [ "{sex}" == "female" ]
+        if [ {snp} == on ]
         then
-        {k8} {js} sam2seg -v {input.snp} {input.aln} 2> {log} | \
-        {k8} {js} chronly -y - |\
-        sed 's/-/+/g' | gzip > {output}
+            if [ {sex} == female ]
+            then
+                {k8} {js} sam2seg -v {input.snp} {input.aln} 2> {log} | \
+                {k8} {js} chronly -y - |\
+                sed 's/-/+/g' | gzip > {output}
+            else
+                {k8} {js} sam2seg -v {input.snp} {input.aln} 2> {log} | \
+                {k8} {js} chronly - | {k8} {js} bedflt {input.par} - | \
+                sed 's/-/+/g' | gzip > {output}
+            fi
         else
-        {k8} {js} sam2seg -v {input.snp} {input.aln} 2> {log} | \
-        {k8} {js} chronly - | {k8} {js} bedflt {input.par} - | \
-        sed 's/-/+/g' | gzip > {output}
+            if [ {sex} == female ]
+            then
+                {k8} {js} sam2seg {input.aln} 2> {log} |\
+                {k8} {js} chronly -y -|\
+                sed 's/-/+/g' | gzip > {output}
+            else
+                {k8} {js} sam2seg -v {input.snp} {input.aln} 2> {log} | \
+                {k8} {js} chronly - | {k8} {js} bedflt {input.par} - | \
+                sed 's/-/+/g' | gzip > {output}
+            fi
         fi
-        """   
+        """
