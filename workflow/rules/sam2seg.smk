@@ -13,7 +13,7 @@ rule sam2seg:
     message: "sam2seg : {wildcards.sample} : {threads} cores"
     shell:
         """
-        if [ {snp} == on ]
+        if [ {snp} == using ]
         then
             if [ {sex} == female ]
             then
