@@ -7,8 +7,8 @@ rule split:
     input:
         #expand( os.path.join(config["dirs"]["raw"],"{{sample}}/{{sample}}_{R}.fq.gz"), R=["R1", "R2"] )
         # order of R1 R2 is critical
-        R1 = os.path.join(config["dirs"]["raw"], "{{sample}}/{{sample}}_R1.fq.gz"),
-        R2 = os.path.join(config["dirs"]["raw"], "{{sample}}/{{sample}}_R2.fq.gz") 
+        R1 = os.path.join(config["dirs"]["raw"], "{sample}/{sample}_R1.fq.gz"),
+        R2 = os.path.join(config["dirs"]["raw"], "{sample}/{sample}_R2.fq.gz") 
     output:
         DNA_R1 = tp1.format("dna", "R1"),
         DNA_R2 = tp1.format("dna", "R2"),
