@@ -13,6 +13,7 @@ reference:
   par: /share/home/ychi/software/GRCh38.chrY.PAR.bed
   star: /share/home/ychi/software/star_index
   annotation: /share/home/ychi/software/gencode.v33.primary_assembly.annotation.gtf
+snp: on #off
 sex: female
 #logs: /share/Data/ychi/repo/300s1/logs
 logs: /share/Data/ychi/repo/300s1/logs/{{sample}}/{}
