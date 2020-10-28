@@ -14,7 +14,8 @@ reference:
   star: /share/home/ychi/software/star_index
   annotation: /share/home/ychi/software/gencode.v33.primary_assembly.annotation.gtf
 sex: female
-logs: /share/Data/ychi/repo/300s1/logs
+#logs: /share/Data/ychi/repo/300s1/logs
+logs: /share/Data/ychi/repo/300s1/logs/{{sample}}/{}
 dirs:
   #for all
   raw: /share/Data/ychi/raw
@@ -37,4 +38,10 @@ dirs:
   count_gene: /share/Data/ychi/repo/300s1/count_gene
   count_exon: /share/Data/ychi/repo/300s1/count_exon
   count_matrix: /share/Data/ychi/repo/300s1/count_matrix
+cpu:
+  bwa: 8
+  split: 8
+  clean1: 8
+  clean2: 8
+  clean3: 8
 
