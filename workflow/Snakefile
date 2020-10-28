@@ -41,7 +41,7 @@ rule do_cut_round2:
 rule do_extract_umi:
     input:
         expand(rules.extract_umi.output, sample=SAMPLES),
-        expand(rules.extrac_cell_name.output, sample=SAMPLES)
+        expand(rules.extract_cell_name.output, sample=SAMPLES)
 
 rule do_bwa:
     input:
