@@ -10,6 +10,7 @@ rule pairs2cons:
         con = os.path.join(config["dirs"]["con"], "{sample}.con.gz"),
         impute_con = os.path.join(config["dirs"]["con"], "{sample}.impute.con.gz")
     conda: "../envs/dip-c.yaml"
+    message: "pairs2con : {wildcards.sample} : {resources} core"
     shell:
         """
         {pairs2con} {input.pairs}
