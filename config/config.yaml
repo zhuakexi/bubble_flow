@@ -45,4 +45,5 @@ cpu:
   clean1: 8
   clean2: 8
   clean3: 8
+  cut_r2: 8
 
