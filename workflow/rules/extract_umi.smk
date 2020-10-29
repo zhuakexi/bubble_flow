@@ -10,10 +10,13 @@ rule extract_umi:
     params:
         # umi pattern
         pattern=r"NNNNNNNN"
+    log: config["logs"].format("extract_umi.log")
+    message: "extract_umi : {wildcards.sample} : {threads} core"
     conda: "../envs/rna_tools.yaml"
-    shell: "umi_tools extract -p {params.pattern} -I {input.RNA_R2} -S {output.umi2} --read2-in={input.RNA_R1} --read2-out={output.umi1}"
+    shell: "umi_tools extract -p {params.pattern} -I {input.RNA_R2} -S {output.umi2} --read2-in={input.RNA_R1} --read2-out={output.umi1} 2> {log}"
         
 rule extract_cell_name:
     input: rules.extract_umi.output.umi1
     output: os.path.join(config["dirs"]["umi_cell"], "cell.umi.{sample}.rna.R1.fq")
+    message: "extract_cell_name : {wildcards.sample} : {threads} core"
     shell: "zcat {input} | sed 's/_/_{wildcards.sample}_/' > {output}"
