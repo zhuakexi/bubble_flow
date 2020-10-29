@@ -15,30 +15,30 @@ reference:
   annotation: /share/home/ychi/software/gencode.v33.primary_assembly.annotation.gtf
 snp: blank #using or anything else
 sex: male
-#logs: /share/Data/ychi/repo/300s1/logs
-logs: /share/Data/ychi/repo/300s1/logs/{{sample}}/{}
+#logs: /share/Data/ychi/repo/dev_config/logs
+logs: /share/Data/ychi/repo/dev_config/logs/{{sample}}/{}
 dirs:
   #for all
-  raw: /share/Data/ychi/raw/300s1/Rawdata
-  dna: /share/Data/ychi/repo/300s1/dna
-  rna: /share/Data/ychi/repo/300s1/rna
-  rna_c: /share/Data/ychi/repo/300s1/rna_c
-  umi: /share/Data/ychi/repo/300s1/umi
-  umi_cell: /share/Data/ychi/repo/300s1/umi_cell
-  sam: /share/Data/ychi/repo/300s1/sam
-  seg: /share/Data/ychi/repo/300s1/seg
-  pairs_0: /share/Data/ychi/repo/300s1/pairs_0
-  pairs_c1: /share/Data/ychi/repo/300s1/pairs_c1
-  pairs_c12: /share/Data/ychi/repo/300s1/pairs_c12
-  pairs_c123: /share/Data/ychi/repo/300s1/pairs_c123
-  impute: /share/Data/ychi/repo/300s1/impute
-  3dg: /share/Data/ychi/repo/300s1/3dg
+  raw: /share/Data/ychi/raw/dev_config/Rawdata
+  dna: /share/Data/ychi/repo/dev_config/dna
+  rna: /share/Data/ychi/repo/dev_config/rna
+  rna_c: /share/Data/ychi/repo/dev_config/rna_c
+  umi: /share/Data/ychi/repo/dev_config/umi
+  umi_cell: /share/Data/ychi/repo/dev_config/umi_cell
+  sam: /share/Data/ychi/repo/dev_config/sam
+  seg: /share/Data/ychi/repo/dev_config/seg
+  pairs_0: /share/Data/ychi/repo/dev_config/pairs_0
+  pairs_c1: /share/Data/ychi/repo/dev_config/pairs_c1
+  pairs_c12: /share/Data/ychi/repo/dev_config/pairs_c12
+  pairs_c123: /share/Data/ychi/repo/dev_config/pairs_c123
+  impute: /share/Data/ychi/repo/dev_config/impute
+  3dg: /share/Data/ychi/repo/dev_config/3dg
   #for part
-  merged_rna: /share/Data/ychi/repo/300s1/merged_rna
-  star_mapped: /share/Data/ychi/repo/300s1/star_mapped
-  count_gene: /share/Data/ychi/repo/300s1/count_gene
-  count_exon: /share/Data/ychi/repo/300s1/count_exon
-  count_matrix: /share/Data/ychi/repo/300s1/count_matrix
+  merged_rna: /share/Data/ychi/repo/dev_config/merged_rna
+  star_mapped: /share/Data/ychi/repo/dev_config/star_mapped
+  count_gene: /share/Data/ychi/repo/dev_config/count_gene
+  count_exon: /share/Data/ychi/repo/dev_config/count_exon
+  count_matrix: /share/Data/ychi/repo/dev_config/count_matrix
 cpu:
   bwa: 8
   split: 8
