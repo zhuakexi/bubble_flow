@@ -15,10 +15,13 @@ rule count:
     output:
         gene_assigned = os.path.join(config["dirs"]["count_gene"], "gene_assigned"), 
         exon_assigned = os.path.join(config["dirs"]["count_exon"], "exon_assigned")
+    log:
+        result = config["logs"].format["count.result"]
+        log = config["logs"].format("count.log")
     conda: "../envs/rna_tools.yaml"
     shell:
         """
-        featureCounts -a {annotation} -o {output.gene_assigned} -R BAM {count_real_input} -T 4 -Q 30 -t gene -g gene_name
+        featureCounts -a {annotation} -o {output.gene_assigned} -R BAM {count_real_input} -T 4 -Q 30 -t gene -g gene_name 2>{log.log} 1>{log.result}
         featureCounts -a {annotation} -o {output.exon_assigned} -R BAM {count_real_input} -T 4 -Q 30 -g gene_name
         """
 rule sort_count:
