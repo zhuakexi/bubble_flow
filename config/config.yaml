@@ -7,6 +7,7 @@ software:
   dip-c: /share/home/ychi/software/dip-c/dip-c
   pairs2con: /share/home/ychi/software/dip-c/scripts/hickit_pairs_to_con.sh
   impute2con: /share/home/ychi/software/dip-c/scripts/hickit_impute_pairs_to_con.sh
+  rescale: "/share/home/ychi/software/dip-c/scripts/hickit_3dg_to_3dg_rescale_unit.sh"
 reference:
   bwa: /share/home/ychi/software/bwa_index/GRCh38
   snp: /share/home/ychi/software/snp_file/gm12878/NA12878.phased_SNP.tsv
