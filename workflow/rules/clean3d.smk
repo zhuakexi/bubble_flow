@@ -6,7 +6,7 @@ rule clean3d:
         impute_cons = rules.pairs2cons.output.impute_con,
         _3dg_20k = rules.build.output._3dg_20k
     output:
-        os.path.join(config["dirs"]["clean3d"], "{sample}.clean.20k.{rep}.3dg")
+        os.path.join(config["dirs"]["3dg_c"], "{sample}.clean.20k.{rep}.3dg")
     resources: nodes = 1
     message: "------> clean3d : {wildcards.sample} : {resources.nodes} cores"
     conda: "../envs/dip-c.yaml"
