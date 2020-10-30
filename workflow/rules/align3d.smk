@@ -1,6 +1,6 @@
 rule align3d:
     input:
-        rules.clean3d.output
+        expand(rules.clean3d.output, sample="{sample}", rep=list(range(1,6)) ) #trick: expand rep, keep sample.
     output:
         directory(os.path.join(config["dirs"]["align3d"], "{sample}.20k"))
     log:
