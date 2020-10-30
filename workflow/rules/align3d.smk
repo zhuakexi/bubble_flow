@@ -4,7 +4,7 @@ rule align3d:
     output:
         directory(os.path.join(config["dirs"]["align3d"], "{sample}.20k"))
     log:
-        result = config["logs"].format("align3d.rmsd.result")
+        result = config["logs"].format("align3d.rmsd.result"),
         log = config["logs"].format("align3d.log")
     conda: "../envs/hires.yaml"
     resources: nodes = 1
