@@ -8,6 +8,7 @@ software:
   pairs2con: /share/home/ychi/software/dip-c/scripts/hickit_pairs_to_con.sh
   impute2con: /share/home/ychi/software/dip-c/scripts/hickit_impute_pairs_to_con.sh
   rescale: "/share/home/ychi/software/dip-c/scripts/hickit_3dg_to_3dg_rescale_unit.sh"
+  color_file: "/share/Data/ychi/genome/GRCh38.chr.fem.txt"
 reference:
   bwa: /share/home/ychi/software/bwa_index/GRCh38
   snp: /share/home/ychi/software/snp_file/gm12878/NA12878.phased_SNP.tsv
@@ -35,6 +36,8 @@ dirs:
   impute: /share/Data/ychi/repo/dev_config/impute
   3dg: /share/Data/ychi/repo/dev_config/3dg
   3dg_c: /share/Data/ychi/repo/dev_config/3dg_c
+  align3d: /share/Data/ychi/repo/dev_config/align3d
+  cif: /share/Data/ychi/repo/dev_config/cif
   #for part
   merged_rna: /share/Data/ychi/repo/dev_config/merged_rna
   star_mapped: /share/Data/ychi/repo/dev_config/star_mapped
