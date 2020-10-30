@@ -15,10 +15,6 @@ rule vis:
             {dip_c} color -n {color_file} {input}/good/$file 2>> {log} | \
             {dip_c} vis -c /dev/stdin {input}/good/$file > {output}/${{file}}.cif 2>> {log}
         done
-        if [ "`ls {input}/good`" == "" ]
-        then
-            mkdir {output}
-        fi
         """
         #dirty workaround for stupid snakemake input/output
         #need better vis or better out file syntax
