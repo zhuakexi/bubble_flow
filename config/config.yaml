@@ -17,7 +17,7 @@ reference:
   annotation: /share/home/ychi/software/gencode.v33.primary_assembly.annotation.gtf
 snp: blank #using or anything else
 sex: male
-#logs: /share/Data/ychi/repo/dev_config/logs
+log_dir: /share/Data/ychi/repo/dev_config/logs
 logs: /share/Data/ychi/repo/dev_config/logs/{{sample}}/{}
 dirs:
   #for all
