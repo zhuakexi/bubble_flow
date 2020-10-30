@@ -22,10 +22,10 @@ include: "rules/seg2pairs.smk"
 include: "rules/clean_pairs.smk"
 include: "rules/impute.smk"
 include: "rules/build.smk"
-#include: "rules/pairs2cons.smk"
-#include: "rules/clean3d.smk"
-#include: "rules/align3d.smk"
-#include: "rules/vis.smk"
+include: "rules/pairs2cons.smk"
+include: "rules/clean3d.smk"
+include: "rules/align3d.smk"
+include: "rules/vis.smk"
 ## --------- RNA branch ---------
 RNA_SAMPLES = list(pandas.read_table("config/rna_cell_list.tsv", header=None).iloc[:,0])
 include: "rules/merge_rna.smk"
@@ -70,7 +70,6 @@ rule do_impute:
 rule do_build:
     input:
         expand(rules.build.output, sample=SAMPLES, rep=list(range(1,6)))
-''''
 rule do_clean3d:
     input:
         expand(rules.clean3d.output, sample=SAMPLES, rep=list(range(1,6)))
@@ -80,7 +79,6 @@ rule do_align3d:
 rule do_vis:
     input:
         expand(rules.vis.output, sample=SAMPLES)
-'''
 rule do_merge_rna:
     input:
         rules.merge_rna.output
