@@ -13,6 +13,7 @@ sex = config["sex"]
 # whether snp files are valid, "on" or "off"
 snp = config["snp"]
 ## --------- DNA branch ----------
+### --------- pre structure ---------
 include: "rules/split.smk"
 include: "rules/cut_round2.smk"
 include: "rules/extract_umi.smk"
@@ -21,6 +22,8 @@ include: "rules/sam2seg.smk"
 include: "rules/seg2pairs.smk"
 include: "rules/clean_pairs.smk"
 include: "rules/impute.smk"
+### --------- structure ---------
+_3d_SAMPLES = list(pandas.read_table("config/3d_list.tsv", header=None).iloc[:,0])
 include: "rules/build.smk"
 include: "rules/pairs2cons.smk"
 include: "rules/clean3d.smk"
@@ -32,17 +35,10 @@ include: "rules/merge_rna.smk"
 include: "rules/star_mapping.smk"
 include: "rules/count.smk"
 
+# split also works in pure dip-c samples
 rule do_split:
     input:
         expand(rules.split.output, sample=SAMPLES)
-rule do_cut_round2:
-    input:
-        expand(rules.cut_round2.output, sample=SAMPLES)
-rule do_extract_umi:
-    input:
-        expand(rules.extract_umi.output, sample=SAMPLES),
-        expand(rules.extract_cell_name.output, sample=SAMPLES)
-
 rule do_bwa:
     input:
         expand(rules.bwa_map.output, sample=SAMPLES) 
@@ -67,18 +63,28 @@ rule do_pairs_info:
 rule do_impute:
     input:
         expand(rules.impute.output, sample=SAMPLES)
+# only work on cell listed in 3d_list.tsv 
+# before structure building, check pairs info, choose qualified cells and change 3d_list.tsv 
 rule do_build:
     input:
-        expand(rules.build.output, sample=SAMPLES, rep=list(range(1,6)))
+        expand(rules.build.output, sample=_3d_SAMPLES, rep=list(range(1,6)))
 rule do_clean3d:
     input:
-        expand(rules.clean3d.output, sample=SAMPLES, rep=list(range(1,6)))
+        expand(rules.clean3d.output, sample=_3d_SAMPLES, rep=list(range(1,6)))
 rule do_align3d:
     input:
-        expand(rules.align3d.output, sample=SAMPLES)
+        expand(rules.align3d.output, sample=_3d_SAMPLES, rep=list(range(1,6)))
 rule do_vis:
     input:
-        expand(rules.vis.output, sample=SAMPLES)
+        expand(rules.vis.output, sample=_3d_SAMPLES)
+# only for hires
+rule do_extract_umi:
+    input:
+        expand(rules.extract_umi.output, sample=SAMPLES),
+        expand(rules.extract_cell_name.output, sample=SAMPLES)
+rule do_cut_round2:
+    input:
+        expand(rules.cut_round2.output, sample=SAMPLES)
 rule do_merge_rna:
     input:
         rules.merge_rna.output
