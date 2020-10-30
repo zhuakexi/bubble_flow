@@ -7,9 +7,11 @@ rule clean3d:
         _3dg_20k = rules.build.output._3dg_20k
     output:
         os.path.join(config["dirs"]["3dg_c"], "{sample}.clean.20k.{rep}.3dg")
-    resources: nodes = 1
-    message: "------> clean3d : {wildcards.sample} : {resources.nodes} cores"
+    log: config["logs"].format("clean3d.{rep}.log")
     conda: "../envs/dip-c.yaml"
+    resources: nodes = 1
+    message: "------> clean3d : {wildcards.sample}.{wildcards.rep} : {resources.nodes} cores"
+    
     shell: 
         """
         {rescale} {input._3dg_20k}
