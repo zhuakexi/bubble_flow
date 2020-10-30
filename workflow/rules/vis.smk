@@ -6,12 +6,16 @@ rule vis:
     conda: "../envs/dip-c.yaml"
     shell:
         """
-        for file in `ls {input}`
+        for file in `ls {input}/good`
         do
             {dip_c} color -n {color_file} {input}/$file | \
-            {dip_c} vis -c /dev/stdin {input}/$file > {output}/${{file}}.cif
+            {dip_c} vis -c /dev/stdin {input}/$file/good/ > {output}/${{file}}.cif
         done
+        if [ "`ls {input}/good`" == "" ]
+        then
+            mkdir {output}
+        fi
         """
         #dirty workaround for stupid snakemake input/output
         #need better vis or better out file syntax
-        #goal: no loop in shell scripts
+        #goal: no loop in shell scripts, no branch either
