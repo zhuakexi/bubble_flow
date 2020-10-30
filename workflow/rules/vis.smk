@@ -9,6 +9,7 @@ rule vis:
     message: "vis : {wildcards.sample} : {resources.nodes} cores"
     shell:
         """
+        mkdir {output}
         for file in `ls {input}/good`
         do
             {dip_c} color -n {color_file} {input}/good/$file 2>> {log} | \
