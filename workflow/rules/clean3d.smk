@@ -14,7 +14,8 @@ rule clean3d:
     
     shell: 
         """
-        {rescale} {input._3dg_20k}
-        {dip_c} clean3 -c {input.impute_cons} {config[dirs][clean3d]}/{wildcards.sample}.20k.{wildcards.rep}.dip-c.3dg > {output} 2>{log}
-        rm {config[dirs][clean3d]}/{wildcards.sample}.20k.{wildcards.rep}.dip-c.3dg
+        {rescale} {input._3dg_20k} #generate .dip-c.3dg in same folder
+        {dip_c} clean3 -c {input.impute_cons} {config[dirs][3dg]}/{wildcards.sample}.20k.{wildcards.rep}.dip-c.3dg > {output} 2>{log}
+        rm {config[dirs][3dg]}/{wildcards.sample}.20k.{wildcards.rep}.dip-c.3dg
         """
+        #move rescale in align
