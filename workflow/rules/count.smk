@@ -16,7 +16,7 @@ rule count:
         gene_assigned = os.path.join(config["dirs"]["count_gene"], "gene_assigned"), 
         exon_assigned = os.path.join(config["dirs"]["count_exon"], "exon_assigned")
     log:
-        result = config["logs"].format["count.result"]
+        result = config["logs"].format["count.result"],
         log = config["logs"].format("count.log")
     conda: "../envs/rna_tools.yaml"
     shell:
