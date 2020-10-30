@@ -73,11 +73,11 @@ rule do_clean3d:
         expand(rules.clean3d.output, sample=_3d_SAMPLES, rep=list(range(1,6)))
 rule do_align3d:
     input:
-        rules.do_clean3d.input,   # need this for wildcards assign
-        expand(rules.align3d.output, sample=_3d_SAMPLES, rep=list(range(1,6)))
+        expand(rules.do_clean3d.input, sample=_3d_SAMPLES, rep=list(range(1,6)) )  # need this for wildcards assign
+        expand(rules.align3d.output, sample=_3d_SAMPLES, rep=list(range(1,6)) )
 rule do_vis:
     input:
-        rules.do_align3d.input,
+        expand(rules.do_align3d.input, sample=_3d_SAMPLES, rep=list(range(1,6)) ),
         expand(rules.vis.output, sample=_3d_SAMPLES)
 # only for hires
 rule do_extract_umi:
