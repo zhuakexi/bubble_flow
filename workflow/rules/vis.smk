@@ -4,12 +4,13 @@ rule vis:
     input: rules.align3d.output
     output: directory(os.path.join(config["dirs"]["cif"], "{sample}.20k"))
     conda: "../envs/dip-c.yaml"
+    log: os.path.join(config["log_dir"],"{sample}.20k.vis")
     shell:
         """
         for file in `ls {input}/good`
         do
             {dip_c} color -n {color_file} {input}/good/$file | \
-            {dip_c} vis -c /dev/stdin {input}/good/$file > {output}/${{file}}.cif
+            {dip_c} vis -c /dev/stdin {input}/good/$file > {output}/${{file}}.cif 2>> {log}
         done
         if [ "`ls {input}/good`" == "" ]
         then
