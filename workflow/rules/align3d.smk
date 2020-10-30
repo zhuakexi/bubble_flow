@@ -1,26 +1,17 @@
 rule align3d:
     input:
-        expand("/share/Data/ychi/repo/clean3d/{{sample}}.clean3d.20k.{rep}.3dg", rep = list(range(1,6)))
+        rules.clean3d.output
     output:
-        aligned_3dg = directory("/share/Data/ychi/repo/aligned/{sample}.20k/"),
-        #good = directory("/share/Data/ychi/repo/aligned/{sample}.20k/good/"),
-        #bad = directory("/share/Data/ychi/repo/aligned/{sample}.20k/bad/"),
-        #rmsdInfo = "/share/Data/ychi/repo/aligned/{sample}.20k/{sample}.20k.rmsd.info"
-    resources:
-        nodes = 1
+        directory(os.path.join(config["dirs"]["align3d"], "{sample}.20k"))
+    log:
+        result = config["logs"].format("align3d.rmsd.result")
+        log = config["logs"].format("align3d.log")
+    conda: "../envs/hires.yaml"
+    resources: nodes = 1
+    message: "align3d : {wildcards.sample} : {resources.nodes}"
     shell:
         """
-        set +u
-        source /share/home/ychi/miniconda3/bin/activate
-        conda activate hires
-        set -u
-        
-        python {hires} align -o {output.aligned_3dg} -gd {output.aligned_3dg}good/ -bd {output.aligned_3dg}bad {input} > {output.aligned_3dg}{wildcards.sample}.20k.rmsd.info
-        
-        #need align to do the real clean or create 3dg_good
-
-        set +u
-        conda deactivate
-        set -u
+        python {hires} align -o {output}/ -gd {output}/good/ -bd {output}/bad/ {input} \
+        > {log.result} 2> {log.log}      
         """
      
