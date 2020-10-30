@@ -2,8 +2,7 @@ dip_c = config["software"]["dip-c"]
 color_file = config["software"]["color_file"]
 rule vis:
     input: rules.align3d.output
-    output:  
-        this = directory(os.path.join(config["dirs"]["cif"], "{sample}.20k"))
+    output: directory(os.path.join(config["dirs"]["cif"], "{sample}.20k"))
     conda: "../envs/dip-c.yaml"
     shell:
         """
