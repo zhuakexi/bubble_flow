@@ -34,7 +34,7 @@ dirs:
   pairs_c123: /share/Data/ychi/repo/dev_config/pairs_c123
   impute: /share/Data/ychi/repo/dev_config/impute
   3dg: /share/Data/ychi/repo/dev_config/3dg
-  clean3: /share/Data/ychi/repo/dev_config/3dg
+  3dg_c: /share/Data/ychi/repo/dev_config/3dg_c
   #for part
   merged_rna: /share/Data/ychi/repo/dev_config/merged_rna
   star_mapped: /share/Data/ychi/repo/dev_config/star_mapped
