@@ -73,7 +73,7 @@ rule do_clean3d:
         expand(rules.clean3d.output, sample=_3d_SAMPLES, rep=list(range(1,6)))
 rule do_align3d:
     input:
-        expand(rules.align3d.output, sample=_3d_SAMPLES, rep=list(range(1,6)))
+        expand(rules.align3d.output, sample=_3d_SAMPLES)
 rule do_vis:
     input:
         expand(rules.vis.output, sample=_3d_SAMPLES)
