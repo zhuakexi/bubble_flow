@@ -74,7 +74,7 @@ rule do_clean3d:
 rule do_align3d:
     input:
         # must together expand clean3d's output
-        expand(rules.align3d.input, rules.align3d.output, sample=_3d_SAMPLES, rep=list(range(1,6)))
+        expand(rules.align3d.input, sample=_3d_SAMPLES, rep=list(range(1,6))), rules.align3d.output
 rule do_vis:
     input:
         expand(rules.vis.output, sample=_3d_SAMPLES)
