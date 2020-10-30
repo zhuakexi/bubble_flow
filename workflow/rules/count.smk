@@ -18,7 +18,7 @@ rule count:
     log:
         # not for all cell, can't use normal format
         result = os.path.join(config["log_dir"], "count.result"),
-        result = os.path.join(config["log_dir"], "count.log")
+        log = os.path.join(config["log_dir"], "count.log")
     conda: "../envs/rna_tools.yaml"
     shell:
         """
