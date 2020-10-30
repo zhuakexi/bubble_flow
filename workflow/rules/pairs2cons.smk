@@ -16,6 +16,6 @@ rule pairs2cons:
         {pairs2con} {input.pairs}
         {impute2con} {input.impute_pairs}
         
-        mv {config[dirs][clean123]}/{wildcards.sample}.c123.con.gz {output.con}
+        mv {config[dirs][pairs_c123]}/{wildcards.sample}.c123.con.gz {output.con}
         mv {config[dirs][impute]}/{wildcards.sample}.impute.con.gz {output.impute_con}
         """
