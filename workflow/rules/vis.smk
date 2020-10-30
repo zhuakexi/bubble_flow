@@ -5,11 +5,13 @@ rule vis:
     output: directory(os.path.join(config["dirs"]["cif"], "{sample}.20k"))
     conda: "../envs/dip-c.yaml"
     log: os.path.join(config["log_dir"],"{sample}.20k.vis")
+    resources: nodes=1
+    message: "vis : {wildcards.sample} : {resources.nodes} cores"
     shell:
         """
         for file in `ls {input}/good`
         do
-            {dip_c} color -n {color_file} {input}/good/$file | \
+            {dip_c} color -n {color_file} {input}/good/$file 2>> {log} | \
             {dip_c} vis -c /dev/stdin {input}/good/$file > {output}/${{file}}.cif 2>> {log}
         done
         if [ "`ls {input}/good`" == "" ]
