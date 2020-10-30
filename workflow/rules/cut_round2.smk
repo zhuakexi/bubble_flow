@@ -9,7 +9,7 @@ rule cut_round2:
     resources: nodes = config["cpu"]["cut_r2"]
     params: adapter=r"XNNNNNNNNTTTTTTTTTTTTTTT;o=18"
     log:
-        result = config["result"].format("cut_round2.result") 
+        result = config["result"].format("cut_round2.result"), 
         log = config["logs"].format("cut_rounds2.log")
     message: "------> cut_round2 : {wildcards.sample} : {threads} cores"
     conda: "../envs/rna_tools.yaml"
