@@ -4,7 +4,7 @@ rule vis:
     input: rules.align3d.output
     output: directory(os.path.join(config["dirs"]["cif"], "{sample}.20k"))
     conda: "../envs/dip-c.yaml"
-    log: os.path.join(config["log_dir"],"{sample}.20k.vis")
+    log: os.path.join(config["log_dir"],"{sample}","20k.vis")
     resources: nodes=1
     message: "vis : {wildcards.sample} : {resources.nodes} cores"
     shell:
