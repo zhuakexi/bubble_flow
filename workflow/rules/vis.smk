@@ -8,8 +8,8 @@ rule vis:
         """
         for file in `ls {input}/good`
         do
-            {dip_c} color -n {color_file} {input}/$file | \
-            {dip_c} vis -c /dev/stdin {input}/$file/good/ > {output}/${{file}}.cif
+            {dip_c} color -n {color_file} {input}/good/$file | \
+            {dip_c} vis -c /dev/stdin {input}/good/$file > {output}/${{file}}.cif
         done
         if [ "`ls {input}/good`" == "" ]
         then
