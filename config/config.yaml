@@ -35,6 +35,7 @@ dirs:
   pairs_c123: /share/Data/ychi/repo/dev_config/pairs_c123
   impute: /share/Data/ychi/repo/dev_config/impute
   3dg: /share/Data/ychi/repo/dev_config/3dg
+  con: /share/Data/ychi/repo/dev_config/con
   3dg_c: /share/Data/ychi/repo/dev_config/3dg_c
   align3d: /share/Data/ychi/repo/dev_config/align3d
   cif: /share/Data/ychi/repo/dev_config/cif
