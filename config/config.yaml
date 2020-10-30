@@ -21,7 +21,7 @@ sex: male
 logs: /share/Data/ychi/repo/dev_config/logs/{{sample}}/{}
 dirs:
   #for all
-  raw: /share/Data/ychi/raw/dev_config/Rawdata
+  raw: /share/Data/ychi/raw/explore
   dna: /share/Data/ychi/repo/dev_config/dna
   rna: /share/Data/ychi/repo/dev_config/rna
   rna_c: /share/Data/ychi/repo/dev_config/rna_c
