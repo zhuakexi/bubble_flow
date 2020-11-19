@@ -17,5 +17,5 @@ rule cut_round2:
         """
         cutadapt --action=none --discard-untrimmed \
         -G '{params.adapter}' -j {threads} -o {output.RNA_R1} -p {output.RNA_R2} \
-        {input.R1} {input.R2} 1> {log.result} 2> {log.log}
+        {input.RNA_R1} {input.RNA_R2} 1> {log.result} 2> {log.log}
         """
