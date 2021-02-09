@@ -49,8 +49,8 @@ rule split:
 # for RNA
 rule cut_round2:
     input:
-        R1 = rules.split.output.RNA_R1,
-        R2 = rules.split.output.RNA_R2
+        R1 = rules.split.output.output, #RNA_R1
+        R2 = rules.split.output.paired_output #RNA_R2
     output:
         output = os.path.join(ana_home, "RNA_c", "{sample}_R1.fq.gz"),
         paired_output = os.path.join(ana_home, "RNA_c", "{sample}_R2.fq.gz")
