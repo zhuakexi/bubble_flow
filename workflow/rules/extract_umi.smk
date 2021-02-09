@@ -10,7 +10,7 @@ rule extract_umi:
     params:
         # umi pattern
         pattern=r"NNNNNNNN"
-    log: config["logs"].format("extract_umi.log")
+    log: log_path("extract_umi.log")
     message: "---> extract_umi : {wildcards.sample} : {threads} core"
     conda: "../envs/rna_tools.yaml"
     shell: "umi_tools extract -p {params.pattern} -I {input.RNA_R2} -S {output.umi2} --read2-in={input.RNA_R1} --read2-out={output.umi1} 2> {log}"
