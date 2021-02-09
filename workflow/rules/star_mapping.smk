@@ -1,3 +1,4 @@
+star_out_prefix = os.path.join(ana_home, "star_mapped")
 rule star_mapping:
     input:
         sequence = rules.merge_rna.output,
@@ -13,6 +14,6 @@ rule star_mapping:
         STAR --runThreadN {threads} \
         --genomeDir {input.index} \
         --readFilesIn {input.sequence} \
-        --outFileNamePrefix {config[dirs][star_mapped]}/ \
+        --outFileNamePrefix {star_out_prefix}/ \
         --outSAMtype BAM Unsorted SortedByCoordinate --outReadsUnmapped Fastx
         """
