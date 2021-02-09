@@ -6,36 +6,114 @@ import os
 import pandas
 
 configfile: "config/config.yaml"
-# cell_list: column 0 as name of samples
-SAMPLES = list(pandas.read_table("config/cell_list.tsv", header=None).iloc[:,0])
-# sex of sample
-sex = config["sex"]
-# whether snp files are valid, "on" or "off"
-snp = config["snp"]
-## --------- DNA branch ----------
-### --------- pre structure ---------
-include: "rules/split.smk"
-include: "rules/cut_round2.smk"
+ana_home = config["ana_home"] # home directory of all analysis results
+sample_table = pd.read_csv("config/sample_table.csv", index_col=0)
+
+# util functions
+def log_path(file):
+    return os.path.join(ana_home, "logs", "{sample}", file)
+def get_raw_fq(wildcards):
+    sample = wildcards.sample
+    R1_path = sample_table.loc[sample, "R1_file"],
+    R2_path = sample_table.loc[sample, "R2_file"]
+    return {"R1":R1_path, "R2":R2_path}
+rule count_reads:
+    input:
+        unpack(get_raw_fq)
+    output:
+        os.path.join(ana_home,"info","{sample}.info")
+    threads: 1
+    resources: 
+        nodes = 1
+    message:
+        " ---> count_reads :{wildcards.sample} : {threads} cores"
+    wrapper:
+        "https://github.com/zhuakexi/snakemake_wrappers/count_reads"
+rule split:
+    input:
+        unpack(get_raw_fq)
+    output:
+        untrimmed_output = os.path.join(ana_home,"DNA","{sample}_R1.fq.gz")
+        untrimmed_paired_output = os.path.join(ana_home,"DNA","{sample}_R2.fq.gz")
+        output = os.path.join(ana_home, "RNA", "{sample}_R1.fq.gz")
+        paired_output = os.path.join(ana_home, "RNA", "{sample}_R2.fq.gz")
+    threads: config["cpu"]["split"]
+    resources: nodes = config["cpu"]["split"] 
+    params:
+        # rna specific adapter
+        adapter=r"XGGTTGAGGTAGTATTGCGCAATG;o=20"
+    log: log_path("split.config")
+    message: "---> split : {wildcards.sample} : {threads} cores"
+    wrapper:
+        "https://github.com/zhuakexi/snakemake_wrappers/cutadapter_pe_4o"
+# for RNA
+rule cut_round2:
+    input:
+        R1 = rules.split.output.RNA_R1,
+        R2 = rules.split.output.RNA_R2
+    output:
+        output = os.path.join(ana_home, "RNA_c", "{sample}_R1.fq.gz")
+        paired_output = os.path.join(ana_home, "RNA_c", "{sample}_R2.fq.gz")
+    threads: config["cpu"]["cut_r2"]
+    resources: nodes = config["cpu"]["cut_r2"]
+    params: adapter=r"XNNNNNNNNTTTTTTTTTTTTTTT;o=18"
+    log: log_path("cut_round2.config")
+    message: "---> cut_round2 : {wildcards.sample} : {threads} cores"
+    wrapper:
+        "https://github.com/zhuakexi/snakemake_wrappers/cutadapter_pe_2o"
 include: "rules/extract_umi.smk"
-include: "rules/bwa_map.smk"
-include: "rules/sam2seg.smk"
+include: "rules/merge_rna.smk"
+include: "rules/star_mapping.smk"
+include: "rules/count.smk"
+# for Hi-C
+rule bwa_mem:
+    input:
+        R1 = rules.split.output.untrimmed_output,
+        R2 = rules.split.output.untrimmed_paired_output
+    output:
+        protected( os.path.join(ana_home,"sam","{sample}.aln.sam.gz"))
+    params:
+        index = config["ref"]["bwa"],
+        extra = r"-R '@RG\tID:{sample}\tPL:ILLUMINA\tSM:{sample}'"
+    threads: 
+        config["cpu"]["bwa"]
+    resources:
+        nodes = config["cpu"]["bwa"]
+    log:
+        log_path("bwa.log")
+    message:
+        " ---> bwa : {wildcards.sample} : {threads} cores"
+    wrapper:
+        # wrapper shipped with conda yaml
+        "https://github.com/zhuakexi/snakemake_wrappers/bwa_mem2"
+rule sam2seg:
+    input:
+        rules.bwa_mem.output
+    output:
+        os.path.join(ana_home, "seg", "{sample}.seg.gz")
+    params:
+        snp = config["snp"],
+        sex = config["sex"],
+        snp_file = config["ref"]["snp"],
+        par_file = config["ref"]["par"],
+        k8 = config["software"]["k8"],
+        js = config["software"]["js"],
+    resources:
+        nodes = 1
+    log:
+        log_path("sam2seg.log")
+    message:
+        " ------> sam2seg : {wildcards.sample} : 1 core"
+    wrapper:
+        "https://github.com/zhuakexi/snakemake_wrappers/sam2seg"
 include: "rules/seg2pairs.smk"
 include: "rules/clean_pairs.smk"
 include: "rules/impute.smk"
-### --------- structure ---------
-_3d_SAMPLES = list(pandas.read_table("config/3d_list.tsv", header=None).iloc[:,0])
 include: "rules/build.smk"
 include: "rules/pairs2cons.smk"
 include: "rules/clean3d.smk"
 include: "rules/align3d.smk"
 include: "rules/vis.smk"
-## --------- RNA branch ---------
-RNA_SAMPLES = list(pandas.read_table("config/rna_cell_list.tsv", header=None).iloc[:,0])
-include: "rules/merge_rna.smk"
-include: "rules/star_mapping.smk"
-include: "rules/count.smk"
-
-# split also works in pure dip-c samples
 rule do_split:
     input:
         expand(rules.split.output, sample=SAMPLES)
