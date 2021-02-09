@@ -10,7 +10,7 @@ software:
   rescale: "/share/home/ychi/software/dip-c/scripts/hickit_3dg_to_3dg_rescale_unit.sh"
   color_file: "/share/Data/ychi/genome/GRCh38.chr.fem.txt"
 reference:
-  bwa: /share/Data/ychi/genome/GRCh37d5/bwa_mem2_index
+  bwa: /share/Data/ychi/genome/GRCh37d5/bwa_mem2_index/genome.fa
   snp: /share/Data/ychi/genome/GRCh37d5/GM12878.hg19.snp.tsv
   par: /share/home/ychi/genome/GRCh37d5/hg19.PAR.bed
   star: /share/home/ychi/software/star_index
