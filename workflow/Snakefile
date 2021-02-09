@@ -73,7 +73,7 @@ rule bwa_mem:
     output:
         protected( os.path.join(ana_home,"sam","{sample}.aln.sam.gz"))
     params:
-        index = config["ref"]["bwa"],
+        index = config["reference"]["bwa"],
         extra = r"-R '@RG\tID:{sample}\tPL:ILLUMINA\tSM:{sample}'"
     threads: 
         config["cpu"]["bwa"]
@@ -94,8 +94,8 @@ rule sam2seg:
     params:
         snp = config["snp"],
         sex = config["sex"],
-        snp_file = config["ref"]["snp"],
-        par_file = config["ref"]["par"],
+        snp_file = config["reference"]["snp"],
+        par_file = config["reference"]["par"],
         k8 = config["software"]["k8"],
         js = config["software"]["js"],
     resources:
