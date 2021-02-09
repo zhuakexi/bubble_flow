@@ -42,7 +42,7 @@ rule split:
     params:
         # rna specific adapter
         adapter=r"XGGTTGAGGTAGTATTGCGCAATG;o=20"
-    log: log_path("split.config")
+    log: log_path("split.log")
     message: "---> split : {wildcards.sample} : {threads} cores"
     wrapper:
         "https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_4o"
@@ -118,4 +118,4 @@ include: "rules/collect_info.smk"
 rule All:
     input:
         rules.collect_info.output,
-        expand(rules.seg2pairs.output, sample=sample_table.index)
+        #expand(rules.seg2pairs.output, sample=sample_table.index)
