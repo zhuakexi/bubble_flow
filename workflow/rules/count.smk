@@ -2,14 +2,14 @@
 # using three rules because conda version of samtools has conflict
 
 # upstream rule star_mapping use dummy as flag file, here gives the real output as featureCount's real input
-count_real_input = os.path.join(config["dirs"]["star_mapped"], "Aligned.sortedByCoord.out.bam")
+count_real_input = os.path.join(ana_home, "star_mapped", "Aligned.sortedByCoord.out.bam")
 annotation = config["reference"]["annotation"]
 
 #featureCount generates 3 output file, shell only show 1 of them, the rest are:
-fC_bam_gene = os.path.join(config["dirs"]["count_gene"], "Aligned.sortedByCoord.out.bam.featureCounts.bam")
-fC_bam_summary_gene = os.path.join(config["dirs"]["count_gene"], "gene_assigned.summary")
-fC_bam_exon = os.path.join(config["dirs"]["count_exon"], "Aligned.sortedByCoord.out.bam.featureCounts.bam")
-fC_bam_summary_exon = os.path.join(config["dirs"]["count_exon"], "exon_assigned.summary")
+fC_bam_gene = os.path.join(ana_home, "count_gene", "Aligned.sortedByCoord.out.bam.featureCounts.bam")
+fC_bam_summary_gene = os.path.join(ana_home, "count_gene", "gene_assigned.summary")
+fC_bam_exon = os.path.join(ana_home, "count_exon", "Aligned.sortedByCoord.out.bam.featureCounts.bam")
+fC_bam_summary_exon = os.path.join(ana_home, "count_exon", "exon_assigned.summary")
 rule count:
     input: rules.star_mapping.output # using flag file to keep in line
     output: 
