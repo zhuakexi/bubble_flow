@@ -10,41 +10,12 @@ software:
   rescale: "/share/home/ychi/software/dip-c/scripts/hickit_3dg_to_3dg_rescale_unit.sh"
   color_file: "/share/Data/ychi/genome/GRCh38.chr.fem.txt"
 reference:
-  bwa: /share/home/ychi/software/bwa_index/GRCh38
-  snp: /share/home/ychi/software/snp_file/gm12878/NA12878.phased_SNP.tsv
-  par: /share/home/ychi/software/GRCh38.chrY.PAR.bed
+  bwa: /share/Data/ychi/genome/GRCh37d5/bwa_mem2_index
+  snp: /share/Data/ychi/genome/GRCh37d5/GM12878.hg19.snp.tsv
+  par: /share/home/ychi/genome/GRCh37d5/hg19.PAR.bed
   star: /share/home/ychi/software/star_index
   annotation: /share/home/ychi/software/gencode.v33.primary_assembly.annotation.gtf
-snp: blank #using or anything else
-sex: male
-log_dir: /share/Data/ychi/repo/dev_config/logs
-logs: /share/Data/ychi/repo/dev_config/logs/{{sample}}/{}
-dirs:
-  #for all
-  raw: /share/Data/ychi/raw/explore
-  dna: /share/Data/ychi/repo/dev_config/dna
-  rna: /share/Data/ychi/repo/dev_config/rna
-  rna_c: /share/Data/ychi/repo/dev_config/rna_c
-  umi: /share/Data/ychi/repo/dev_config/umi
-  umi_cell: /share/Data/ychi/repo/dev_config/umi_cell
-  sam: /share/Data/ychi/repo/dev_config/sam
-  seg: /share/Data/ychi/repo/dev_config/seg
-  pairs_0: /share/Data/ychi/repo/dev_config/pairs_0
-  pairs_c1: /share/Data/ychi/repo/dev_config/pairs_c1
-  pairs_c12: /share/Data/ychi/repo/dev_config/pairs_c12
-  pairs_c123: /share/Data/ychi/repo/dev_config/pairs_c123
-  impute: /share/Data/ychi/repo/dev_config/impute
-  3dg: /share/Data/ychi/repo/dev_config/3dg
-  con: /share/Data/ychi/repo/dev_config/con
-  3dg_c: /share/Data/ychi/repo/dev_config/3dg_c
-  align3d: /share/Data/ychi/repo/dev_config/align3d
-  cif: /share/Data/ychi/repo/dev_config/cif
-  #for part
-  merged_rna: /share/Data/ychi/repo/dev_config/merged_rna
-  star_mapped: /share/Data/ychi/repo/dev_config/star_mapped
-  count_gene: /share/Data/ychi/repo/dev_config/count_gene
-  count_exon: /share/Data/ychi/repo/dev_config/count_exon
-  count_matrix: /share/Data/ychi/repo/dev_config/count_matrix
+
 cpu:
   bwa: 8
   split: 8
@@ -53,3 +24,7 @@ cpu:
   clean3: 8
   cut_r2: 8
 
+# change every time
+snp: using #using or anything else
+sex: female
+ana_home: /share/Data/ychi/repo/test_bubble_flow

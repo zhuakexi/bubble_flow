@@ -12,13 +12,12 @@ fC_bam_exon = os.path.join(config["dirs"]["count_exon"], "Aligned.sortedByCoord.
 fC_bam_summary_exon = os.path.join(config["dirs"]["count_exon"], "exon_assigned.summary")
 rule count:
     input: rules.star_mapping.output # using flag file to keep in line
-    output:
-        gene_assigned = os.path.join(config["dirs"]["count_gene"], "gene_assigned"), 
-        exon_assigned = os.path.join(config["dirs"]["count_exon"], "exon_assigned")
+    output: 
+        gene_assigned = os.path.join(ana_home, "count_gene", "gene_assigned"), 
+        exon_assigned = os.path.join(ana_home, "count_exon", "exon_assigned")
     log:
-        # not for all cell, can't use normal format
-        result = os.path.join(config["log_dir"], "count.result"),
-        log = os.path.join(config["log_dir"], "count.log")
+        result = log_path("count.result"),
+        log = log_path("count.log")
     conda: "../envs/rna_tools.yaml"
     shell:
         """
@@ -28,8 +27,8 @@ rule count:
 rule sort_count:
     input: rules.count.output # this only for dependency keeping. use fC_bam_gene in fact 
     output:
-        gene_sam_sort = os.path.join(config["dirs"]["count_gene"], "samsort.bam"),
-        exon_sam_sort = os.path.join(config["dirs"]["count_exon"], "samsort.bam")
+        gene_sam_sort = os.path.join(ana_home, "count_gene", "samsort.bam"),
+        exon_sam_sort = os.path.join(ana_home, "count_exon", "samsort.bam")
     conda: "../envs/samtools.yaml"
     shell:
         '''
@@ -43,8 +42,8 @@ rule matrix_count:
         for_gene = rules.sort_count.output.gene_sam_sort,
         for_exon = rules.sort_count.output.exon_sam_sort
     output:
-        gene_count_matrix = os.path.join(config["dirs"]["count_matrix"], "counts.gene.tsv.gz"),
-        exon_count_matrix = os.path.join(config["dirs"]["count_matrix"], "counts.exon.tsv.gz")
+        gene_count_matrix = os.path.join(ana_home, "count_matrix", "counts.gene.tsv.gz"),
+        exon_count_matrix = os.path.join(ana_home, "count_matrix", "counts.exon.tsv.gz")
     params:
         r"--per-gene --per-cell --gene-tag=XT --wide-format-cell-counts --assigned-status-tag=XS"
     conda: "../envs/rna_tools.yaml"

@@ -107,68 +107,15 @@ rule sam2seg:
     wrapper:
         "https://github.com/zhuakexi/snakemake_wrappers/sam2seg"
 include: "rules/seg2pairs.smk"
-include: "rules/clean_pairs.smk"
-include: "rules/impute.smk"
-include: "rules/build.smk"
-include: "rules/pairs2cons.smk"
-include: "rules/clean3d.smk"
-include: "rules/align3d.smk"
-include: "rules/vis.smk"
-rule do_split:
+include: "rules/collect_info.smk"
+#include: "rules/clean_pairs.smk"
+#include: "rules/impute.smk"
+#include: "rules/build.smk"
+#include: "rules/pairs2cons.smk"
+#include: "rules/clean3d.smk"
+#include: "rules/align3d.smk"
+#include: "rules/vis.smk"
+rule All:
     input:
-        expand(rules.split.output, sample=SAMPLES)
-rule do_bwa:
-    input:
-        expand(rules.bwa_map.output, sample=SAMPLES) 
-rule do_sam2seg:
-    input:
-        expand(rules.sam2seg.output, sample=SAMPLES)
-rule do_seg2pairs:
-    input:
-        expand(rules.seg2pairs.output, sample=SAMPLES)
-rule do_clean1:
-    input:
-        expand(rules.clean1.output, sample=SAMPLES)
-rule do_clean12:
-    input:
-        expand(rules.clean12.output, sample=SAMPLES)
-rule do_clean123:
-    input:
-        expand(rules.clean123.output, sample=SAMPLES)
-rule do_pairs_info:
-    input:
-        expand(rules.pairs_info.output, sample=SAMPLES)
-rule do_impute:
-    input:
-        expand(rules.impute.output, sample=SAMPLES)
-# only work on cell listed in 3d_list.tsv 
-# before structure building, check pairs info, choose qualified cells and change 3d_list.tsv 
-rule do_build:
-    input:
-        expand(rules.build.output, sample=_3d_SAMPLES, rep=list(range(1,6)))
-rule do_clean3d:
-    input:
-        expand(rules.clean3d.output, sample=_3d_SAMPLES, rep=list(range(1,6)))
-rule do_align3d:
-    input:
-        expand(rules.align3d.output, sample=_3d_SAMPLES, rep=list(range(1,6)) )
-rule do_vis:
-    input:
-        expand(rules.vis.output, sample=_3d_SAMPLES)
-# only for hires
-rule do_extract_umi:
-    input:
-        expand(rules.extract_umi.output, sample=SAMPLES),
-        expand(rules.extract_cell_name.output, sample=SAMPLES)
-rule do_cut_round2:
-    input:
-        expand(rules.cut_round2.output, sample=SAMPLES)
-rule do_merge_rna:
-    input:
-        rules.merge_rna.output
-rule do_star:
-    input:
-        rules.star_mapping.output
-rule do_count:
-    input:
-        rules.matrix_count.output
+        rules.collect_info.output,
+        expand(rules.seg2pairs.output, sample=sample_table.index)

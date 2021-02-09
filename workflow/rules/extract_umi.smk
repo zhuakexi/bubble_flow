@@ -4,8 +4,8 @@ rule extract_umi:
         RNA_R1 = rules.cut_round2.output.output,
         RNA_R2 = rules.cut_round2.output.paired_output
     output:
-        umi1 = os.path.join(config["dirs"]["umi"], "umi.{sample}.rna.R1.fq.gz"),
-        umi2 = os.path.join(config["dirs"]["umi"], "umi.{sample}.rna.R2.fq.gz")
+        umi1 = os.path.join(ana_home, "umi", "umi.{sample}.rna.R1.fq.gz"),
+        umi2 = os.path.join(ana_home, "umi", "umi.{sample}.rna.R2.fq.gz")
     resources: nodes = 1
     params:
         # umi pattern
@@ -17,6 +17,6 @@ rule extract_umi:
         
 rule extract_cell_name:
     input: rules.extract_umi.output.umi1
-    output: os.path.join(config["dirs"]["umi_cell"], "cell.umi.{sample}.rna.R1.fq")
+    output: os.path.join(ana_home, "umi_cell", "cell.umi.{sample}.rna.R1.fq")
     message: "extract_cell_name : {wildcards.sample} : {threads} core"
     shell: "zcat {input} | sed 's/_/_{wildcards.sample}_/' > {output}"

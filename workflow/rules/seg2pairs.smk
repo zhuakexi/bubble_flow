@@ -1,14 +1,14 @@
-# 4th step
 # generate pairs file from seg
 hickit = config["software"]["hickit"]
 rule seg2pairs:
     input:
         rules.sam2seg.output
     output:
-        os.path.join(config["dirs"]["pairs_0"], "{sample}.pairs.gz")
+        os.path.join(ana_home, "pairs_0", "{sample}.pairs.gz")
     threads: 1
     resources: nodes=1
-    log: config["logs"].format("seg2pairs.log")
+    log:
+        log_path("seg2pairs.log") 
     message: "seg2pairs : {wildcards.sample} : {threads} cores"
     shell:
         """        
@@ -19,10 +19,11 @@ rule raw_pairs:
     input:
         rules.sam2seg.output
     output:
-        os.path.join(config["dirs"]["pairs_0"], "{sample}.raw_pairs.gz")
+        os.path.join(ana_home, "pairs_0", "{sample}.raw_pairs.gz")
     threads: 1
     resources: nodes=1
-    log: config["logs"].format("rawpairs.log")
+    log:
+        log_path("rawpairs.log") 
     message: "raw_pairs : {wildcards.sample} : {threads} cores"
     shell:
         """        
@@ -30,12 +31,14 @@ rule raw_pairs:
         """
 # qualitive statistic of experiments 
 rule pairs_info:
-    input: 
+    input:
+        reads = rules.count_reads.output, 
         pairs_log = rules.seg2pairs.log,
         pairs = rules.seg2pairs.output,
         raw_pairs_log = rules.raw_pairs.log,
         raw_pairs = rules.raw_pairs.output
-    output: config["logs"].format("{sample}.contacts.info")
+    output:
+        log_path("contacts.info") 
     params:
         dedup = r'dedup',
         comment = r'^#',
@@ -46,6 +49,7 @@ rule pairs_info:
     message: "pairs_info : {wildcards.sample} : {threads} cores"
     shell:
         """
+        reads=$(cat {input.reads})
         dup_line=$(grep {params.dedup} {input.pairs_log}) # extract critic line in log
         dup_rate=${{dup_line%%\%*}};dup_rate=${{dup_rate##* }} # extract dup_rate
         dup_num=${{dup_line%% /*}};dup_num=${{dup_num##* }} #dup_num
@@ -54,6 +58,6 @@ rule pairs_info:
         intra=$(zcat {input.pairs} | grep -v {params.comment} | awk '{params.intra}') # percent intra
         raw_intra=$(zcat {input.raw_pairs} | grep -v {params.comment} | awk '{params.intra}') # percent intra before dedup
         phased=$(zcat {input.pairs} | grep -v {params.comment} | awk '{params.phased}') # percent leg phased
-        echo {wildcards.sample} ${{raw_con}} ${{raw_intra}} ${{dup_rate}} ${{con}} ${{intra}} ${{phased}} > {output}
+        echo {wildcards.sample},$reads,$raw_con,$raw_intra,$dup_rate,$con,$intra,$phased > {output}
         """
     

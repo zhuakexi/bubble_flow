@@ -3,9 +3,9 @@ rule star_mapping:
         sequence = rules.merge_rna.output,
         index = config["reference"]["star"]
     output:
-        touch( os.path.join(config["dirs"]["star_mapped"], "Aligned.sortedByCoord.out.bam.dummy") )
+        touch( os.path.join(ana_home, "star_mapped", "Aligned.sortedByCoord.out.bam.dummy") )
     threads: 10
-    message: "star mapping on {threads} cores."
+    message: "---> star mapping on {threads} cores."
     conda: "../envs/rna_tools.yaml"
     shell:
         # file name prefix need "/"
