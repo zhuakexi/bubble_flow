@@ -123,4 +123,4 @@ include: "rules/collect_info.smk"
 rule All:
     input:
         rules.collect_info.output,
-        #expand(rules.seg2pairs.output, sample=sample_table.index)
+        expand(rules.seg2pairs.output, sample=sample_table.index)
