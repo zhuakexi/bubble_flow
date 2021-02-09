@@ -29,7 +29,7 @@ rule count_reads:
         " ---> count_reads :{wildcards.sample} : {threads} cores"
     wrapper:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/count_reads"
-        "file://wrappers/count_reads"
+        "file:./wrappers/count_reads"
 rule split:
     input:
         unpack(get_raw_fq)
@@ -47,7 +47,7 @@ rule split:
     message: "---> split : {wildcards.sample} : {threads} cores"
     wrapper:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_4o"
-        "file://wrappers/cutadapt_pe_4o"
+        "file:./wrappers/cutadapt_pe_4o"
 # for RNA
 rule cut_round2:
     input:
@@ -63,7 +63,7 @@ rule cut_round2:
     message: "---> cut_round2 : {wildcards.sample} : {threads} cores"
     wrapper:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_2o"
-        "file://wrappers/cutadapt_pe_2o"
+        "file:./wrappers/cutadapt_pe_2o"
 include: "rules/extract_umi.smk"
 include: "rules/merge_rna.smk"
 include: "rules/star_mapping.smk"
@@ -89,7 +89,7 @@ rule bwa_mem:
     wrapper:
         # wrapper shipped with conda yaml
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/bwa_mem2"
-        "file://wrappers/bwa_mem2"
+        "file:./wrappers/bwa_mem2"
 rule sam2seg:
     input:
         rules.bwa_mem.output
@@ -110,7 +110,7 @@ rule sam2seg:
         " ---> sam2seg : {wildcards.sample} : 1 core"
     wrapper:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/sam2seg"
-        "file://wrappers/sam2seg"
+        "file:./wrappers/sam2seg"
 include: "rules/seg2pairs.smk"
 include: "rules/collect_info.smk"
 #include: "rules/clean_pairs.smk"
