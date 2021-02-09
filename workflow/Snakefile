@@ -85,7 +85,7 @@ rule bwa_mem:
         " ---> bwa : {wildcards.sample} : {threads} cores"
     wrapper:
         # wrapper shipped with conda yaml
-        "https://github.com/zhuakexi/snakemake_wrappers/blob/main/bwa_mem2"
+        "https://github.com/zhuakexi/snakemake_wrappers/v0.10/bwa_mem2"
 rule sam2seg:
     input:
         rules.bwa_mem.output
@@ -105,7 +105,7 @@ rule sam2seg:
     message:
         " ------> sam2seg : {wildcards.sample} : 1 core"
     wrapper:
-        "https://github.com/zhuakexi/snakemake_wrappers/blob/main/sam2seg"
+        "https://github.com/zhuakexi/snakemake_wrappers/v0.10/sam2seg"
 include: "rules/seg2pairs.smk"
 include: "rules/collect_info.smk"
 #include: "rules/clean_pairs.smk"
