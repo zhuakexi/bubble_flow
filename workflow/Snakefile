@@ -33,9 +33,9 @@ rule split:
     input:
         unpack(get_raw_fq)
     output:
-        untrimmed_output = os.path.join(ana_home,"DNA","{sample}_R1.fq.gz")
-        untrimmed_paired_output = os.path.join(ana_home,"DNA","{sample}_R2.fq.gz")
-        output = os.path.join(ana_home, "RNA", "{sample}_R1.fq.gz")
+        untrimmed_output = os.path.join(ana_home,"DNA","{sample}_R1.fq.gz"),
+        untrimmed_paired_output = os.path.join(ana_home,"DNA","{sample}_R2.fq.gz"),
+        output = os.path.join(ana_home, "RNA", "{sample}_R1.fq.gz"),
         paired_output = os.path.join(ana_home, "RNA", "{sample}_R2.fq.gz")
     threads: config["cpu"]["split"]
     resources: nodes = config["cpu"]["split"] 
@@ -52,7 +52,7 @@ rule cut_round2:
         R1 = rules.split.output.RNA_R1,
         R2 = rules.split.output.RNA_R2
     output:
-        output = os.path.join(ana_home, "RNA_c", "{sample}_R1.fq.gz")
+        output = os.path.join(ana_home, "RNA_c", "{sample}_R1.fq.gz"),
         paired_output = os.path.join(ana_home, "RNA_c", "{sample}_R2.fq.gz")
     threads: config["cpu"]["cut_r2"]
     resources: nodes = config["cpu"]["cut_r2"]
