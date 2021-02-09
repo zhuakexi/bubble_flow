@@ -28,7 +28,7 @@ rule count_reads:
     message:
         " ---> count_reads :{wildcards.sample} : {threads} cores"
     wrapper:
-        "0.2.0/bio/samtools/sort"
+        "https://github.com/zhuakexi/snakemake_wrappers/v0.10/sam2seg"
 rule split:
     input:
         unpack(get_raw_fq)
