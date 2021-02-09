@@ -5,8 +5,8 @@ localrules: merge_rna
 
 rule merge_rna:
     input:
-        expand(rules.extract_cell_name.output, sample=RNA_SAMPLES)
+        expand(rules.extract_cell_name.output, sample=sample_table.index)
     output:
         os.path.join(ana_home, "merged_rna", "all.rna.fq")
-    message: "rna_merging: %d cells." % len(RNA_SAMPLES)
+    message: "rna_merging: %d cells." % len(sample_table)
     shell: "cat {input} > {output}"
