@@ -28,7 +28,8 @@ rule count_reads:
     message:
         " ---> count_reads :{wildcards.sample} : {threads} cores"
     wrapper:
-        "https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/count_reads"
+        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/count_reads"
+        "file://wrappers/count_reads"
 rule split:
     input:
         unpack(get_raw_fq)
@@ -45,7 +46,8 @@ rule split:
     log: log_path("split.log")
     message: "---> split : {wildcards.sample} : {threads} cores"
     wrapper:
-        "https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_4o"
+        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_4o"
+        "file://wrappers/cutadapt_pe_4o"
 # for RNA
 rule cut_round2:
     input:
@@ -60,7 +62,8 @@ rule cut_round2:
     log: log_path("cut_round2.config")
     message: "---> cut_round2 : {wildcards.sample} : {threads} cores"
     wrapper:
-        "https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10cutadapt_pe_2o"
+        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_2o"
+        "file://wrappers/cutadapt_pe_2o"
 include: "rules/extract_umi.smk"
 include: "rules/merge_rna.smk"
 include: "rules/star_mapping.smk"
@@ -85,7 +88,8 @@ rule bwa_mem:
         " ---> bwa : {wildcards.sample} : {threads} cores"
     wrapper:
         # wrapper shipped with conda yaml
-        "https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/bwa_mem2"
+        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/bwa_mem2"
+        "file://wrappers/bwa_mem2"
 rule sam2seg:
     input:
         rules.bwa_mem.output
@@ -103,9 +107,10 @@ rule sam2seg:
     log:
         log_path("sam2seg.log")
     message:
-        " ------> sam2seg : {wildcards.sample} : 1 core"
+        " ---> sam2seg : {wildcards.sample} : 1 core"
     wrapper:
-        "https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/sam2seg"
+        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/sam2seg"
+        "file://wrappers/sam2seg"
 include: "rules/seg2pairs.smk"
 include: "rules/collect_info.smk"
 #include: "rules/clean_pairs.smk"
