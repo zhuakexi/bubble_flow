@@ -3,7 +3,7 @@
 # date 2020/9/22                   
 
 import os
-import pandas
+import pandas as pd
 
 configfile: "config/config.yaml"
 ana_home = config["ana_home"] # home directory of all analysis results
