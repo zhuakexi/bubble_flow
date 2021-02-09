@@ -124,4 +124,4 @@ rule All:
     input:
         rules.collect_info.output,
         expand(rules.seg2pairs.output, sample=sample_table.index),
-        rules.count.output
+        rules.matrix_count.output
