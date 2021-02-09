@@ -45,7 +45,7 @@ rule split:
     log: log_path("split.config")
     message: "---> split : {wildcards.sample} : {threads} cores"
     wrapper:
-        "https://github.com/zhuakexi/snakemake_wrappers/raw/cutadapter_pe_4o"
+        "0.70.0/bio/bwa-mem2/mem"
 # for RNA
 rule cut_round2:
     input:
@@ -60,7 +60,7 @@ rule cut_round2:
     log: log_path("cut_round2.config")
     message: "---> cut_round2 : {wildcards.sample} : {threads} cores"
     wrapper:
-        "https://github.com/zhuakexi/snakemake_wrappers/blob/main/cutadapter_pe_2o"
+        "0.70.0/bio/cutadapt/pe"
 include: "rules/extract_umi.smk"
 include: "rules/merge_rna.smk"
 include: "rules/star_mapping.smk"
