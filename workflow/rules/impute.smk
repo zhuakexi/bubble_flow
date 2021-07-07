@@ -3,11 +3,12 @@ hickit = config["software"]["hickit"]
 rule impute:
     input: rules.clean123.output
     output:
-        impute_pairs = os.path.join(config["dirs"]["impute"], "{sample}.impute.pairs.gz"),
-        impute_val = os.path.join(config["dirs"]["impute"], "{sample}.impute.val")
+        impute_pairs = os.path.join(ana_home, "impute", "{sample}.impute.pairs.gz"),
+        impute_val = os.path.join(ana_home, "impute", "{sample}.impute.val")
     threads: 1
     resources: nodes = 1
-    log: config["logs"].format("impute.log")
+    log:
+        log_path("impute.log") 
     message: "impute: {wildcards.sample} : {threads} cores"
     shell:
         """
