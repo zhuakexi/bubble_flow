@@ -112,16 +112,18 @@ rule sam2seg:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/sam2seg"
         "file:./wrappers/sam2seg"
 include: "rules/seg2pairs.smk"
+include: "rules/clean_pairs.smk"
+include: "rules/impute.smk"
+include: "rules/sep_clean.smk"
+include: "rules/build.smk"
+include: "rules/clean3d.smk"
+include: "rules/rmsd.smk"
+include: "rules/vis.smk"
 include: "rules/collect_info.smk"
-#include: "rules/clean_pairs.smk"
-#include: "rules/impute.smk"
-#include: "rules/build.smk"
-#include: "rules/pairs2cons.smk"
-#include: "rules/clean3d.smk"
-#include: "rules/align3d.smk"
-#include: "rules/vis.smk"
 rule All:
     input:
         rules.collect_info.output,
         expand(rules.seg2pairs.output, sample=sample_table.index),
+        expand(rules.cif.output, sample=sample_table.index, rep=list(range(1,6))),
+        expand(rules.rmsd.output, sample=sample_table.index),
         rules.matrix_count.output
