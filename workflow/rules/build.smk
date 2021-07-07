@@ -1,6 +1,6 @@
 import os
 hickit = config["software"]["hickit"]
-tp = os.path.join(ana_home, "{{sample}}.{}.{{rep}}.3dg")
+tp = os.path.join(ana_home, "3dg", "{{sample}}.{}.{{rep}}.3dg")
 rule build:
     # using hires sep_clean
     # don't need hickit -Sr1m xx
