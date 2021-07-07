@@ -3,12 +3,6 @@ software:
   k8: /share/home/ychi/software/hickit/k8
   js: /share/home/ychi/software/hickit/hickit.js
   hires: /share/home/ychi/software/hires-utils/hires.py
-  hires_index: /share/home/ychi/software/hires-utils/bin_10k_FULL_index
-  dip-c: /share/home/ychi/software/dip-c/dip-c
-  pairs2con: /share/home/ychi/software/dip-c/scripts/hickit_pairs_to_con.sh
-  impute2con: /share/home/ychi/software/dip-c/scripts/hickit_impute_pairs_to_con.sh
-  rescale: "/share/home/ychi/software/dip-c/scripts/hickit_3dg_to_3dg_rescale_unit.sh"
-  color_file: "/share/Data/ychi/genome/GRCh38.chr.fem.txt" # not right
 reference:
   bwa: /share/Data/ychi/genome/GRCh37d5/bwa_mem2_index/genome.fa
   snp: /share/Data/ychi/genome/GRCh37d5/GM12878.hg19.snp.tsv
