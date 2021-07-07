@@ -1,21 +1,41 @@
-dip_c = config["software"]["dip-c"]
-rescale = config["software"]["rescale"]
+# rescale and clean built 3d structures
+hires = config["software"]["hires"]
+in_tp = os.path.join(ana_home, "3dg", "{{sample}}.{}.{{rep}}.3dg")
+out_tp = os.path.join(ana_home, "3dg_c", "{{sample}}.clean.{}.{{rep}}.3dg")
 rule clean3d:
     input:
-        con = rules.pairs2cons.output.con,
-        impute_cons = rules.pairs2cons.output.impute_con,
-        _3dg_20k = rules.build.output._3dg_20k
+        _3dg_1m = in_tp.format("1m"),
+        _3dg_200k = in_tp.format("200k"),
+        _3dg_50k = in_tp.format("50k"),
+        _3dg_20k = in_tp.format("20k"),
+        pairs = rules.sep_clean.output.dip
     output:
-        os.path.join(config["dirs"]["3dg_c"], "{sample}.clean.20k.{rep}.3dg")
-    log: config["logs"].format("clean3d.{rep}.log")
-    conda: "../envs/dip-c.yaml"
+        _3dg_1m = out_tp.format("1m"),
+        _3dg_200k = out_tp.format("200k"),
+        _3dg_50k = out_tp.format("50k"),
+        _3dg_20k = out_tp.format("20k")
+    conda: "../envs/hires.yaml"
     resources: nodes = 1
-    message: "------> clean3d : {wildcards.sample}.{wildcards.rep} : {resources.nodes} cores"
-    
-    shell: 
+    message: "---> clean3d : {wildcards.sample}.{wildcards.rep} : {resources.nodes}"
+    shell:
         """
-        {rescale} {input._3dg_20k} #generate .dip-c.3dg in same folder
-        {dip_c} clean3 -c {input.impute_cons} {config[dirs][3dg]}/{wildcards.sample}.20k.{wildcards.rep}.dip-c.3dg > {output} 2>{log}
-        rm {config[dirs][3dg]}/{wildcards.sample}.20k.{wildcards.rep}.dip-c.3dg
+        python {hires} clean3 \
+            -i {input._3dg_1m} \
+            -r {input.pairs} \
+            -o {output._3dg_1m}
+        
+        python {hires} clean3 \
+            -i {input._3dg_200k} \
+            -r {input.pairs} \
+            -o {output._3dg_200k}
+
+        python {hires} clean3 \
+            -i {input._3dg_50k} \
+            -r {input.pairs} \
+            -o {output._3dg_50k}
+        
+        python {hires} clean3 \
+            -i {input._3dg_20k} \
+            -r {input.pairs} \
+            -o {output._3dg_20k}
         """
-        #move rescale in align
