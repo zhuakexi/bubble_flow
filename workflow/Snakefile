@@ -7,7 +7,7 @@ import pandas as pd
 
 configfile: "config/config.yaml"
 ana_home = config["ana_home"] # home directory of all analysis results
-sample_table = pd.read_csv("config/sample_table.csv", index_col=0)
+sample_table = pd.read_csv("config/sample_table.csv", dtype={0:pd.StringDtype()},index_col=0)
 
 # util functions
 def log_path(file):
