@@ -11,5 +11,5 @@ log = snakemake.log
 output = snakemake.output
 
 shell(
-    " zgrep -c $ {input.R1} 1> {output} "
+    " echo `zgrep -c $ {input.R1}` / 4 | bc 1> {output} "
 )
