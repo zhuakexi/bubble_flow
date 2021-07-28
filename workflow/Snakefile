@@ -8,7 +8,8 @@ import pandas as pd
 configfile: "config/config.yaml"
 ana_home = config["ana_home"] # home directory of all analysis results
 sample_table = pd.read_csv("config/sample_table.csv", dtype={0:pd.StringDtype()},index_col=0)
-
+hires = config["software"]["hires"]
+rd = os.path.join(ana_home,"rd")
 # util functions
 def log_path(file):
     return os.path.join(ana_home, "logs", "{sample}", file)
@@ -21,15 +22,20 @@ rule count_reads:
     input:
         unpack(get_raw_fq)
     output:
-        os.path.join(ana_home,"info","{sample}.info")
+        # dummy and backup information 
+        os.path.join(ana_home,"info","{sample}.reads.info")
     threads: 1
     resources: 
         nodes = 1
     message:
         " ---> count_reads :{wildcards.sample} : {threads} cores"
-    wrapper:
-        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/count_reads"
-        "file:./wrappers/count_reads"
+    shell:
+        """
+        python {hires} gcount \
+        -f pe_fastq -rd {rd} \
+        -sa {wildcards.sample} -at raw_reads \
+        {input.R1} 1> {output}
+        """
 rule split:
     input:
         unpack(get_raw_fq)
@@ -48,6 +54,23 @@ rule split:
     wrapper:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_4o"
         "file:./wrappers/cutadapt_pe_4o"
+rule count_dna_reads:
+    input:
+        # DNA_R1
+        rules.split.output.untrimmed_output
+    output:
+        os.path.join(ana_home,"info","{sample}.dna_reads.info")
+    threads: 1
+    resources:
+        nodes = 1
+    message:
+        " ---> count_dna_reads : {wildcards.sample} :{threads} cores"
+    shell:
+        """
+        python {hires} gcount \
+        -f pe_fastq -rd {rd} -sa {wildcards.sample} -at dna_reads {input} \
+        1> {output}
+        """
 # for RNA
 rule cut_round2:
     input:
@@ -64,6 +87,23 @@ rule cut_round2:
     wrapper:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_2o"
         "file:./wrappers/cutadapt_pe_2o"
+rule count_rna_reads:
+    input:
+        # RNA_R1 after trim_cleaning
+        rules.cut_round2.output.output
+    output:
+        os.path.join(ana_home,"info","{sample}.rna_reads.info")
+    threads: 1
+    resources:
+        nodes = 1
+    message:
+        " ---> count_rna_reads : {wildcards.sample} :{threads} cores"
+    shell:
+        """
+        python {hires} gcount \
+        -f pe_fastq -rd {rd} -sa {wildcards.sample} -at rna_reads {input} \
+        1> {output}
+        """
 include: "rules/extract_umi.smk"
 include: "rules/merge_rna.smk"
 include: "rules/star_mapping.smk"
@@ -112,6 +152,7 @@ rule sam2seg:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/sam2seg"
         "file:./wrappers/sam2seg"
 include: "rules/seg2pairs.smk"
+include: "rules/pairs_info.smk"
 include: "rules/clean_pairs.smk"
 include: "rules/impute.smk"
 include: "rules/sep_clean.smk"
@@ -123,6 +164,9 @@ include: "rules/collect_info.smk"
 rule All:
     input:
         rules.collect_info.output,
+        expand(rules.count_reads.output,sample=sample_table.index),
+        expand(rules.count_dna_reads.output,sample=sample_table.index),
+        expand(rules.count_rna_reads.output,sample=sample_table.index),
         expand(rules.seg2pairs.output, sample=sample_table.index),
         expand(rules.cif.output, sample=sample_table.index, rep=list(range(1,6))),
         expand(rules.rmsd.output, sample=sample_table.index),
