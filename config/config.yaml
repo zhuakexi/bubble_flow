@@ -2,14 +2,13 @@ software:
   hickit: /share/home/ychi/software/hickit/hickit
   k8: /share/home/ychi/software/hickit/k8
   js: /share/home/ychi/software/hickit/hickit.js
-  hires: /share/home/ychi/software/hires-utils/hires.py
+  hires: /share/home/ychi/software/hires_utils
 reference:
   bwa: /share/Data/ychi/genome/GRCh37d5/bwa_mem2_index/genome.fa
   snp: /share/Data/ychi/genome/GRCh37d5/GM12878.hg19.snp.tsv
   par: /share/home/ychi/genome/GRCh37d5/hg19.PAR.bed
   star: /share/Data/ychi/genome/GRCh37d5/star_index
   annotation: /share/Data/ychi/genome/GRCh37d5/raw/gencode.v19.annotation.gtf
-
 cpu:
   bwa: 8
   split: 8
