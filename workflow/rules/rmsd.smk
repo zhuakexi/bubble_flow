@@ -14,5 +14,5 @@ rule rmsd:
     message: "---> rmsd : {wildcards.sample} : {resources.nodes}"
     shell:
         """
-        python {hires} rmsd -o {output} {input}
+        python {hires} rmsd -o {output} -rd {rd} {input}
         """
