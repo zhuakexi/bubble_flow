@@ -8,6 +8,6 @@ rule collect_info:
     message: "------> collect info..."
     shell: 
         """
-        echo "name,reads,raw_contacts,raw_intra,dup_rate,contacts,intra,phased_ratio" > {output}
+        echo "name,raw_contacts,raw_intra,dup_rate,contacts,intra,phased_ratio" > {output}
         cat {input} >> {output}
         """
