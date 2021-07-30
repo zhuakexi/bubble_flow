@@ -1,5 +1,0 @@
-name: blank
-channels:
-  - bioconda
-  - conda-forge
-  - defaults
