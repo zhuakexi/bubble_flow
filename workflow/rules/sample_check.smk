@@ -18,7 +18,7 @@ rule pre_seg:
          | {k8} {js} bedflt {PAR} - \
          | gzip > {output}
         """
-checkpoint sex_assignment:
+checkpoint seg_stat:
     input:
         rules.pre_seg.output
     output:
