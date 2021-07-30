@@ -1,3 +1,4 @@
+# need k8, js, hires, rd, snp
 rule pre_seg:
     # get snp annoted, chronly, par filtered
     # .seg file for all input, even haploid
@@ -18,4 +19,16 @@ rule pre_seg:
          | gzip > {output}
         """
 checkpoint sex_assignment:
-    pass
+    input:
+        rules.pre_seg.output
+    output:
+        os.path.join(ana_home, "info","{sample}.seg_stat.info")
+    conda:
+        "../envs/hires.yaml"
+    shell:
+        """
+        python {hires} seg_stat \
+            -o {output} \
+            -rd {rd} \
+            {input}
+        """
