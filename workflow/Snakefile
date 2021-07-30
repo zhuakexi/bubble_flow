@@ -16,6 +16,9 @@ hires = config["software"]["hires"]
 hickit = config["software"]["hickit"]
 k8 = config["software"]["k8"]
 js = config["software"]["js"]
+# reference
+snp = config["reference"]["snp"]
+PAR = config["reference"]["par"]
 
 # util functions
 def log_path(file):
