@@ -5,7 +5,7 @@ rule dipfem_sam2seg:
     input:
         rules.bwa_mem.output
     output:
-        os.path.join(ana_home, "seg", "dipfem_seg", "{sample}.seg.gz")
+        os.path.join(ana_home, "seg", "dipfem", "{sample}.seg.gz")
     shell:
         """
         {k8} {js} sam2seg -v {snp} {input} 2> /dev/null \
@@ -19,7 +19,7 @@ rule dipmal_sam2seg:
     input:
         rules.bwa_mem.output
     output:
-        os.path.join(ana_home, "seg","dipmal_seg", "{sample}.seg.gz")
+        os.path.join(ana_home, "seg","dipmal", "{sample}.seg.gz")
     shell:
         """
         {k8} {js} sam2seg -v {snp} {input} 2> /dev/null \
@@ -35,7 +35,7 @@ rule hapfem_sam2seg:
     input:
         rules.bwa_mem.output
     output:
-        os.path.join(ana_home, "seg", "hapfem_seg", "{sample}.seg.gz")
+        os.path.join(ana_home, "seg", "hapfem", "{sample}.seg.gz")
     shell:
         """
         {k8} {js} sam2seg {input} 2> /dev/null \
@@ -50,7 +50,7 @@ rule hapmal_sam2seg:
     input:
         rules.bwa_mem.output
     output:
-        os.path.join(ana_home, "seg","hapmal_seg", "{sample}.seg.gz")
+        os.path.join(ana_home, "seg","hapmal", "{sample}.seg.gz")
     shell:
         """
         {k8} {js} sam2seg {input} 2> /dev/null \
