@@ -1,5 +1,3 @@
-import os
-hickit = config["software"]["hickit"]
 rule impute:
     input: rules.clean123.output
     output:

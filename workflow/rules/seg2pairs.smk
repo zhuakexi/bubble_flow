@@ -1,5 +1,5 @@
 # generate pairs file from seg
-def sex_conditional_input(wildcards):
+def sex_conditional_seg(wildcards):
     with checkpoints.seg_stat.get(sample = wildcards.sample).output[0].open() as f:
         for line in f:
             if line.split(":")[0] == "cell_state":
@@ -16,7 +16,7 @@ def sex_conditional_input(wildcards):
         return os.path.join(ana_home, "seg", "hapmal","{sample}.seg.gz")
 rule seg2pairs:
     input:
-        sex_conditional_input
+        sex_conditional_seg
     output:
         os.path.join(ana_home, "pairs_0", "{sample}.pairs.gz")
     threads: 1
@@ -31,7 +31,7 @@ rule seg2pairs:
 # generate raw pairs for static
 rule raw_pairs:
     input:
-        sex_conditional_input
+        sex_conditional_seg
     output:
         os.path.join(ana_home, "pairs_0", "{sample}.raw_pairs.gz")
     threads: 1

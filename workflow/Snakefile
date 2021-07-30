@@ -144,27 +144,8 @@ rule bwa_mem:
         # wrapper shipped with conda yaml
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/bwa_mem2"
         "file:./wrappers/bwa_mem2"
-rule sam2seg:
-    input:
-        rules.bwa_mem.output
-    output:
-        os.path.join(ana_home, "seg", "{sample}.seg.gz")
-    params:
-        snp = config["snp"],
-        sex = config["sex"],
-        snp_file = config["reference"]["snp"],
-        par_file = config["reference"]["par"],
-        k8 = config["software"]["k8"],
-        js = config["software"]["js"],
-    resources:
-        nodes = 1
-    log:
-        log_path("sam2seg.log")
-    message:
-        " ---> sam2seg : {wildcards.sample} : 1 core"
-    wrapper:
-        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/sam2seg"
-        "file:./wrappers/sam2seg"
+include: "rules/sample_check.smk"
+include: "rules/sam2seg.smk"
 include: "rules/seg2pairs.smk"
 include: "rules/pairs_info.smk"
 include: "rules/clean_pairs.smk"
