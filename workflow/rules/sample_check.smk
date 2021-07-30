@@ -16,6 +16,7 @@ rule pre_seg:
         {k8} {js} sam2seg -v {snp} {input} 2> {log} \
          | {k8} {js} chronly - \
          | {k8} {js} bedflt {PAR} - \
+         | sed 's/-/+/g' \
          | gzip > {output}
         """
 checkpoint seg_stat:
