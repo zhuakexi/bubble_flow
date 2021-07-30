@@ -18,6 +18,4 @@ cpu:
   cut_r2: 8
 
 # change every time
-snp: using #using or anything else
-sex: female
 ana_home: /share/Data/ychi/repo/test_bubble_flow
