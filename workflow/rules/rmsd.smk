@@ -1,6 +1,6 @@
 def sex_conditional_build_all_rep(wildcards):
     sample = wildcards.sample
-    with checkpoints.seg_stat.get(sample=sample).output[0].open() as f:
+    with checkpoints.check_after_clean.get(sample=sample).output[0].open() as f:
         for line in f:
             if line.split(":")[0] == "cell_state":
                 cell_state = line.split(":")[1].strip()
