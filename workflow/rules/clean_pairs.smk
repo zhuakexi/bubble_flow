@@ -38,3 +38,26 @@ rule clean123:
     conda: "../envs/hires.yaml"
     message: " ------> clean_pairs_stage3 : {wildcards.sample} : {threads} cores."
     shell: "python {hires} clean_splicing -r {input.gtf} -o {output} {input.pairs} 1> {log}"
+rule propagate_seg_stat:
+    # insulate two checkpoints
+    # buggy if one depend on another
+    # even if the output is exactly the same
+    # to insulate, copy info file once
+    input:
+        os.path.join(ana_home, "info","{sample}.seg_stat.info")
+    output:
+        os.path.join(ana_home, "info","{sample}.seg_stat_copy.info")
+    shell:
+        """
+        cp {input} {output}
+        """
+checkpoint check_after_clean:
+    input:
+        dep = rules.clean123.output,
+        info = rules.propagate_seg_stat.output
+    output:
+        os.path.join(ana_home, "info", "{sample}.seg_stat_copy_copy.info")
+    shell:
+        """
+        cp {input.info} {output}
+        """
