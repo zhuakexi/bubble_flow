@@ -47,7 +47,7 @@ rule hap_clean3d:
         _3dg_200k = hap_in_tp.format("200k"),
         _3dg_50k = hap_in_tp.format("50k"),
         _3dg_20k = hap_in_tp.format("20k"),
-        pairs = rules.pairs_c123.output
+        pairs = rules.clean123.output
     output:
         _3dg_1m = hap_out_tp.format("1m"),
         _3dg_200k = hap_out_tp.format("200k"),
