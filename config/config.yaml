@@ -7,7 +7,7 @@ reference:
   bwa: /share/Data/ychi/genome/GRCh37d5/bwa_mem2_index/genome.fa
   # if doesn't have snp.tsv file, give a nonsense 4 col tsv
   snp: /share/Data/ychi/genome/GRCh37d5/GM12878.hg19.snp.tsv
-  par: /share/home/ychi/genome/GRCh37d5/hg19.PAR.bed
+  par: /share/Data/ychi/genome/GRCh37d5/hg19.PAR.bed
   star: /share/Data/ychi/genome/GRCh37d5/star_index
   annotation: /share/Data/ychi/genome/GRCh37d5/raw/gencode.v19.annotation.gtf
 cpu:
