@@ -165,4 +165,7 @@ rule All:
         expand(rules.seg2pairs.output, sample=sample_table.index),
         expand(rules.cif.output, sample=sample_table.index, rep=list(range(1,6))),
         expand(rules.rmsd.output, sample=sample_table.index),
+        expand(rules.rmsd_50k.output, sample=sample_table.index),
+        expand(rules.rmsd_200k.output, sample=sample_table.index),
+        expand(rules.rmsd_1m.output, sample=sample_table.index),
         rules.matrix_count.output
