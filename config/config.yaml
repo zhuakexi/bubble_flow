@@ -17,6 +17,8 @@ cpu:
   clean2: 8
   clean3: 8
   cut_r2: 8
+  cut_r3: 8
+  sortBAM: 8
 
 # change every time
 ana_home: /share/Data/ychi/repo/test_bubble_flow

@@ -118,10 +118,10 @@ rule count_rna_reads:
         -f pe_fastq -rd {rd} -sa {wildcards.sample} -at rna_reads {input} \
         1> {output}
         """
-include: "rules/extract_umi.smk"
-include: "rules/merge_rna.smk"
-include: "rules/star_mapping.smk"
-include: "rules/count.smk"
+include: "rules/RNA/prepareRNA.smk"
+include: "rules/RNA/star_mapping.smk"
+include: "rules/RNA/feature_count.smk"
+
 # for Hi-C
 rule bwa_mem:
     input:
