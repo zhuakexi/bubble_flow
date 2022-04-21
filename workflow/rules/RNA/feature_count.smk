@@ -1,6 +1,7 @@
+annotation = config["reference"]["annotation"]
 rule feature_count:
     input: rules.star_mapping.output # using flag file to keep in line
-    output: 
+    output:
         gene_assigned = os.path.join(ana_home, "count_gene", "gene_assigned"),
         bam = os.path.join(ana_home, "count_gene", "Aligned.sortedByCoord.out.bam.featureCounts.bam")
     log:
@@ -9,11 +10,11 @@ rule feature_count:
     conda: "../envs/rna_tools.yaml"
     shell:
         """
-        featureCounts -a {annotation} -o {gene_assigned} -R BAM {input} \
+        featureCounts -a {annotation} -o {output.gene_assigned} -R BAM {input} \
          -T 4 -Q 30 -t gene -g gene_id -M -O --fraction 2>{log.log} 1>{log.result}
         """
 rule sort_count:
-    input: rules.feature_count.output.bam # this only for dependency keeping. use fC_bam_gene in fact 
+    input: rules.feature_count.output.bam # this only for dependency keeping. use fC_bam_gene in fact
     output:
         os.path.join(ana_home, "count_gene", "samsort.bam")
     threads: config["cpu"]["sortBAM"]
@@ -35,5 +36,3 @@ rule matrix_count:
         '''
         umi_tools count {params} -I {input} -S {output}
         '''
-
-        
