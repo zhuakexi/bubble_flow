@@ -7,7 +7,7 @@ rule feature_count:
     log:
         result = os.path.join(ana_home, "logs", "count.result"),
         log = os.path.join(ana_home, "logs", "count.log")
-    conda: "../envs/rna_tools.yaml"
+    conda: "../../envs/rna_tools.yaml"
     shell:
         """
         featureCounts -a {annotation} -o {output.gene_assigned} -R BAM {input} \

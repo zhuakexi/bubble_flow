@@ -13,7 +13,7 @@ rule extract_umi:
     log: log_path("extract_umi.log")
     message: "---> extract_umi : {wildcards.sample} : {threads} core"
     conda: "../../envs/rna_tools.yaml"
-    shell: "umi_tools extract -p {params.pattern} -I {input.RNA_R2} -S {output.umi2} --read2-in={input.RNA_R1} --read2-out={output.umi1} 2> {log}"
+    shell: "umi_tools extract -p {params.pattern} -I {input.RNA_R2} -S {output.umi2} --read2-in={input.RNA_R1} --read2-out={output.umi1} 2>&1 > {log}"
 rule cut_round3:
     input:
         rules.extract_umi.output.umi1
@@ -26,8 +26,7 @@ rule cut_round3:
     conda: "../../envs/rna_tools.yaml"
     shell:
         """
-        cutadapt -a CTGTCTCTTATA {input} -m 1 -j {threads} 2>{log} \ 
-         | sed 'N;N;N;/\\n\\n/d' | gzip > {output}
+        cutadapt -a CTGTCTCTTATA {input} -m 1 -j {threads} | sed 'N;N;N;/\\n\\n/d' | gzip > {output}
         """
 rule fq2uBAM:
     input:
