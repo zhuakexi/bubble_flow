@@ -1,4 +1,4 @@
-star_out_prefix = os.path.join(ana_home, "star_mapped")
+star_out_prefix = os.path.join(ana_home, "star_mapped", "")
 rule star_mapping:
     input:
         RNAprep = expand(rules.mend_umi.output, sample=sample_table.index),
