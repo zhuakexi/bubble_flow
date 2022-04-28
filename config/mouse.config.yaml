@@ -1,0 +1,22 @@
+﻿software:
+  hickit: /share/home/ychi/software/hickit/hickit
+  k8: /share/home/ychi/software/hickit/k8
+  js: /share/home/ychi/software/hickit/hickit.js
+  hires: /share/home/ychi/software/hires_utils
+reference:
+  bwa: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
+  snp: /share/home/ychi/data/genome/GRCm38/phased.B6_CAST.chr.vcf.tsv
+  par: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
+  star: /share/home/ychi/data/genome/GRCm38/star_index
+  annotation: /share/home/ychi/data/genome/GRCm38/raw/gencode.vM25.annotation.gtf
+
+cpu:
+  bwa: 8
+  split: 8
+  clean1: 8
+  clean2: 8
+  clean3: 8
+  cut_r2: 8
+
+# change every time
+ana_home: /shareb/ychi/repo/embryo_test
