@@ -19,6 +19,6 @@ shell(
     " -t {threads} "
     " {index} "
     " {input.R1} {input.R2} " 
-    " 2> {log} "
-    " | gzip > {output} "
+    " | samtools sort -@{threads} -o {output} - ; "
+    " samtools index -@ {threads} {output} "
 )
