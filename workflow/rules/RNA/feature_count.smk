@@ -11,7 +11,7 @@ rule feature_count:
     shell:
         """
         featureCounts -a {annotation} -o {output.gene_assigned} -R BAM {input} \
-         -T 4 -Q 30 -t gene -g gene_id -M -O --fraction 2>{log.log} 1>{log.result}
+         -T 4 -Q 30 -t gene -g gene_name 2>{log.log} 1>{log.result}
         """
 rule sort_count:
     input: rules.feature_count.output.bam # this only for dependency keeping. use fC_bam_gene in fact
