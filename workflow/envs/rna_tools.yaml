@@ -1,4 +1,4 @@
-name: rna_tools
+name: standard_rna_tools
 channels:
   - bioconda
   - conda-forge
@@ -6,16 +6,24 @@ channels:
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
   - _openmp_mutex=4.5=1_gnu
+  - _r-mutex=1.0.0=anacondar_1
   - bzip2=1.0.8=h516909a_3
   - c-ares=1.11.0=h470a237_1
-  - ca-certificates=2020.6.20=hecda079_0
-  - certifi=2020.6.20=py36h9880bd3_2
+  - ca-certificates=2022.3.29=h06a4308_1
+  - cairo=1.14.12=h8948797_3
+  - certifi=2021.5.30=py36h06a4308_0
   - curl=7.71.1=he644dc0_8
   - cutadapt=2.10=py36h4c5857e_1
   - cycler=0.10.0=py_2
   - dnaio=0.4.2=py36h4c5857e_1
+  - fontconfig=2.13.1=h6c09931_0
   - freetype=2.10.4=he06d7ca_0
+  - fribidi=1.0.10=h7b6447c_0
   - future=0.18.2=py36h9f0ad1d_2
+  - glib=2.63.1=h5a9c865_0
+  - graphite2=1.3.14=h23475e2_0
+  - harfbuzz=1.8.8=hffaf4a1_0
+  - icu=58.2=he6710b0_3
   - jpeg=9d=h516909a_0
   - kiwisolver=1.2.0=py36hdb11119_1
   - krb5=1.17.1=hfafb76e_3
@@ -40,23 +48,32 @@ dependencies:
   - libssh2=1.9.0=hab1572f_5
   - libstdcxx-ng=9.3.0=h2ae2ef3_17
   - libtiff=4.1.0=hc7e4089_6
+  - libuuid=1.0.3=h7f8727e_2
   - libwebp-base=1.1.0=h516909a_3
+  - libxcb=1.14=h7b6447c_0
+  - libxml2=2.9.12=h03d6c58_0
   - lz4-c=1.9.2=he1b5a44_3
   - matplotlib-base=3.3.2=py36h1eb8776_1
   - ncurses=6.2=he1b5a44_2
   - numpy=1.19.2=py36h68c22af_1
   - olefile=0.46=pyh9f0ad1d_1
-  - openssl=1.1.1h=h516909a_0
+  - openjdk=8.0.152=h7b6447c_3
+  - openssl=1.1.1n=h7f8727e_0
   - pandas=1.1.3=py36h66e3816_2
+  - pango=1.42.4=h049681c_0
+  - pcre=8.45=h295c915_0
+  - picard=2.27.1=hdfd78af_0
   - pigz=2.3.4=hed695b0_1
   - pillow=8.0.1=py36h8328e55_0
   - pip=20.2.4=py_0
+  - pixman=0.40.0=h7f8727e_1
   - pyparsing=2.4.7=pyh9f0ad1d_0
   - pysam=0.15.3=py36hda2845c_1
   - python=3.6.11=h4d41432_2_cpython
   - python-dateutil=2.8.1=py_0
   - python_abi=3.6=1_cp36m
   - pytz=2020.1=pyh9f0ad1d_0
+  - r-base=3.2.2=0
   - readline=8.0=he28a2e2_2
   - regex=2016.06.24=py36_1
   - samtools=1.7=1
@@ -64,7 +81,7 @@ dependencies:
   - setuptools=49.6.0=py36h9880bd3_2
   - six=1.15.0=pyh9f0ad1d_0
   - sqlite=3.33.0=h4cf870e_1
-  - star=2.7.6a=0
+  - star=2.7.10a=h9ee0642_0
   - subread=2.0.1=hed695b0_0
   - tk=8.6.10=hed695b0_1
   - tornado=6.0.4=py36h8c4c3a4_2
@@ -74,3 +91,4 @@ dependencies:
   - xz=5.2.5=h516909a_1
   - zlib=1.2.11=h516909a_1010
   - zstd=1.4.5=h6597ccf_2
+prefix: /share/home/ychi/miniconda3/envs/standard_rna_tools
