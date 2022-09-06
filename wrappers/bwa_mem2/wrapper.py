@@ -7,7 +7,8 @@ from snakemake.shell import shell
 import os
 extra = snakemake.params.get("extra")
 threads = snakemake.threads
-index = snakemake.params.index
+#index = snakemake.params.index
+index = snakemake.input.index
 input = snakemake.input
 log = snakemake.log
 output = snakemake.output
