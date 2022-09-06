@@ -165,6 +165,9 @@ include: "rules/collect_info.smk"
 rule target_bwa_mem:
     input:
         expand(rules.bwa_mem.output, sample = sample_table.index)
+rule target_sam2seg:
+    input:
+        expand(rules.sam2seg.output, sample = sample_table.index)
 rule All:
     input:
         rules.collect_info.output,
