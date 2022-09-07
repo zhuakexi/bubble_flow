@@ -17,8 +17,8 @@ hickit = config["software"]["hickit"]
 k8 = config["software"]["k8"]
 js = config["software"]["js"]
 # reference
-snp = config["reference"]["snp"]
-PAR = config["reference"]["par"]
+#snp = config["reference"]["snp"]
+#PAR = config["reference"]["par"]
 
 # util functions
 def log_path(file):
@@ -168,6 +168,9 @@ rule target_bwa_mem:
 rule target_sam2seg:
     input:
         expand(rules.sam2seg.output, sample = sample_table.index)
+rule target_seg_stat:
+    input:
+        expand(rules.sample_check.output, sample= sample_table.index)
 rule All:
     input:
         rules.collect_info.output,
