@@ -1,3 +1,3 @@
 sample_name,R1_file,R2_file,ref,mode
-test1,/shareb/ychi/raw/test_bubble_flow/Rawdata/test1/test1_R1.fq.gz,/shareb/ychi/raw/test_bubble_flow/Rawdata/test1/test1_R2.fq.gz,mm10_B6_CAST,X_SNP
-test2,/shareb/ychi/raw/test_bubble_flow/Rawdata/test2/test2_R1.fq.gz,/shareb/ychi/raw/test_bubble_flow/Rawdata/test2/test2_R2.fq.gz,mm10_B6_CAST,X_SNP
+test1,/shareb/ychi/raw/test_bubble_flow/Rawdata/test1/test1_R1.fq.gz,/shareb/ychi/raw/test_bubble_flow/Rawdata/test1/test1_R2.fq.gz,mm10_B6_CAST,2C__SNP
+test2,/shareb/ychi/raw/test_bubble_flow/Rawdata/test2/test2_R1.fq.gz,/shareb/ychi/raw/test_bubble_flow/Rawdata/test2/test2_R2.fq.gz,mm10_B6_CAST,2C_lY_SNP
