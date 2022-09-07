@@ -1,12 +1,12 @@
 from sqlite3 import paramstyle
 from subprocess import check_output
-def sam2segW(cfg, sam, mode_deduction, params, snp_file, par_file, output, log):
+def sam2segW(cfg, sam, params, snp_file, par_file, output, log):
     """
     Input:
         cfg: softwares path
-        mode_deduction: mode str deducted from sample_checking, must be [ploidy]_[sex]_[snp], eg:
-            2C_lY_
-        params: per sample mode assignment from config or sample_table, same as mode_deduction.
+        mode_deduction:  deducted from sample_checking, 
+        params: mode str, must be [ploidy]_[sex]_[snp], eg:
+            2C_lY_SNP
         snp_file: phased snp file path, give dummy if don't run hickit.js -v in fact.
         par_file: pseudoautosome region bed file, give dummy if don't bedfilt in fact.
         output: output file path
@@ -17,8 +17,7 @@ def sam2segW(cfg, sam, mode_deduction, params, snp_file, par_file, output, log):
         snp: `NO` `SNP`
         deduction SNP is always ``, ploidy and sex can't be ``.
     """
-    # params assignment first, if missing, using deduction
-    ploidy, sex, snp = [ e if e != "" else mode_deduction.split("_")[i] for i, e in enumerate(params.split("_")) ]
+    ploidy, sex, snp = params.split("_")
     code =  """{{k8}} {{js}} {sam2seg} 2> {{log}} \
             | {{k8}} {{js}} {chrfilt} - \
             {bedfilt} \
@@ -59,7 +58,7 @@ def sam2segW(cfg, sam, mode_deduction, params, snp_file, par_file, output, log):
         sam2seg=sam2seg,
         chrfilt=chrfilt,
         bedfilt = bedfilt)
-    print(code)
+    #print(code)
     code = code.format(
             k8 = cfg["software"]["k8"],
             js = cfg["software"]["js"],
@@ -69,11 +68,11 @@ def sam2segW(cfg, sam, mode_deduction, params, snp_file, par_file, output, log):
             output = output,
             log = log
     )
-    return code
+    print("sam2segW shell:",code)
+    check_output(code, shell=True)
 sam2segW(
     snakemake.config,
     snakemake.input.get("sam"),
-    snakemake.input.get("mode_deduction"),
     snakemake.params[0],
     snakemake.input.get("snp_file"),
     snakemake.input.get("par_file"),
