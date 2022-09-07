@@ -1,4 +1,12 @@
 star_out_prefix = os.path.join(ana_home, "star_mapped", "")
+def star_mapping_input(wildcards):
+    """
+    TODO: make a real group/aggregate mode
+    """     
+    return {
+        "RNAprep" : expand(rules.mend_umi.output, sample=sample_table.index),
+        "index" : config["reference"]["star"][ref] if ref in config["reference"]["star"] else "NoSTARIndexFile.txt"
+    }
 rule star_mapping:
     input:
         RNAprep = expand(rules.mend_umi.output, sample=sample_table.index),
