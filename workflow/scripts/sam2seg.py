@@ -1,12 +1,14 @@
 from sqlite3 import paramstyle
 from subprocess import check_output
-def sam2segW(cfg, sam, mode_deduction, params, output, log):
+def sam2segW(cfg, sam, mode_deduction, params, snp_file, par_file, output, log):
     """
     Input:
         cfg: softwares path
         mode_deduction: mode str deducted from sample_checking, must be [ploidy]_[sex]_[snp], eg:
             2C_lY_
         params: per sample mode assignment from config or sample_table, same as mode_deduction.
+        snp_file: phased snp file path, give dummy if don't run hickit.js -v in fact.
+        par_file: pseudoautosome region bed file, give dummy if don't bedfilt in fact.
         output: output file path
         log: log file path
     Note:
@@ -61,8 +63,8 @@ def sam2segW(cfg, sam, mode_deduction, params, output, log):
     code = code.format(
             k8 = cfg["software"]["k8"],
             js = cfg["software"]["js"],
-            snp = cfg["reference"]["snp"],
-            PAR = cfg["reference"]["par"],
+            snp = snp_file,
+            PAR = par_file,
             input_ = sam,
             output = output,
             log = log
@@ -73,6 +75,8 @@ sam2segW(
     snakemake.input.get("sam"),
     snakemake.input.get("mode_deduction"),
     snakemake.params[0],
+    snakemake.input.get("snp_file"),
+    snakemake.input.get("par_file"),
     snakemake.output,
     snakemake.log
 )
