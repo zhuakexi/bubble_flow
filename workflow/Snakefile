@@ -20,9 +20,7 @@ js = config["software"]["js"]
 #snp = config["reference"]["snp"]
 #PAR = config["reference"]["par"]
 
-# util functions
-def log_path(file):
-    return os.path.join(ana_home, "logs", "{sample}", file)
+include: "rules/utils.smk"
 def get_raw_fq(wildcards):
     sample = wildcards.sample
     R1_path = sample_table.loc[sample, "R1_file"],
