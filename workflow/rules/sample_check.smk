@@ -19,7 +19,7 @@ rule pre_seg:
          | sed 's/-/+/g' \
          | gzip > {output}
         """
-checkpoint seg_stat:
+checkpoint sample_check:
     input:
         rules.pre_seg.output
     output:
