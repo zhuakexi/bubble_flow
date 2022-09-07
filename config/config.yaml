@@ -8,21 +8,31 @@ reference:
   bwa: 
     hg19: /share/Data/ychi/genome/GRCh37d5/bwa_mem2_index/genome.fa
     mm10_B6_CAST: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
+    mm10_B6_DBA2: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
+    mm10_B6: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
     ara: /share/Data/public/ref_genome/ara_ref_embl/bwamem2_index/genome.fa
   # if doesn't have snp.tsv file, give a nonsense 4 col tsv
   snp: 
     hg19: /share/Data/ychi/genome/GRCh37d5/GM12878.hg19.snp.tsv
     mm10_B6_CAST: /share/home/ychi/data/genome/GRCm38/phased.B6_CAST.chr.vcf.tsv
+    mm10_B6_DBA2: /share/home/ychi/data/genome/mouse_snp/B6_DBA2/B6_DBA2.phased.snp.withchr.tsv
+    mm10_B6: /share/home/ychi/data/genome/mouse_snp/B6_DBA2/B6_DBA2.phased.snp.withchr.tsv
   par:
     hg19: /share/Data/ychi/genome/GRCh37d5/hg19.PAR.bed
     mm10_B6_CAST: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
+    mm10_B6_DBA2: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
+    mm10_B6: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
   star:
     hg19: /share/Data/ychi/genome/GRCh37d5/star_index
     mm10_B6_CAST: /share/home/ychi/data/genome/GRCm38/star_index
+    mm10_B6_DBA2: /share/home/ychi/data/genome/GRCm38/star_index
+    mm10_B6: /share/home/ychi/data/genome/GRCm38/star_index
     ara: /share/Data/public/ref_genome/ara_ref_embl/star_index
   annotation: 
     hg19: /share/Data/ychi/genome/GRCh37d5/raw/gencode.v19.annotation.gtf
     mm10_B6_CAST: /share/home/ychi/data/genome/GRCm38/raw/gencode.vM25.annotation.gtf
+    mm10_B6_DBA2: /share/home/ychi/data/genome/GRCm38/raw/gencode.vM25.annotation.gtf
+    mm10_B6: /share/home/ychi/data/genome/GRCm38/raw/gencode.vM25.annotation.gtf
     ara: /share/Data/public/ref_genome/ara_ref_embl/Rawdata/Arabidopsis_thaliana.TAIR10.52.gtf
 cpu:
   bwa: 8
@@ -35,4 +45,5 @@ cpu:
   sortBAM: 8
 
 # change every time
-ana_home: /share/Data/ychi/repo/test_bubble_flow
+global_mode: 1C__SNP
+ana_home: /share/home/ychi/dev/bubble_flow/tests/output/files
