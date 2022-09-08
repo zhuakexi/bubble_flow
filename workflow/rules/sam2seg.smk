@@ -19,6 +19,7 @@ def sam2seg_params(wildcards):
     #   to instruct as long as mode is not assigned in config or sample_table.csv
     ## get  mode assignedin config files
     assigend_mode = get_assigned_sam2seg_mode(wildcards)
+    assigend_mode = "_".join(assigend_mode.split("_")[:3])
     ## deduct mode from sample feature.
     with checkpoints.sample_check.get(sample = wildcards.sample).output[0].open() as f:
         for line in f:
