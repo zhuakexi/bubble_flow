@@ -25,10 +25,17 @@ rule clean12:
     message: " ------> clean_pairs_stage2 : {wildcards.sample} : {threads} cores."
     shell: "python {hires} clean_isolated -t {threads} -o {output} {input} 1> {log.result} 2> {log.log}"
 
+def clean123_input(wildcards):
+    ref = sample_table.loc[wildcards.sample, "ref"]
+    return {
+        "pairs" : rules.clean12.output[0].format(sample = wildcards),
+        "gtf" : config["reference"]["annotation"][ref]
+    }
 rule clean123:
     input: 
-        pairs = rules.clean12.output,
-        gtf = config["reference"]["annotation"]
+        #pairs = rules.clean12.output,
+        #gtf = config["reference"]["annotation"]
+        unpack(clean123_input)
     output: 
         os.path.join(ana_home, "pairs_c123", "{sample}.c123.pairs.gz")
     log: 
