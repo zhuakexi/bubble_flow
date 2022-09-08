@@ -10,7 +10,7 @@ def star_mapping_input(wildcards):
 rule star_mapping:
     input:
         RNAprep = expand(rules.mend_umi.output, sample=sample_table.index),
-        index = config["reference"]["star"]
+        index = config["reference"]["star"]["mm10_B6"]
     output:
         os.path.join(ana_home, "star_mapped", "Aligned.sortedByCoord.out.bam")
     params:

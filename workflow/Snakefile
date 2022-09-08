@@ -187,4 +187,5 @@ rule All:
         #expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"])
         rules.target_rmsd.input,
         rules.target_cif.input,
-        rules.collect_info.output
+        rules.collect_info.output,
+        rules.matrix_count.output

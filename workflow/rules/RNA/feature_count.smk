@@ -1,4 +1,4 @@
-annotation = config["reference"]["annotation"]
+annotation = config["reference"]["annotation"]["mm10_B6"]
 rule feature_count:
     input: rules.star_mapping.output # using flag file to keep in line
     output:
