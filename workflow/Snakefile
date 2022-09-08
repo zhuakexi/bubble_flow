@@ -151,7 +151,6 @@ rule bwa_mem:
 include: "rules/sample_check.smk"
 include: "rules/sam2seg.smk"
 include: "rules/seg2pairs.smk"
-include: "rules/pairs_info.smk"
 include: "rules/clean_pairs.smk"
 include: "rules/impute.smk"
 include: "rules/build.smk"
@@ -188,3 +187,4 @@ rule All:
         #expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"])
         rules.target_rmsd.input,
         rules.target_cif.input,
+        rules.collect_info.output
