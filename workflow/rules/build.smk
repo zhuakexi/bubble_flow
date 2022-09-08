@@ -15,7 +15,10 @@ def build_input(wildcards):
     }
     if build == "NO":
         print("rule.build Warning: shouldn't execute this line")
-    return mapper[build].format(sample = wildcards.sample)
+    return {
+        "pairs" : mapper[build].format(sample = wildcards.sample),
+        "checkpoint" : checkpoints.sample_check.get(sample = wildcards.sample).output[0]
+    }
 def build_params(wildcards):
     """
     Input params for rule.build.
@@ -27,7 +30,7 @@ rule build:
     # using output of pairs
     # no impute
     # don't need hickit -r1m xx, has better sep_clean
-    input: build_input
+    input: unpack(build_input)
     params: build_params
     output:
         _3dg_4m = tp.format("4m"),

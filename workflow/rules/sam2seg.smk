@@ -11,7 +11,8 @@ def sam2seg_input(wildcards):
         #"sam" : rules.bwa_mem.output.get(sample = wildcards.sample).output[0],
         "sam" : rules.bwa_mem.output[0].format(sample = wildcards.sample),
         "snp_file" : snp_file,
-        "par_file" : par_file
+        "par_file" : par_file,
+        "checkpoint" : checkpoints.sample_check.get(sample = wildcards.sample).output[0]
     }
 def sam2seg_params(wildcards):
     # Get params for rule.sam2seg. Impose assigend and deducted mode.

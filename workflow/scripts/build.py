@@ -33,7 +33,7 @@ def buildW(cfg, input_, ploidy, rep,  _4m, _1m, _200k, _50k, _20k, log):
     return 0
 buildW(
     snakemake.config,
-    snakemake.input[0],
+    snakemake.input.get("pairs"),
     snakemake.params[0],
     snakemake.wildcards["rep"],
     snakemake.output.get("_3dg_4m"),
