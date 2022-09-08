@@ -169,6 +169,9 @@ rule target_sam2seg:
 rule target_seg_stat:
     input:
         expand(rules.sample_check.output, sample= sample_table.index)
+rule target_seg2pairs:
+    input:
+        expand(rules.seg2pairs.output, sample=sample_table.index)
 rule All:
     input:
         rules.collect_info.output,
