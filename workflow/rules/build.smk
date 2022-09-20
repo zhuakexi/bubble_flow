@@ -42,12 +42,12 @@ rule build:
     threads: 1
     resources: nodes = 1
     message: " ------> hickit build 3d : {wildcards.sample}.{wildcards.rep} : {threads} cores"
-    script: "../scripts/sam2seg.py"
+    script: "../scripts/build.py"
 # rescale and clean built 3d structures
 def clean3d_input(wildcards):
     return {
         "_3dg" : os.path.join(ana_home, "3dg", "{sample}.{reso}.{rep}.3dg"),
-        "pairs" : build_input(wildcards)
+        "pairs" : build_input(wildcards)["pairs"]
     }
 rule clean3d:
     input: 
@@ -55,7 +55,7 @@ rule clean3d:
         #pairs = rules.clean1.output
         unpack(clean3d_input)
     output: os.path.join(ana_home, "3dg_c", "{sample}.clean.{reso}.{rep}.3dg")
-    conda: "hires.yaml"
+    conda: "../envs/hires.yaml"
     threads: 1
     resources: nodes = 1
     message: " ------> clean3d : {wildcards.sample}"
@@ -71,7 +71,7 @@ rule rmsd:
         [os.path.join(ana_home, "3dg", "{{sample}}.{{reso}}.{rep}.3dg.3dg").format(rep=i) for i in range(1,6)]
     output:
         os.path.join(ana_home, "rmsd", "{sample}.{reso}.rmsd.info")
-    conda: "hires.yaml"
+    conda: "../envs/hires.yaml"
     threads: 1
     resources: nodes = 1
     message: "---> rmsd : {wildcards.sample} : {resources.nodes}"
@@ -84,7 +84,7 @@ rule cif:
         rules.clean3d.output
     output:
         os.path.join(ana_home, "cif", "{sample}.{reso}.{rep}.cif")
-    conda: "hires.yaml"
+    conda: "../envs/hires.yaml"
     threads: 1
     resources: nodes = 1
     message: "---> vis : {wildcards.sample}.{wildcards.rep} : {resources.nodes}"
