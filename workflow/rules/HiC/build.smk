@@ -17,6 +17,8 @@ def build_input(wildcards):
         print("rule.build Warning: shouldn't execute this line")
     return {
         "pairs" : mapper[build].format(sample = wildcards.sample),
+        # build_params call sam2seg_params which using checkpoint, so input must also have that checkpoint file
+        # by snakemake rule
         "checkpoint" : checkpoints.sample_check.get(sample = wildcards.sample).output[0]
     }
 def build_params(wildcards):
@@ -45,14 +47,28 @@ rule build:
     script: "../../scripts/build.py"
 # rescale and clean built 3d structures
 def clean3d_input(wildcards):
-    return {
-        "_3dg" : os.path.join(ana_home, "3dg", "{sample}.{reso}.{rep}.3dg"),
-        "pairs" : build_input(wildcards)["pairs"]
+    """
+    Input files for rule.clean3d.
+    Require:
+        `mode` in sample_table.csv
+    """
+    _, _, _, _, build = get_assigned_mode(wildcards).split("_")
+    mapper = {
+        "c1b" : rules.clean1.output[0],
+        "c12b" : rules.clean12.output[0],
+        "c123b" : rules.clean123.output[0],
+        "Ib" : rules.impute.output[0],
+        "Icb" : rules.sep_clean.output["impute_c"]
     }
+    inputs = {
+        "_3dg" : os.path.join(ana_home, "3dg", "{sample}.{reso}.{rep}.3dg"),
+        # can't call build_input here because it will call sam2seg_params which using checkpoint
+        # but clean3d is not conditional, it only depends on mode string.
+        "pairs" : mapper[build].format(sample = wildcards.sample)
+    }
+    return inputs
 rule clean3d:
-    input: 
-        #_3dg = os.path.join(ana_home, "3dg", "{sample}.{reso}.{rep}.3dg"),
-        #pairs = rules.clean1.output
+    input:
         unpack(clean3d_input)
     output: os.path.join(ana_home, "3dg_c", "{sample}.clean.{reso}.{rep}.3dg")
     conda: "../../envs/hires.yaml"
@@ -67,8 +83,9 @@ rule clean3d:
             -o {output}
         """
 rule rmsd:
+    # calculate r.m.s.d of *cleaned* 3d structures
     input:
-        [os.path.join(ana_home, "3dg", "{{sample}}.{{reso}}.{rep}.3dg.3dg").format(rep=i) for i in range(1,6)]
+        [os.path.join(ana_home, "3dg_c", "{{sample}}.clean.{{reso}}.{rep}.3dg").format(rep=i) for i in range(1,6)]
     output:
         os.path.join(ana_home, "rmsd", "{sample}.{reso}.rmsd.info")
     conda: "../../envs/hires.yaml"

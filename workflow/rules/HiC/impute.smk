@@ -1,7 +1,9 @@
 import os
 def impute_input(wildcards):
     """
-    Decide which pairs to impute on.
+    Decide from assigned_mode which pairs to impute on.
+    Assigned mode must be one of:
+        c1i, c12i, c123i
     """
     _, _, _, impute, _ = get_assigned_mode(wildcards).split("_")
     mapper = {
@@ -9,8 +11,8 @@ def impute_input(wildcards):
         "c12i" : rules.clean12.output[0],
         "c123i" : rules.clean123.output[0]
     }
-    if impute == "NO":
-        print("rule.impute Warning: shouldn't execute this line, group_impute may be failed.")
+    #if impute == "NO":
+    #    print("rule.impute Warning: shouldn't execute this line, group_impute may be failed.")
     return mapper[impute].format(sample = wildcards.sample)
 rule impute:
     input: impute_input

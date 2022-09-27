@@ -1,6 +1,11 @@
 from cmath import log
 from subprocess import check_output
 def buildW(cfg, input_, ploidy, rep,  _4m, _1m, _200k, _50k, _20k, log):
+    """
+    Run hickit structural building.
+    TODO:
+        when input is default imputation output(no sep_clean), use -r.
+    """
     code ="""
         {{hickit}} -s{{rep}} -M \
             -i {{input}} {split} \

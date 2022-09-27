@@ -16,14 +16,12 @@ hires = config["software"]["hires"]
 hickit = config["software"]["hickit"]
 k8 = config["software"]["k8"]
 js = config["software"]["js"]
-# reference
-#snp = config["reference"]["snp"]
-#PAR = config["reference"]["par"]
 
 include: "rules/utils.smk"
 # main workflow
-# for RNA
+## preprocessing
 include: "rules/pp/pp.smk"
+## for HiC
 include: "rules/HiC/mapping.smk"
 include: "rules/HiC/sample_check.smk"
 include: "rules/HiC/sam2seg.smk"
@@ -32,6 +30,7 @@ include: "rules/HiC/clean_pairs.smk"
 include: "rules/HiC/impute.smk"
 include: "rules/HiC/build.smk"
 include: "rules/HiC/collect_info.smk"
+## for RNA
 include: "rules/RNA/prepareRNA.smk"
 include: "rules/RNA/star_mapping.smk"
 include: "rules/RNA/feature_count.smk"
@@ -63,6 +62,23 @@ rule target_rmsd:
 rule target_cif:
     input:
         expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"])
+rule target_collect_info:
+    input:
+        rules.collect_info.output
+rule run_pairs:
+    input:
+        expand(rules.clean12.output, sample = sample_table.index),
+        rules.collect_info.output
+rule run_dip:
+    # get phased and dip-c imputated pairs file
+    input:
+        expand(rules.sep_clean.output, sample = sample_table.index),
+        rules.collect_info.output
+rule run_struct:
+    # get hickit simulated 3d structure
+    input:
+        expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"]),
+        rules.collect_info.output
 rule All:
     input:
         #expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"])
