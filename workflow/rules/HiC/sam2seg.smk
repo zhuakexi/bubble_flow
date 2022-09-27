@@ -48,4 +48,4 @@ rule sam2seg:
     resources: nodes = 1
     message: " ------> sam2seg : {wildcards.sample}"
     script:
-        "../scripts/sam2seg.py"
+        "../../scripts/sam2seg.py"

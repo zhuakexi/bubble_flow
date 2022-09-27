@@ -25,4 +25,9 @@ def get_assigned_mode(wildcards):
         if ref not in config["reference"]["snp"]:
             raise ValueError("no phased snp file for {}".format(ref))
     return params
+def get_raw_fq(wildcards):
+    sample = wildcards.sample
+    R1_path = sample_table.loc[sample, "R1_file"],
+    R2_path = sample_table.loc[sample, "R2_file"]
+    return {"R1":R1_path, "R2":R2_path}
 hires = config["software"]["hires"]

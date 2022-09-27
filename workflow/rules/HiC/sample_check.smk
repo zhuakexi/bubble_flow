@@ -32,7 +32,7 @@ checkpoint sample_check:
     output:
         os.path.join(ana_home, "info","{sample}.seg_stat.info")
     conda:
-        "../envs/hires.yaml"
+        "../../envs/hires.yaml"
     shell:
         """
         python {hires} seg_stat \

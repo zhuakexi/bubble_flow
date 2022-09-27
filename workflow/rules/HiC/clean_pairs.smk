@@ -9,7 +9,7 @@ rule clean1:
         log = log_path("clean1.log") 
     threads: config["cpu"]["clean1"]
     resources: nodes = config["cpu"]["clean1"]
-    conda: "../envs/hires.yaml"
+    conda: "../../envs/hires.yaml"
     message: " ------> clean_pairs_stage1 : {wildcards.sample} : {threads} cores."
     shell: "python {hires} clean_leg -t {threads} -o {output} {input}  1> {log.result} 2> {log.log}"
 
@@ -21,7 +21,7 @@ rule clean12:
         log = log_path("clean12.log") 
     threads: config["cpu"]["clean2"]
     resources: nodes = config["cpu"]["clean2"]
-    conda: "../envs/hires.yaml"
+    conda: "../../envs/hires.yaml"
     message: " ------> clean_pairs_stage2 : {wildcards.sample} : {threads} cores."
     shell: "python {hires} clean_isolated -t {threads} -o {output} {input} 1> {log.result} 2> {log.log}"
 
@@ -42,7 +42,7 @@ rule clean123:
         log = log_path("clean123.log")
     threads: config["cpu"]["clean3"]
     resources: nodes = config["cpu"]["clean3"]
-    conda: "../envs/hires.yaml"
+    conda: "../../envs/hires.yaml"
     message: " ------> clean_pairs_stage3 : {wildcards.sample} : {threads} cores."
     shell: "python {hires} clean_splicing -r {input.gtf} -o {output} {input.pairs} 1> {log}"
 rule propagate_seg_stat:

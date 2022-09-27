@@ -1,0 +1,1 @@
+snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs -c 17 --keep-going --jobs=16 target_build

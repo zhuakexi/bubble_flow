@@ -25,7 +25,7 @@ def buildW(cfg, input_, ploidy, rep,  _4m, _1m, _200k, _50k, _20k, log):
         _3dg_50k = _50k,
         _3dg_20k = _20k,
         log = log)
-    print(code)
+    #print(code)
     check_output(
         code,
         shell = True

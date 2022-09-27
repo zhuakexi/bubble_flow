@@ -1,4 +1,37 @@
 #cut out umi sequence; write umi sequence and cell name to sequence id
+rule cut_round2:
+    input:
+        R1 = rules.split.output.output, #RNA_R1
+        R2 = rules.split.output.paired_output #RNA_R2
+    output:
+        output = os.path.join(ana_home, "RNA_c", "{sample}_R1.fq.gz"),
+        paired_output = os.path.join(ana_home, "RNA_c", "{sample}_R2.fq.gz")
+    threads: config["cpu"]["cut_r2"]
+    resources: nodes = config["cpu"]["cut_r2"]
+    params: adapter=' -G "XNNNNNNNNTTTTTTTTTTTTTTT;o=18" '
+    log: log_path("cut_round2.config")
+    message: "---> cut_round2 : {wildcards.sample} : {threads} cores"
+    wrapper:
+        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_2o"
+        "file:./wrappers/cutadapt_pe_2o"
+rule count_rna_reads:
+    input:
+        # RNA_R1 after trim_cleaning
+        rules.cut_round2.output.output
+    output:
+        os.path.join(ana_home,"info","{sample}.rna_reads.info")
+    threads: 1
+    resources:
+        nodes = 1
+    message:
+        " ---> count_rna_reads : {wildcards.sample} :{threads} cores"
+    conda:"./envs/hires.yaml"
+    shell:
+        """
+        python {hires} gcount \
+        -f pe_fastq -rd {rd} -sa {wildcards.sample} -at rna_reads {input} \
+        1> {output}
+        """
 rule extract_umi:
     input:
         RNA_R1 = rules.cut_round2.output.output,

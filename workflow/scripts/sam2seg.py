@@ -68,7 +68,7 @@ def sam2segW(cfg, sam, params, snp_file, par_file, output, log):
             output = output,
             log = log
     )
-    print("sam2segW shell:",code)
+    #print("sam2segW shell:",code)
     check_output(code, shell=True)
 sam2segW(
     snakemake.config,

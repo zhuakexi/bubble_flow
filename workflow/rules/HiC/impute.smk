@@ -39,7 +39,7 @@ rule sep_clean:
     log:
         log=log_path("sep_clean.log"),
         result=log_path("sep_clean.result")
-    conda: "../envs/hires.yaml" 
+    conda: "../../envs/hires.yaml" 
     message: " ------> sep_clean: {wildcards.sample} : {threads} cores"
     shell:
         """

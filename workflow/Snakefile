@@ -21,140 +21,21 @@ js = config["software"]["js"]
 #PAR = config["reference"]["par"]
 
 include: "rules/utils.smk"
-def get_raw_fq(wildcards):
-    sample = wildcards.sample
-    R1_path = sample_table.loc[sample, "R1_file"],
-    R2_path = sample_table.loc[sample, "R2_file"]
-    return {"R1":R1_path, "R2":R2_path}
 # main workflow
-rule count_reads:
-    input:
-        unpack(get_raw_fq)
-    output:
-        # dummy and backup information 
-        os.path.join(ana_home,"info","{sample}.reads.info")
-    threads: 1
-    resources: 
-        nodes = 1
-    message:
-        " ---> count_reads :{wildcards.sample} : {threads} cores"
-    conda:"./envs/hires.yaml"
-    shell:
-        """
-        python {hires} gcount \
-        -f pe_fastq -rd {rd} \
-        -sa {wildcards.sample} -at raw_reads \
-        {input.R1} 1> {output}
-        """
-rule split:
-    input:
-        unpack(get_raw_fq)
-    output:
-        untrimmed_output = os.path.join(ana_home,"DNA","{sample}_R1.fq.gz"),
-        untrimmed_paired_output = os.path.join(ana_home,"DNA","{sample}_R2.fq.gz"),
-        output = os.path.join(ana_home, "RNA", "{sample}_R1.fq.gz"),
-        paired_output = os.path.join(ana_home, "RNA", "{sample}_R2.fq.gz")
-    threads: config["cpu"]["split"]
-    resources: nodes = config["cpu"]["split"] 
-    params:
-        # rna specific adapter
-        adapter=' -G "XGGTTGAGGTAGTATTGCGCAATG;o=20" '
-    log: log_path("split.log")
-    message: "---> split : {wildcards.sample} : {threads} cores"
-    wrapper:
-        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_4o"
-        "file:./wrappers/cutadapt_pe_4o"
-rule count_dna_reads:
-    input:
-        # DNA_R1
-        rules.split.output.untrimmed_output
-    output:
-        os.path.join(ana_home,"info","{sample}.dna_reads.info")
-    threads: 1
-    resources:
-        nodes = 1
-    message:
-        " ---> count_dna_reads : {wildcards.sample} :{threads} cores"
-    conda:"./envs/hires.yaml"
-    shell:
-        """
-        python {hires} gcount \
-        -f pe_fastq -rd {rd} -sa {wildcards.sample} -at dna_reads {input} \
-        1> {output}
-        """
 # for RNA
-rule cut_round2:
-    input:
-        R1 = rules.split.output.output, #RNA_R1
-        R2 = rules.split.output.paired_output #RNA_R2
-    output:
-        output = os.path.join(ana_home, "RNA_c", "{sample}_R1.fq.gz"),
-        paired_output = os.path.join(ana_home, "RNA_c", "{sample}_R2.fq.gz")
-    threads: config["cpu"]["cut_r2"]
-    resources: nodes = config["cpu"]["cut_r2"]
-    params: adapter=' -G "XNNNNNNNNTTTTTTTTTTTTTTT;o=18" '
-    log: log_path("cut_round2.config")
-    message: "---> cut_round2 : {wildcards.sample} : {threads} cores"
-    wrapper:
-        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_2o"
-        "file:./wrappers/cutadapt_pe_2o"
-rule count_rna_reads:
-    input:
-        # RNA_R1 after trim_cleaning
-        rules.cut_round2.output.output
-    output:
-        os.path.join(ana_home,"info","{sample}.rna_reads.info")
-    threads: 1
-    resources:
-        nodes = 1
-    message:
-        " ---> count_rna_reads : {wildcards.sample} :{threads} cores"
-    conda:"./envs/hires.yaml"
-    shell:
-        """
-        python {hires} gcount \
-        -f pe_fastq -rd {rd} -sa {wildcards.sample} -at rna_reads {input} \
-        1> {output}
-        """
+include: "rules/pp/pp.smk"
+include: "rules/HiC/mapping.smk"
+include: "rules/HiC/sample_check.smk"
+include: "rules/HiC/sam2seg.smk"
+include: "rules/HiC/seg2pairs.smk"
+include: "rules/HiC/clean_pairs.smk"
+include: "rules/HiC/impute.smk"
+include: "rules/HiC/build.smk"
+include: "rules/HiC/collect_info.smk"
 include: "rules/RNA/prepareRNA.smk"
 include: "rules/RNA/star_mapping.smk"
 include: "rules/RNA/feature_count.smk"
 
-# for Hi-C
-def bwa_mem_input(wildcards):
-    R1 = rules.split.output.untrimmed_output
-    R2 = rules.split.output.untrimmed_paired_output
-    index = config["reference"]["bwa"][sample_table.loc[wildcards.sample,"ref"]]
-    return {"R1":R1, "R2":R2, "index": index}
-rule bwa_mem:
-    input:
-        unpack(bwa_mem_input)
-        #R1 = rules.split.output.untrimmed_output,
-        #R2 = rules.split.output.untrimmed_paired_output
-    output:
-        protected( os.path.join(ana_home,"sam","{sample}.aln.sam.gz"))
-    params:
-        #index = config["reference"]["bwa"][sample_table.loc[snakemake.wildcards.sample,"ref"]],
-        extra = r"-R '@RG\tID:{sample}\tPL:ILLUMINA\tSM:{sample}'"
-    threads: 
-        config["cpu"]["bwa"]
-    resources:
-        nodes = config["cpu"]["bwa"]
-    log:
-        log_path("bwa.log")
-    message:
-        " ---> bwa : {wildcards.sample} : {threads} cores"
-    wrapper:
-        # wrapper shipped with conda yaml
-        #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/bwa_mem2"
-        "file:./wrappers/bwa_mem2"
-include: "rules/sample_check.smk"
-include: "rules/sam2seg.smk"
-include: "rules/seg2pairs.smk"
-include: "rules/clean_pairs.smk"
-include: "rules/impute.smk"
-include: "rules/build.smk"
-include: "rules/collect_info.smk"
 rule target_bwa_mem:
     input:
         expand(rules.bwa_mem.output, sample = sample_table.index)
