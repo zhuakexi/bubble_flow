@@ -52,4 +52,5 @@ cpu:
 ## imputation: c1i, c12i, c123i, other
 ## build: c1b, c12b, c123b, other
 global_mode: 1C__SNP_c123i_c12b
+global_ref: mm10_B6_CAST
 ana_home: /share/home/ychi/dev/bubble_flow/tests/output/files

@@ -6,17 +6,9 @@ import os
 import pandas as pd
 
 configfile: "config/config.yaml"
-# samples
-sample_table = pd.read_csv("config/sample_table.csv", dtype={0:pd.StringDtype()},index_col=0)
-# dirs
-ana_home = config["ana_home"] # home directory of all analysis results
-rd = os.path.join(ana_home,"rd") # dir to store stat jsons
-# softwares
-hires = config["software"]["hires"]
-hickit = config["software"]["hickit"]
-k8 = config["software"]["k8"]
-js = config["software"]["js"]
-
+# global variables
+include: "rules/h.smk"
+# global utilities
 include: "rules/utils.smk"
 # main workflow
 ## preprocessing
@@ -34,37 +26,9 @@ include: "rules/HiC/collect_info.smk"
 include: "rules/RNA/prepareRNA.smk"
 include: "rules/RNA/star_mapping.smk"
 include: "rules/RNA/feature_count.smk"
-
-rule target_bwa_mem:
-    input:
-        expand(rules.bwa_mem.output, sample = sample_table.index)
-rule target_sam2seg:
-    input:
-        expand(rules.sam2seg.output, sample = sample_table.index)
-rule target_seg_stat:
-    input:
-        expand(rules.sample_check.output, sample= sample_table.index)
-rule target_seg2pairs:
-    input:
-        expand(rules.seg2pairs.output, sample=sample_table.index)
-rule target_sep_clean:
-    input:
-        expand(rules.sep_clean.output, sample = sample_table.index)
-rule target_build:
-    input:
-        expand(rules.build.output, sample = sample_table.index, rep=list(range(1,6)))
-rule target_clean3d:
-    input:
-        expand(rules.clean3d.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"])
-rule target_rmsd:
-    input:
-        expand(rules.rmsd.output, sample = sample_table.index, reso = ["4m","1m","200k","50k","20k"])
-rule target_cif:
-    input:
-        expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"])
-rule target_collect_info:
-    input:
-        rules.collect_info.output
+## debugging entries
+include: "rules/target_rules.smk"
+## helper entries
 rule run_pairs:
     input:
         expand(rules.clean12.output, sample = sample_table.index),
