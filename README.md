@@ -62,7 +62,7 @@ Set "software" section of config.yaml
             [SNP, `others`] (phasing, not phasing)
         imputation: 
             用什么pairs结果impute phasing(dip-c imputation算法)。影响imputation, sep_clean。除非不执行imputation及子任务不可以省略。
-            [c1i, c12i, c123i] (impute from clean1, clean12, clean123, don't impute)
+            [c1i, c12i, c123i] (impute from clean1, clean12, clean123)
         build: 
             用什么pairs类结果build三维结构。影响build。除非不执行build及子任务不可以省略。
             [c1b, c12b, c123b， Ib, Icb] (build from clean1, clean12, clean123, imputated pairs, imputated and cleaned pairs)
