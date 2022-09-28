@@ -1,3 +1,4 @@
 .snakemake/*
 tests/output/*
 tests/test_struct/output/*
+tests/test_hires/output/*
