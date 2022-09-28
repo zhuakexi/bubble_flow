@@ -3,13 +3,13 @@ def star_mapping_input(wildcards):
     """
     TODO: make a real group/aggregate mode
     """
-    per_ref_samples = sample_table.loc[sample_table["ref"] == wildcards.ref].index
+    per_ref_samples = sample_table.loc[sample_table["ref"] == wildcards.ref].index if "ref" in sample_table.columns else sample_table.index # global ref means all samples
     return {
         "RNAprep" : expand(rules.mend_umi.output, sample=per_ref_samples),
         "index" : config["reference"]["star"][wildcards.ref] if wildcards.ref in config["reference"]["star"] else "NoSTARIndexFile.txt"
     }
 def star_mapping_params(wildcards):
-    per_ref_samples = sample_table.loc[sample_table["ref"] == wildcards.ref].index
+    per_ref_samples = sample_table.loc[sample_table["ref"] == wildcards.ref].index if "ref" in sample_table.columns else sample_table.index # global ref means all samples
     # string that defines the input files for STAR
     sequence = ",".join([os.path.join(ana_home, "umi_uBAM", "{sample}.bam").format(sample=i)
         for i in per_ref_samples]),

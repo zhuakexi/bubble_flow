@@ -26,7 +26,7 @@ rule clean12:
     shell: "python {hires} clean_isolated -t {threads} -o {output} {input} 1> {log.result} 2> {log.log}"
 
 def clean123_input(wildcards):
-    ref = sample_table.loc[wildcards.sample, "ref"]
+    ref = sample_table.loc[wildcards.sample, "ref"] if "ref" in sample_table.columns else config["global_ref"]
     return {
         "pairs" : rules.clean12.output[0].format(sample = wildcards),
         "gtf" : config["reference"]["annotation"][ref]

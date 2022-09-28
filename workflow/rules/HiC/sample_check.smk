@@ -1,6 +1,6 @@
 # need k8, js, hires, rd, snp
 def pre_seg_input(wildcards):
-    ref = sample_table.loc[wildcards.sample, "ref"]
+    ref = sample_table.loc[wildcards.sample, "ref"] if "ref" in sample_table.columns else config["global_ref"]
     return {
         #"sam" : rules.bwa_mem.output.get(sample = wildcards.sample).output[0],
         "sam" : rules.bwa_mem.output[0].format(sample = wildcards.sample),

@@ -2,7 +2,8 @@
 def bwa_mem_input(wildcards):
     R1 = rules.split.output.untrimmed_output
     R2 = rules.split.output.untrimmed_paired_output
-    index = config["reference"]["bwa"][sample_table.loc[wildcards.sample,"ref"]]
+    ref = sample_table.loc[wildcards.sample, "ref"] if "ref" in sample_table.columns else config["global_ref"]
+    index = config["reference"]["bwa"][ref]
     return {"R1":R1, "R2":R2, "index": index}
 rule bwa_mem:
     input:

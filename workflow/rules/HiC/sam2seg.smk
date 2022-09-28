@@ -2,7 +2,7 @@ def sam2seg_input(wildcards):
     # Get input files for rule.sam2seg
     ## get snp file
     ## if no snp file, return some path any way since may don't need phasing in `mode`.
-    ref = sample_table.loc[wildcards.sample, "ref"]
+    ref = sample_table.loc[wildcards.sample, "ref"] if "ref" in sample_table.columns else config["global_ref"]
     snp_file = config["reference"]["snp"][ref] if ref in config["reference"]["snp"] else "NoSNPFile.txt"
     ## if no par file, return some path any way since may don't need par filtering in `mode`.
     par_file = config["reference"]["par"][ref] if ref in config["reference"]["par"] else "NoPARFile.txt"
