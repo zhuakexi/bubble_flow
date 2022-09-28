@@ -45,8 +45,6 @@ rule run_struct:
         rules.collect_info.output
 rule All:
     input:
-        #expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"])
-        rules.target_rmsd.input,
-        rules.target_cif.input,
+        expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"]),
         rules.collect_info.output,
-        rules.matrix_count.output
+        expand(rules.matrix_count.output, ref = sample_table["ref"].unique() if "ref" in sample_table.columns else config["global_ref"])
