@@ -49,8 +49,8 @@ cpu:
 ## ploidy: 1C, 2C
 ## sex: lY, hY (means low Y, high Y)
 ## snp: SNP, other
-## imputation: c1i, c12i, c123i, other
-## build: c1b, c12b, c123b, other
+## imputation: c1i, c12i, c123i
+## build: c1b, c12b, c123b， Ib, Icb
 global_mode: 1C__SNP_c123i_c12b
 global_ref: mm10_B6_CAST
 sample_table: /share/home/ychi/dev/bubble_flow/tests/test_struct/sample_table.csv
