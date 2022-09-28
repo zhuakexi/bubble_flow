@@ -1,22 +1,28 @@
-annotation = config["reference"]["annotation"]["mm10_B6"]
+def feature_count_input(wildcards):
+    return {
+        "annotation" : config["reference"]["annotation"][wildcards.ref] if wildcards.ref in config["reference"]["annotation"] else "NoAnnotationIndexFile.txt",
+        "bam" : rules.star_mapping.output[0].format(ref=wildcards.ref)
+        }
 rule feature_count:
-    input: rules.star_mapping.output # using flag file to keep in line
+    input: 
+        unpack(feature_count_input)
+        #rules.star_mapping.output # using flag file to keep in line
     output:
-        gene_assigned = os.path.join(ana_home, "count_gene", "gene_assigned"),
-        bam = os.path.join(ana_home, "count_gene", "Aligned.sortedByCoord.out.bam.featureCounts.bam")
+        gene_assigned = os.path.join(ana_home, "count_gene_{ref}", "gene_assigned"),
+        bam = os.path.join(ana_home, "count_gene_{ref}", "Aligned.sortedByCoord.out.bam.featureCounts.bam")
     log:
-        result = os.path.join(ana_home, "logs", "count.result"),
-        log = os.path.join(ana_home, "logs", "count.log")
+        result = os.path.join(ana_home, "logs", "count_{ref}.result"),
+        log = os.path.join(ana_home, "logs", "count_{ref}.log")
     conda: "../../envs/rna_tools.yaml"
     shell:
         """
-        featureCounts -a {annotation} -o {output.gene_assigned} -R BAM {input} \
+        featureCounts -a {input.annotation} -o {output.gene_assigned} -R BAM {input.bam} \
          -T 4 -Q 30 -t gene -g gene_name 2>{log.log} 1>{log.result}
         """
 rule sort_count:
     input: rules.feature_count.output.bam # this only for dependency keeping. use fC_bam_gene in fact
     output:
-        os.path.join(ana_home, "count_gene", "samsort.bam")
+        os.path.join(ana_home, "count_gene_{ref}", "samsort.bam")
     threads: config["cpu"]["sortBAM"]
     conda: "../../envs/samtools.yaml"
     shell:
@@ -28,7 +34,7 @@ rule matrix_count:
     input:
         rules.sort_count.output
     output:
-        os.path.join(ana_home, "count_matrix", "counts.gene.tsv.gz")
+        os.path.join(ana_home, "count_matrix_{ref}", "counts.gene.tsv.gz")
     params:
         r"--per-gene --per-cell --extract-umi-method=tag --umi-tag UB --cell-tag RG --gene-tag=XT --assigned-status-tag=XS --wide-format-cell-counts"
     conda: "../../envs/rna_tools.yaml"

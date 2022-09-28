@@ -31,3 +31,12 @@ rule target_collect_info:
 rule target_star_mapping:
     input:
         expand(rules.star_mapping.output, ref = sample_table["ref"].unique() if "ref" in sample_table.columns else config["global_ref"])
+rule target_feature_count:
+    input:
+        expand(rules.feature_count.output, ref = sample_table["ref"].unique() if "ref" in sample_table.columns else config["global_ref"])
+rule target_sort_count:
+    input:
+        expand(rules.sort_count.output, ref = sample_table["ref"].unique() if "ref" in sample_table.columns else config["global_ref"])
+rule target_matrix_count:
+    input:
+        expand(rules.matrix_count.output, ref = sample_table["ref"].unique() if "ref" in sample_table.columns else config["global_ref"])
