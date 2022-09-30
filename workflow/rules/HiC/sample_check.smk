@@ -19,8 +19,8 @@ rule pre_seg:
     log:
         log_path("snp.log")
     shell:
-        """
-        {k8} {js} sam2seg -v {input.snp_file} {input.sam} 2> {log} \
+        """ samtools sort -n @4 -O SAM {input.sam} \
+         | {k8} {js} sam2seg -v {input.snp_file} - 2> {log} \
          | {k8} {js} chronly - \
          | {k8} {js} bedflt {input.par_file} - \
          | sed 's/-/+/g' \
