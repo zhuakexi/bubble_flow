@@ -18,8 +18,9 @@ rule pre_seg:
             "{sample}.seg.gz")
     log:
         log_path("snp.log")
+    conda: "../../envs/samtools.yaml"
     shell:
-        """ samtools sort -n @4 -O SAM {input.sam} \
+        """ samtools sort -n -@4 -O SAM {input.sam} \
          | {k8} {js} sam2seg -v {input.snp_file} - 2> {log} \
          | {k8} {js} chronly - \
          | {k8} {js} bedflt {input.par_file} - \
