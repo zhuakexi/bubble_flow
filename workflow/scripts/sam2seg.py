@@ -18,7 +18,8 @@ def sam2segW(cfg, sam, params, snp_file, par_file, output, log):
         deduction SNP is always ``, ploidy and sex can't be ``.
     """
     ploidy, sex, snp = params.split("_")
-    code =  """{{k8}} {{js}} {sam2seg} 2> {{log}} \
+    code =  """ samtools sort -n -@{{threads}} -O SAM {{input_}} \
+            | {{k8}} {{js}} {sam2seg} 2> {{log}} \
             | {{k8}} {{js}} {chrfilt} - \
             {bedfilt} \
             | sed 's/-/+/g' \
@@ -26,9 +27,9 @@ def sam2segW(cfg, sam, params, snp_file, par_file, output, log):
             """
     if snp == "SNP":
         # add snp col in seg and pairs
-        sam2seg = "sam2seg -v {snp} {input_}"
+        sam2seg = "sam2seg -v {snp} -"
     else:
-        sam2seg = "sam2seg {input_}"
+        sam2seg = "sam2seg -"
     if ploidy == "1C":
         if sex == "hY":
             # high Y
@@ -62,6 +63,7 @@ def sam2segW(cfg, sam, params, snp_file, par_file, output, log):
     code = code.format(
             k8 = cfg["software"]["k8"],
             js = cfg["software"]["js"],
+            threads = cfg["cpu"]["sam2seg"],
             snp = snp_file,
             PAR = par_file,
             input_ = sam,

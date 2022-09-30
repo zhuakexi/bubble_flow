@@ -11,7 +11,7 @@ rule bwa_mem:
         #R1 = rules.split.output.untrimmed_output,
         #R2 = rules.split.output.untrimmed_paired_output
     output:
-        protected( os.path.join(ana_home,"sam","{sample}.aln.sam.gz"))
+        os.path.join(ana_home,"hic_mapped","{sample}.sorted.bam")
     params:
         #index = config["reference"]["bwa"][sample_table.loc[snakemake.wildcards.sample,"ref"]],
         extra = r"-R '@RG\tID:{sample}\tPL:ILLUMINA\tSM:{sample}'"

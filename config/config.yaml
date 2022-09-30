@@ -37,6 +37,7 @@ reference:
 cpu:
   bwa: 8
   split: 8
+  sam2seg: 4
   clean1: 8
   clean2: 8
   clean3: 8

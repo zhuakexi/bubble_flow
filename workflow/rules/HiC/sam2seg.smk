@@ -44,8 +44,9 @@ rule sam2seg:
     output:
         os.path.join(ana_home, "seg","{sample}.seg.gz")
     log: log_path("sam2seg.log")
-    threads: 1
-    resources: nodes = 1
-    message: " ------> sam2seg : {wildcards.sample}"
+    conda: "../../envs/samtools.yaml"
+    threads: config["cpu"]["sam2seg"]
+    resources: nodes = config["cpu"]["sam2seg"]
+    message: " ------> sam2seg : {threads} : {wildcards.sample}"
     script:
         "../../scripts/sam2seg.py"

@@ -20,6 +20,6 @@ shell(
     " -t {threads} "
     " {index} "
     " {input.R1} {input.R2} " 
-    " | samtools sort -@{threads} -o {output} - ; "
+    " | samtools sort -@{threads} -o {output} -O BAM - ; "
     " samtools index -@ {threads} {output} "
 )
