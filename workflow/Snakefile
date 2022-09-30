@@ -42,6 +42,7 @@ rule run_struct:
     # get hickit simulated 3d structure
     input:
         expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"]),
+        expand(rules.rmsd.output, sample = sample_table.index, reso = ["4m","1m","200k","50k","20k"]),
         rules.collect_info.output
 rule run_RNA:
     input:
@@ -49,5 +50,6 @@ rule run_RNA:
 rule All:
     input:
         expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"]),
+        expand(rules.rmsd.output, sample = sample_table.index, reso = ["4m","1m","200k","50k","20k"]),
         rules.collect_info.output,
         expand(rules.matrix_count.output, ref = sample_table["ref"].unique() if "ref" in sample_table.columns else config["global_ref"])
