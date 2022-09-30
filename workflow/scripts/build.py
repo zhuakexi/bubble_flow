@@ -15,9 +15,9 @@ def buildW(cfg, input_, ploidy, rep,  _4m, _1m, _200k, _50k, _20k, log):
             -D5 -b20k -O {{_3dg_20k}} 1> {{log}} 2>&1
         """
     if ploidy == "2C":
-        code = code.format(split = "")
-    elif ploidy == "1C":
         code = code.format(split = "-S")
+    elif ploidy == "1C":
+        code = code.format(split = "")
     else:
         raise ValueError("buildW: wrong ploidy.")
     code = code.format(
