@@ -34,10 +34,10 @@ rule collect_info:
     # TODO: write a modern version
     # TODO: separate reads info and pairs info(maybe)
     input: 
-        expand(rules.pairs_info.output, sample=sample_table.index),
-        expand(rules.count_reads.output, sample=sample_table.index),
-        expand(rules.count_dna_reads.output, sample=sample_table.index),
-        expand(rules.count_rna_reads.output, sample=sample_table.index)
+        pairs_info = expand(rules.pairs_info.output, sample=sample_table.index), # this is the string content
+        reads = expand(rules.count_reads.output, sample=sample_table.index),
+        dna_reads = expand(rules.count_dna_reads.output, sample=sample_table.index),
+        rna_reads = expand(rules.count_rna_reads.output, sample=sample_table.index)
     output:
         os.path.join(ana_home, "contacts_info.csv")
     threads: 1
@@ -46,5 +46,5 @@ rule collect_info:
     shell: 
         """
         echo "name,raw_contacts,raw_intra,dup_rate,contacts,intra,phased_ratio" > {output}
-        cat {input} >> {output}
+        cat {input.pairs_info} >> {output}
         """
