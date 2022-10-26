@@ -64,7 +64,7 @@ rule count_rna_reads:
         nodes = 1
     message:
         " ---> count_rna_reads : {wildcards.sample} :{threads} cores"
-    conda:".././envs/hires.yaml"
+    conda:"../../envs/hires.yaml"
     shell:
         """
         python {hires} gcount \
