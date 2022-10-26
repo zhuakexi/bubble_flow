@@ -2,7 +2,7 @@ software:
   hickit: /share/home/ychi/software/hickit/hickit
   k8: /share/home/ychi/software/hickit/k8
   js: /share/home/ychi/software/hickit/hickit.js
-  hires: /share/home/ychi/software/hires_utils
+  hires: /share/home/ychi/dev/hires_utils
 reference:
   # for each species, regist every entry in reference
   bwa: 
