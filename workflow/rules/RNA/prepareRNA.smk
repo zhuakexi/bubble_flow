@@ -21,7 +21,7 @@ rule count_rna_c1_reads:
         # RNA_R1 after trim_cleaning
         rules.cut_round2.output.output
     output:
-        os.path.join(ana_home,"info","{sample}.rna_reads.info")
+        os.path.join(ana_home,"info","{sample}.rna_c1_reads.info")
     threads: 1
     resources:
         nodes = 1
@@ -31,7 +31,7 @@ rule count_rna_c1_reads:
     shell:
         """
         python {hires} gcount \
-        -f pe_fastq -rd {rd} -sa {wildcards.sample} -at rna_reads {input} \
+        -f pe_fastq -rd {rd} -sa {wildcards.sample} -at rna_c1_reads {input} \
         1> {output}
         """
 rule extract_umi:
