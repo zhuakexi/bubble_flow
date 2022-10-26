@@ -30,7 +30,14 @@ rule pairs_info:
         echo {wildcards.sample},$raw_con,$raw_intra,$dup_rate,$con,$intra,$phased > {output}
         """
 rule collect_info:
-    input: expand(rules.pairs_info.output, sample=sample_table.index)
+    # collect hic pairs info and reads info
+    # TODO: write a modern version
+    # TODO: separate reads info and pairs info(maybe)
+    input: 
+        expand(rules.pairs_info.output, sample=sample_table.index),
+        expand(rules.count_reads.output, sample=sample_table.index),
+        expand(rules.count_dna_reads.output, sample=sample_table.index),
+        expand(rules.count_rna_reads.output, sample=sample_table.index)
     output:
         os.path.join(ana_home, "contacts_info.csv")
     threads: 1

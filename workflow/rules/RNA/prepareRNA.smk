@@ -14,7 +14,9 @@ rule cut_round2:
     wrapper:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_2o"
         "file:./wrappers/cutadapt_pe_2o"
-rule count_rna_reads:
+rule count_rna_c1_reads:
+    # warning: this rule is not used in the pipeline
+    # TODO: adding count_c2_reads
     input:
         # RNA_R1 after trim_cleaning
         rules.cut_round2.output.output

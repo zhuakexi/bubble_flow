@@ -53,3 +53,21 @@ rule count_dna_reads:
         -f pe_fastq -rd {rd} -sa {wildcards.sample} -at dna_reads {input} \
         1> {output}
         """
+rule count_rna_reads:
+    input:
+        # RNA_R1
+        rules.split.output.output
+    output:
+        os.path.join(ana_home,"info","{sample}.rna_reads.info")
+    threads: 1
+    resources:
+        nodes = 1
+    message:
+        " ---> count_rna_reads : {wildcards.sample} :{threads} cores"
+    conda:"./envs/hires.yaml"
+    shell:
+        """
+        python {hires} gcount \
+        -f pe_fastq -rd {rd} -sa {wildcards.sample} -at rna_reads {input} \
+        1> {output}
+        """
