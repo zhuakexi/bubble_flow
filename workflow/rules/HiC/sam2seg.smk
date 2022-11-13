@@ -31,7 +31,7 @@ def sam2seg_params(wildcards):
         "dipmal" : "2C_hY_",
         "hapfem" : "1C_lY_",
         "hapmal" : "1C_hY_",
-        "unassigened" : "1C_lY_" # should not be used, maybe bad cell.
+        "unassigned" : "1C_lY_" # should not be used, maybe bad cell.
         }
     deducted_mode = mode_mapper[cell_state]
     ## params assignment first, if missing, using deduction
