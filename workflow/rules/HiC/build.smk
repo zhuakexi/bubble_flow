@@ -42,7 +42,9 @@ rule build:
         _3dg_20k = tp.format("20k")
     log: log_path("build.{rep}.log")
     threads: 1
-    resources: nodes = 1
+    resources:
+        nodes = 1,
+        runtime = 300
     message: " ------> hickit build 3d : {wildcards.sample}.{wildcards.rep} : {threads} cores"
     script: "../../scripts/build.py"
 # rescale and clean built 3d structures
