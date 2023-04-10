@@ -1,7 +1,7 @@
 # bubble_flow: the hires pipeline            
 # author CY                   
 # date 2020/9/22                   
-
+# snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs --cluster "sbatch --cpus-per-task={threads} --job-name=job --output=slurm/%j.out --time={resources.runtime}" --jobs 300 --keep-going run_struct
 import os
 import pandas as pd
 
