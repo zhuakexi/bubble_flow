@@ -20,12 +20,11 @@ def get_assigned_mode(wildcards):
         ## rely on global mode
         params = config["global_mode"]
     # check mode compatibility
-    ref = sample_table.loc[wildcards.sample, "ref"].unique() if "ref" in sample_table.columns else [config["global_ref"]]
+    ref = sample_table.loc[wildcards.sample, "ref"] if "ref" in sample_table.columns else [config["global_ref"]]
     # if phasing, check whether all ref have SNP file
     if params.split("_")[2] == "SNP":
-        for r in ref:
-            if r not in config["reference"]["snp"]:
-                raise ValueError("no phased snp file for {}".format(r))
+        if ref not in config["reference"]["snp"]:
+            raise ValueError("no phased snp file for {}".format(r))
     return params
 def get_raw_fq(wildcards):
     sample = wildcards.sample
