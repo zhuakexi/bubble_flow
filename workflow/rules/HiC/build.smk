@@ -10,8 +10,8 @@ def build_input(wildcards):
         "c1b" : rules.clean1.output[0],
         "c12b" : rules.clean12.output[0],
         "c123b" : rules.clean123.output[0],
-        "Ib" : rules.impute.output[0],
-        "Icb" : rules.sep_clean.output["impute_c"]
+        "Ib" : rules.impute.output[0], # don't do this, clean3 will give blank output
+        "Icb" : rules.sep_clean.output["dip"]
     }
     if build == "NO":
         print("rule.build Warning: shouldn't execute this line")

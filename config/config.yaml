@@ -56,7 +56,7 @@ cpu:
 ## sex: lY, hY (means low Y, high Y)
 ## snp: SNP, other
 ## imputation: c1i, c12i, c123i
-## build: c1b, c12b, c123b， Ib, Icb
+## build: c1b, c12b, c123b， Ib, Icb # don't use Ib, clean3 will give blank output
 global_mode: 1C__SNP_c123i_c12b
 global_ref: mm10_B6_CAST
 ana_home: /shareb/ychi/repo/PROJECT
