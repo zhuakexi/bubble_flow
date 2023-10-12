@@ -34,7 +34,7 @@ rule split:
     message: "---> split : {wildcards.sample} : {threads} cores"
     wrapper:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_4o"
-        "file:./wrappers/cutadapt_pe_4o"
+        "file:wrappers/cutadapt_pe_4o"
 rule count_dna_reads:
     input:
         # DNA_R1

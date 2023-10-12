@@ -26,4 +26,4 @@ rule bwa_mem:
     wrapper:
         # wrapper shipped with conda yaml
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/bwa_mem2"
-        "file:./wrappers/bwa_mem2"
+        "file:wrappers/bwa_mem2"
