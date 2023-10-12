@@ -1,25 +1,35 @@
 star_out_prefix = os.path.join(ana_home, "star_mapped", "")
+def star_files_manifest_input(wildcards):
+    per_ref_samples = sample_table.loc[sample_table["ref"] == wildcards.ref].index if "ref" in sample_table.columns else sample_table.index # global ref means all samples
+    return expand(rules.mend_umi.output, sample=per_ref_samples)
+def star_files_manifest_params(wildcards):
+    per_ref_samples = sample_table.loc[sample_table["ref"] == wildcards.ref].index if "ref" in sample_table.columns else sample_table.index # global ref means all samples
+    return per_ref_samples
+rule star_files_manifest:
+    input:
+        unpack(star_files_manifest_input)
+    params:
+        # can't use unpack in params
+        star_files_manifest_params
+    output:
+        os.path.join(ana_home, "star_mapped_{ref}", "files_manifest.tsv")
+    run:
+        with open(output[0], "wt") as f:
+            text = "\n".join(
+                ["{sequence}\t-\tID:{sample}\n".format(sample=sample, sequence=sequence) for sample, sequence in zip(params[0], input)]
+            )
+            f.write(text)
 def star_mapping_input(wildcards):
     """
     TODO: make a real group/aggregate mode
     """
-    per_ref_samples = sample_table.loc[sample_table["ref"] == wildcards.ref].index if "ref" in sample_table.columns else sample_table.index # global ref means all samples
     return {
-        "RNAprep" : expand(rules.mend_umi.output, sample=per_ref_samples),
+        "readFilesManifest" : expand(rules.star_files_manifest.output, ref=wildcards.ref)[0],
         "index" : config["reference"]["star"][wildcards.ref] if wildcards.ref in config["reference"]["star"] else "NoSTARIndexFile.txt"
     }
 def star_mapping_params(wildcards):
-    per_ref_samples = sample_table.loc[sample_table["ref"] == wildcards.ref].index if "ref" in sample_table.columns else sample_table.index # global ref means all samples
-    # string that defines the input files for STAR
-    sequence = ",".join([os.path.join(ana_home, "umi_uBAM", "{sample}.bam").format(sample=i)
-        for i in per_ref_samples]),
-    # string that defines the read groups for output sam
-    RGline = " , ".join(["ID:{sample}".format(sample=i) for i in per_ref_samples]),
     star_out_prefix = os.path.join(ana_home, "star_mapped_{ref}".format(ref = wildcards.ref), "")
     return {
-        "per_ref_samples" : per_ref_samples,
-        "sequence" : sequence,
-        "RGline" : RGline,
         "star_out_prefix" : star_out_prefix
     }
 rule star_mapping:
@@ -28,20 +38,31 @@ rule star_mapping:
         #index = config["reference"]["star"]["mm10_B6"]
         unpack(star_mapping_input)
     output:
-        os.path.join(ana_home, "star_mapped_{ref}", "Aligned.sortedByCoord.out.bam")
+        os.path.join(ana_home, "star_mapped_{ref}", "Aligned.out.bam")
     params:
         # can't use unpack in params
         star_mapping_params
-    threads: 10
+    threads: 16
     message: "---> star mapping on {threads} cores."
     conda: "../../envs/rna_tools.yaml"
     shell:
         # file name prefix need "/"
         # "params[0]" to solve bug https://github.com/snakemake/snakemake/issues/1171
         """
-        STAR --runThreadN 8 --genomeDir {input.index} \
-         --readFilesIn {params[0][sequence]} --readFilesType SAM SE \
+        STAR --runThreadN {threads} --genomeDir {input.index} \
+         --readFilesManifest {input.readFilesManifest} --readFilesType SAM SE \
          --readFilesCommand samtools view --readFilesSAMattrKeep UB \
-         --outSAMattrRGline {params[0][RGline]} --outFileNamePrefix {params[0][star_out_prefix]} \
-         --outSAMtype BAM SortedByCoordinate --outReadsUnmapped Fastx
+         --outFileNamePrefix {params[0][star_out_prefix]} \
+         --outSAMtype BAM Unsorted --outReadsUnmapped Fastx
+        """
+rule star_mapping_sort:
+    input:
+        os.path.join(ana_home, "star_mapped_{ref}", "Aligned.out.bam")
+    output:
+        os.path.join(ana_home, "star_mapped_{ref}", "Aligned.out.sorted.bam")
+    threads: config["cpu"]["sortBAM"]
+    conda: "../../envs/samtools.yaml"
+    shell:
+        """
+        samtools sort -@ {threads} -m 2G -O BAM -o {output} {input}
         """
