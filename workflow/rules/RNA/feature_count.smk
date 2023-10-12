@@ -1,7 +1,7 @@
 def feature_count_input(wildcards):
     return {
         "annotation" : config["reference"]["annotation"][wildcards.ref] if wildcards.ref in config["reference"]["annotation"] else "NoAnnotationIndexFile.txt",
-        "bam" : rules.star_mapping.output[0].format(ref=wildcards.ref)
+        "bam" : rules.star_mapping_sort.output[0].format(ref=wildcards.ref)
         }
 rule feature_count:
     input: 
@@ -9,7 +9,7 @@ rule feature_count:
         #rules.star_mapping.output # using flag file to keep in line
     output:
         gene_assigned = os.path.join(ana_home, "count_gene_{ref}", "gene_assigned"),
-        bam = os.path.join(ana_home, "count_gene_{ref}", "Aligned.sortedByCoord.out.bam.featureCounts.bam")
+        bam = temp(os.path.join(ana_home, "count_gene_{ref}", "Aligned.sortedByCoord.out.bam.featureCounts.bam"))
     log:
         result = os.path.join(ana_home, "logs", "count_{ref}.result"),
         log = os.path.join(ana_home, "logs", "count_{ref}.log")
@@ -27,7 +27,7 @@ rule sort_count:
     conda: "../../envs/samtools.yaml"
     shell:
         '''
-        samtools sort -@ {threads} {input} -o {output}
+        samtools sort -@ {threads} -m 2G -o {output} -O BAM {input}
         samtools index -@ {threads} {output}
         '''
 rule matrix_count:
