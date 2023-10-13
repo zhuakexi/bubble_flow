@@ -9,7 +9,7 @@ rule feature_count:
         #rules.star_mapping.output # using flag file to keep in line
     output:
         gene_assigned = os.path.join(ana_home, "count_gene_{ref}", "gene_assigned"),
-        bam = temp(os.path.join(ana_home, "count_gene_{ref}", "Aligned.sortedByCoord.out.bam.featureCounts.bam"))
+        bam = temp(os.path.join(ana_home, "count_gene_{ref}", "Aligned.out.sorted.bam.featureCounts.bam"))
     log:
         result = os.path.join(ana_home, "logs", "count_{ref}.result"),
         log = os.path.join(ana_home, "logs", "count_{ref}.log")
@@ -23,12 +23,16 @@ rule sort_count:
     input: rules.feature_count.output.bam # this only for dependency keeping. use fC_bam_gene in fact
     output:
         os.path.join(ana_home, "count_gene_{ref}", "samsort.bam")
+    params:
+        sort_tmp_prefix = os.path.join(ana_home, "count_gene_{ref}", "samsort.tmp")
     threads: config["cpu"]["sortBAM"]
-    conda: "../../envs/samtools.yaml"
+    conda: "../../envs/rna_tools.yaml"
+    resources:
+        mem_per_cpu = config["mem_G"]["sortBAM"]
     shell:
         '''
-        samtools sort -@ {threads} -m 2G -o {output} -O BAM {input}
-        samtools index -@ {threads} {output}
+        samtools sort -@ {threads} -m {resources.mem_per_cpu}G -T {params.sort_tmp_prefix} \
+        -O BAM --write-index -o {output} {input}
         '''
 rule matrix_count:
     input:
