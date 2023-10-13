@@ -60,9 +60,14 @@ rule star_mapping_sort:
         os.path.join(ana_home, "star_mapped_{ref}", "Aligned.out.bam")
     output:
         os.path.join(ana_home, "star_mapped_{ref}", "Aligned.out.sorted.bam")
+    params:
+        sort_tmp_prefix = os.path.join(ana_home, "star_mapped_{ref}", "samsort.tmp")
     threads: config["cpu"]["sortBAM"]
-    conda: "../../envs/samtools.yaml"
+    resources:
+        mem_per_cpu = config["mem_G"]["sortBAM"]
+    conda: "../../envs/rna_tools.yaml"
     shell:
         """
-        samtools sort -@ {threads} -m 2G -O BAM -o {output} {input}
+        samtools sort -@ {threads} -m {resources.mem_per_cpu}G -T {params.sort_tmp_prefix} \
+        -O BAM --write-index -o {output} {input}
         """
