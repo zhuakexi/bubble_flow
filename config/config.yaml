@@ -48,7 +48,9 @@ cpu:
   clean3: 8
   cut_r2: 8
   cut_r3: 8
-  sortBAM: 8
+  sortBAM: 32
+mem_G:
+  sortBAM: 2
 
 # change every time
 ## global_mode: ploidy_sex_snp_imputation_build
