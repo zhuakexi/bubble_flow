@@ -48,8 +48,10 @@ cpu:
   clean3: 8
   cut_r2: 8
   cut_r3: 8
-  sortBAM: 32
+  star: 128
+  sortBAM: 64
 mem_G:
+  star: 2
   sortBAM: 2
 
 # change every time
