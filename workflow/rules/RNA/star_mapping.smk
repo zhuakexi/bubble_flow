@@ -38,11 +38,13 @@ rule star_mapping:
         #index = config["reference"]["star"]["mm10_B6"]
         unpack(star_mapping_input)
     output:
-        os.path.join(ana_home, "star_mapped_{ref}", "Aligned.out.bam")
+        temp(os.path.join(ana_home, "star_mapped_{ref}", "Aligned.out.bam"))
     params:
         # can't use unpack in params
         star_mapping_params
-    threads: 16
+    threads: config["cpu"]["star"]
+    resources:
+        mem_per_cpu = config["mem_G"]["star"]
     message: "---> star mapping on {threads} cores."
     conda: "../../envs/rna_tools.yaml"
     shell:
@@ -51,7 +53,8 @@ rule star_mapping:
         """
         STAR --runThreadN {threads} --genomeDir {input.index} \
          --readFilesManifest {input.readFilesManifest} --readFilesType SAM SE \
-         --readFilesCommand samtools view --readFilesSAMattrKeep UB \
+         --readFilesCommand samtools view  \
+         --outSAMattributes NH HI AS nM RG --readFilesSAMattrKeep UB \
          --outFileNamePrefix {params[0][star_out_prefix]} \
          --outSAMtype BAM Unsorted --outReadsUnmapped Fastx
         """
