@@ -1,6 +1,7 @@
-name: standard_hires
+name: hires
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - _libgcc_mutex=0.1=main
   - _openmp_mutex=4.5=1_gnu
@@ -41,15 +42,16 @@ dependencies:
   - xz=5.2.5=h7b6447c_0
   - zlib=1.2.11=h7b6447c_3
   - pip:
-    - attrs==21.4.0
-    - gemmi==0.4.7
-    - iniconfig==1.1.1
-    - packaging==21.3
-    - pluggy==1.0.0
-    - py==1.11.0
-    - pyparsing==3.0.8
-    - pysam==0.19.0
-    - pytest==7.1.1
-    - rmsd==1.4
-    - tomli==2.0.1
-prefix: /share/home/ychi/miniconda3/envs/standard_hires
+      - attrs==21.4.0
+      - gemmi==0.4.7
+      - iniconfig==1.1.1
+      - packaging==21.3
+      - pluggy==1.0.0
+      - py==1.11.0
+      - pyparsing==3.0.8
+      - pysam==0.19.0
+      - pytest==7.1.1
+      - rmsd==1.4
+      - tomli==2.0.1
+      - toolz==0.12.0
+prefix: /share/home/ychi/mambaforge/envs/hires
