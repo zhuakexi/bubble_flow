@@ -11,7 +11,10 @@ def build_input(wildcards):
         "c12b" : rules.clean12.output[0],
         "c123b" : rules.clean123.output[0],
         "Ib" : rules.impute.output[0], # don't do this, clean3 will give blank output
-        "Icb" : rules.sep_clean.output["dip"]
+        "Icb" : rules.sep_clean.output["impute_c"] # for hickit compatibility
+        # impute_c hasn't been split, but has all the prob cols, dip file is the split version of impute_c
+        # let hickit do the split of homologous chromosomes here, otherwise it throws error
+        # hires_utils:sep_clean hacks impute_c file to make hickit's split same as it's dip file
     }
     if build == "NO":
         print("rule.build Warning: shouldn't execute this line")
@@ -60,7 +63,7 @@ def clean3d_input(wildcards):
         "c12b" : rules.clean12.output[0],
         "c123b" : rules.clean123.output[0],
         "Ib" : rules.impute.output[0],
-        "Icb" : rules.sep_clean.output["impute_c"]
+        "Icb" : rules.sep_clean.output["dip"] # use dip file as ref, because input 3dg at this step is split version
     }
     inputs = {
         "_3dg" : os.path.join(ana_home, "3dg", "{sample}.{reso}.{rep}.3dg"),
