@@ -2,9 +2,9 @@ import os
 # qualitive statistic of experiments 
 rule pairs_info:
     input:
-        pairs_log = rules.seg2pairs.log,
+        pairs_log = rules.seg2pairs.output[1],
         pairs = rules.seg2pairs.output,
-        raw_pairs_log = rules.raw_pairs.log,
+        raw_pairs_log = rules.raw_pairs.output[1],
         raw_pairs = rules.raw_pairs.output
     output:
         #log_path("contacts.info")
