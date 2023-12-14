@@ -3,9 +3,9 @@ import os
 rule pairs_info:
     input:
         pairs_log = rules.seg2pairs.output[1],
-        pairs = rules.seg2pairs.output,
+        pairs = rules.seg2pairs.output[0],
         raw_pairs_log = rules.raw_pairs.output[1],
-        raw_pairs = rules.raw_pairs.output
+        raw_pairs = rules.raw_pairs.output[0]
     output:
         #log_path("contacts.info")
         os.path.join(ana_home, "info","{sample}.basic.info")

@@ -2,7 +2,7 @@
 # clean poor mapping, DNA duplication, RNA containment in pairs file
 hires = config["software"]["hires"]
 rule clean1:
-    input: rules.seg2pairs.output,
+    input: rules.seg2pairs.output[0],
     output: os.path.join(ana_home, "pairs_c1", "{sample}.c1.pairs.gz")
     log:
         result = log_path("clean1.result"),
