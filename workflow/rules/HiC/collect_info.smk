@@ -24,9 +24,21 @@ rule pairs_info:
         dup_num=${{dup_line%% /*}};dup_num=${{dup_num##* }} #dup_num
         raw_con=${{dup_line##* }} # all contacts
         con=$((raw_con-dup_num)) # non-dup contacts
-        intra=$(zcat {input.pairs} | grep -v {params.comment} | awk '{params.intra}') # percent intra
-        raw_intra=$(zcat {input.raw_pairs} | grep -v {params.comment} | awk '{params.intra}') # percent intra before dedup
-        phased=$(zcat {input.pairs} | grep -v {params.comment} | awk '{params.phased}') # percent leg phased
+        if [[ $(zcat {input.pairs} | grep -v {params.comment} | wc -l) -eq 0 ]];then
+            intra=0
+        else
+            intra=$(zcat {input.pairs} | grep -v {params.comment} | awk '{params.intra}') # percent intra
+        fi
+        if [[ $(zcat {input.raw_pairs} | grep -v {params.comment} | wc -l) -eq 0 ]];then
+            raw_intra=0
+        else
+            raw_intra=$(zcat {input.raw_pairs} | grep -v {params.comment} | awk '{params.intra}') # percent intra before dedup
+        fi
+        if [[ $(zcat {input.pairs} | grep -v {params.comment} | wc -l) -eq 0 ]];then
+            phased=0
+        else
+            phased=$(zcat {input.pairs} | grep -v {params.comment} | awk '{params.phased}') # percent leg phased
+        fi
         echo {wildcards.sample},$raw_con,$raw_intra,$dup_rate,$con,$intra,$phased > {output}
         """
 rule collect_info:
