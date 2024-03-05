@@ -16,7 +16,7 @@ reference:
   # if doesn't have snp.tsv file, give a nonsense 4 col tsv
   snp: 
     hg19: /share/Data/ychi/genome/GRCh37d5/GM12878.hg19.snp.tsv
-    GRCh38: /share/Data/ychi/genome/GRCh38/nonsense.snp.tsv
+    GRCh38: /share/Data/public/ref_genome/GRCh38/snp_file/gm12878/NA12878.phased_SNP.tsv
     mm10_B6_CAST: /share/home/ychi/data/genome/GRCm38/phased.B6_CAST.chr.vcf.tsv
     mm10_B6_DBA2: /share/home/ychi/data/genome/mouse_snp/B6_DBA2/B6_DBA2.phased.snp.withchr.tsv
     mm10_129_CAST: /share/home/ychi/data/genome/mouse_snp/129_CAST/129_CAST.phased.snp.withchr.tsv
@@ -38,6 +38,7 @@ reference:
     ara: /share/Data/public/ref_genome/ara_ref_embl/star_index
   annotation: 
     hg19: /share/Data/ychi/genome/GRCh37d5/raw/gencode.v19.annotation.gtf
+    GRCh38: /share/Data/public/ref_genome/GRCh38/raw_data/gencode.v33.primary_assembly.annotation.gtf
     mm10_B6_CAST: /share/home/ychi/data/genome/GRCm38/raw/gencode.vM25.annotation.gtf
     mm10_B6_DBA2: /share/home/ychi/data/genome/GRCm38/raw/gencode.vM25.annotation.gtf
     mm10_B6: /share/home/ychi/data/genome/GRCm38/raw/gencode.vM25.annotation.gtf
