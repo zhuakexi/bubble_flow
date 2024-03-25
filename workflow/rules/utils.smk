@@ -24,7 +24,7 @@ def get_assigned_mode(wildcards):
     # if phasing, check whether all ref have SNP file
     if params.split("_")[2] == "SNP":
         if ref not in config["reference"]["snp"]:
-            raise ValueError("no phased snp file for {}".format(r))
+            raise ValueError("no phased snp file for {}".format(ref))
     return params
 def get_raw_fq(wildcards):
     sample = wildcards.sample
