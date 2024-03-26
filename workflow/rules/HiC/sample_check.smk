@@ -19,6 +19,7 @@ rule pre_seg:
     log:
         log_path("snp.log")
     conda: "../../envs/samtools.yaml"
+    threads: 5
     shell:
         """ samtools sort -n -@4 -O SAM {input.sam} \
          | {k8} {js} sam2seg -v {input.snp_file} - 2> {log} \
