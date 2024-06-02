@@ -38,7 +38,8 @@ def sam2segW(cfg, sam, params, snp_file, par_file, output, log):
             # note: gamete has Y chromosome only
             #   must remove X chromosome, otherwise 3d build defects
             chrfilt = "chronly -r '^(chr)?([0-9]+|[Y])$'"
-            bedfilt = "| {k8} {js} bedflt {PAR} - "
+            #bedfilt = "| {k8} {js} bedflt {PAR} - "
+            bedfilt = ""
         elif sex == "lY":
             # low Y
             # remove Y reads
