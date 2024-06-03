@@ -8,7 +8,13 @@ reference:
   bwa: 
     hg19: /share/Data/ychi/genome/GRCh37d5/bwa_mem2_index/genome.fa
     GRCh38: /share/Data/ychi/genome/GRCh38/bwa_mem2_index/genome.fa
+    GRCh38_noYpar: /share/Data/ychi/genome/GRCh38/bwa_mem2_index/noYpar
+    GRCh38_noY: /share/Data/ychi/genome/GRCh38/bwa_mem2_index/noY
+    GRCh38_noX: /share/Data/ychi/genome/GRCh38/bwa_mem2_index/noX
     mm10_B6_CAST: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
+    mm10_B6_CAST_noYpar: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/noYpar
+    mm10_B6_CAST_noY: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/noY
+    mm10_B6_CAST_noX: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/noX
     mm10_B6_DBA2: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
     mm10_B6: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
     mm10_129_CAST: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
@@ -17,14 +23,26 @@ reference:
   snp: 
     hg19: /share/Data/ychi/genome/GRCh37d5/GM12878.hg19.snp.tsv
     GRCh38: /share/Data/public/ref_genome/GRCh38/snp_file/gm12878/NA12878.phased_SNP.tsv
+    GRCh38_noYpar: /share/Data/public/ref_genome/GRCh38/snp_file/gm12878/NA12878.phased_SNP.tsv
+    GRCh38_noY: /share/Data/public/ref_genome/GRCh38/snp_file/gm12878/NA12878.phased_SNP.tsv
+    GRCh38_noX: /share/Data/public/ref_genome/GRCh38/snp_file/gm12878/NA12878.phased_SNP.tsv
     mm10_B6_CAST: /share/home/ychi/data/genome/GRCm38/phased.B6_CAST.chr.vcf.tsv
+    mm10_B6_CAST_noYpar: /share/home/ychi/data/genome/GRCm38/phased.B6_CAST.chr.vcf.tsv
+    mm10_B6_CAST_noY: /share/home/ychi/data/genome/GRCm38/phased.B6_CAST.chr.vcf.tsv
+    mm10_B6_CAST_noX: /share/home/ychi/data/genome/GRCm38/phased.B6_CAST.chr.vcf.tsv
     mm10_B6_DBA2: /share/home/ychi/data/genome/mouse_snp/B6_DBA2/B6_DBA2.phased.snp.withchr.tsv
     mm10_129_CAST: /share/home/ychi/data/genome/mouse_snp/129_CAST/129_CAST.phased.snp.withchr.tsv
     mm10_B6: /share/home/ychi/data/genome/mouse_snp/B6_DBA2/B6_DBA2.phased.snp.withchr.tsv
   par:
     hg19: /share/Data/ychi/genome/GRCh37d5/hg19.PAR.bed
     GRCh38: /share/Data/ychi/genome/GRCh38/GRCh38.PAR.bed
+    GRCh38_noYpar: /share/Data/ychi/genome/GRCh38/GRCh38.PAR.bed
+    GRCh38_noY: /share/Data/ychi/genome/GRCh38/GRCh38.PAR.bed
+    GRCh38_noX: /share/Data/ychi/genome/GRCh38/GRCh38.PAR.bed
     mm10_B6_CAST: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
+    mm10_B6_CAST_noYpar: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
+    mm10_B6_CAST_noY: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
+    mm10_B6_CAST_noX: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
     mm10_B6_DBA2: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
     mm10_129_CAST: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
     mm10_B6: /share/home/ychi/data/genome/GRCm38/GRCm38.PAR.bed
