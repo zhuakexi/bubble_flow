@@ -41,14 +41,24 @@ rule extract_umi:
     output:
         umi1 = temp(os.path.join(ana_home, "umi", "umi.{sample}.rna.R1.fq.gz")),
         umi2 = temp(os.path.join(ana_home, "umi", "umi.{sample}.rna.R2.fq.gz"))
-    resources: nodes = 1
+    resources:
+        nodes = 1
     params:
         # umi pattern
-        pattern=r"NNNNNNNN"
-    log: log_path("extract_umi.log")
-    message: "---> extract_umi : {wildcards.sample} : {threads} core"
-    conda: "../../envs/rna_tools.yaml"
-    shell: "umi_tools extract -p {params.pattern} -I {input.RNA_R2} -S {output.umi2} --read2-in={input.RNA_R1} --read2-out={output.umi1} 2>&1 > {log}"
+        pattern = r"NNNNNNNN"
+    log:
+        log_path("extract_umi.log")
+    message:
+        "---> extract_umi : {wildcards.sample} : {threads} core"
+    conda:
+        "../../envs/rna_tools.yaml"
+    shell:
+        """
+        umi_tools extract -p {params.pattern} -I {input.RNA_R2} -S {output.umi2} \
+        --read2-in={input.RNA_R1} --read2-out={output.umi1} \
+        $([[ {config[remove_id_suffix]} == true ]] && echo "--ignore-read-pair-suffixes") \
+        2>&1 > {log}
+        """
 rule cut_round3:
     input:
         rules.extract_umi.output.umi1
