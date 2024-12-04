@@ -45,6 +45,7 @@ rule star_mapping:
     threads: config["cpu"]["star"]
     resources:
         mem_per_cpu = config["mem_G"]["star"]
+        partition = config["partition"]["star"]
     message: "---> star mapping on {threads} cores."
     conda: "../../envs/rna_tools.yaml"
     shell:

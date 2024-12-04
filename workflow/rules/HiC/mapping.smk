@@ -19,6 +19,7 @@ rule bwa_mem:
         config["cpu"]["bwa"]
     resources:
         nodes = config["cpu"]["bwa"]
+        partition = config["partition"]["bwa"]
     log:
         log_path("bwa.log")
     message:

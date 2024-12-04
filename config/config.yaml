@@ -76,6 +76,9 @@ cpu:
 mem_G:
   star: 2
   sortBAM: 2
+partition:
+  bwa: fatcomp
+  star: fatcomp
 remove_id_suffix: false # do when fastq id is like "E250027995L1C010R03800251842/1", use bash true or false
 
 # change every time
