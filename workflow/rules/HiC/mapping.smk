@@ -18,7 +18,7 @@ rule bwa_mem:
     threads: 
         config["cpu"]["bwa"]
     resources:
-        nodes = config["cpu"]["bwa"]
+        nodes = config["cpu"]["bwa"],
         partition = config["partition"]["bwa"]
     log:
         log_path("bwa.log")
