@@ -68,7 +68,8 @@ rule star_mapping_sort:
         sort_tmp_prefix = os.path.join(ana_home, "star_mapped_{ref}", "samsort.tmp")
     threads: config["cpu"]["sortBAM"]
     resources:
-        mem_per_cpu = config["mem_G"]["sortBAM"]
+        mem_per_cpu = config["mem_G"]["sortBAM"],
+        partition = config["partition"]["star_mapping_sort"]
     conda: "../../envs/rna_tools.yaml"
     shell:
         """
