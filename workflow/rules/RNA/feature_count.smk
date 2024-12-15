@@ -28,7 +28,8 @@ rule sort_count:
     threads: config["cpu"]["sortBAM"]
     conda: "../../envs/rna_tools.yaml"
     resources:
-        mem_per_cpu = config["mem_G"]["sortBAM"]
+        mem_per_cpu = config["mem_G"]["sortBAM"],
+        partition = config["partition"]["sort_count"]
     shell:
         '''
         samtools sort -@ {threads} -m {resources.mem_per_cpu}G -T {params.sort_tmp_prefix} \
