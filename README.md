@@ -35,52 +35,53 @@ Set "software" section of config.yaml
 
 ## Usage
 
-### 1. change configurations
+### 1. Change Configurations
 
-    config在config/config.yaml和config/sample_table.csv两个文件中指定。一般地，前者存储全局设置和简写定义（比如ref label包含哪些文件，这样可以在直接在sample_table.csv里引用）。后者包含逐个样品的设置。
+The configuration is specified in two files: `config.yaml` and `sample_table.csv` under the config directory. Typically, the former stores global settings and abbreviation definitions (such as which files are included in a ref label, so they can be referenced directly in `sample_table.csv`). The latter contains settings for each individual sample.
 
-#### 1.1 output directories (analysis home).
+#### 1.1 Output Directories (Analysis Home)
 
-    在config/config.yaml的ana_home中指定输出目录( Need large storage space )。
+The output directory is specified in `ana_home` within `config/config.yaml` (Requires large storage space).
 
-#### 1.2 running mode: 
+#### 1.2 Running Mode:
 
-    一个string，决定每个样品按照什么样的流程和参数运行。
+A string that determines the workflow and parameters used for each sample.
 
-    format: ploidy_sex_snp_imputation_build  
+Format: `ploidy_sex_snp_imputation_build`
 
-    可以在config/config.yaml的global_mode里指定。也可以在config/sample_table.csv的mode列里指定。后者优先级更高。
+This can be set globally in `global_mode` within `config/config.yaml`, or individually for each sample in the `mode` column of `config/sample_table.csv`. The latter has higher precedence.
 
-        ploidy: 
-            倍性。影响sam2seg参数,影响build。可以省略，写成 _ploidy_sex_snp_imputation_build，系统自动deduct ploidy。
-            [1C, 2C, ]
-        sex：
-            样品“性别”。影响sam2seg性染色体相关参数。可以省略，系统自动deduct sex。
-            [lY, hY] (low Y, high Y)。
-        snp: 
-            是否phasing。影响sam2seg -v参数。不可以省略。
-            [SNP, `others`] (phasing, not phasing)
-        imputation: 
-            用什么pairs结果impute phasing(dip-c imputation算法)。影响imputation, sep_clean。除非不执行imputation及子任务不可以省略。
-            [c1i, c12i, c123i] (impute from clean1, clean12, clean123)
-        build: 
-            用什么pairs类结果build三维结构。影响build。除非不执行build及子任务不可以省略。
-            [c1b, c12b, c123b， Ib, Icb] (build from clean1, clean12, clean123, imputated pairs, imputated and cleaned pairs)
+- `ploidy`: 
+    - Ploidy level. Affects `sam2seg` parameters and the build process. Can be omitted, written as `_ploidy_sex_snp_imputation_build`, with the system automatically deducing ploidy.
+    - Options: `[1C, 2C]`
+- `sex`:
+    - Sample "sex". Affects `sam2seg` parameters related to sex chromosomes. Can be omitted, with the system automatically deducing sex.
+    - Options: `[lY, hY]` (low Y, high Y).
+- `snp`:
+    - Whether to perform phasing. Affects the `-v` parameter of `sam2seg`. Cannot be omitted.
+    - Options: `[SNP, others]` (phasing, not phasing)
+- `imputation`:
+    - Which pairs results to use for imputing phasing (using the dip-c imputation algorithm). Affects imputation and sep_clean. Cannot be omitted unless imputation and its subtasks are not performed.
+    - Options: `[c1i, c12i, c123i]` (impute from clean1, clean12, clean123)
+- `build`:
+    - Which pairs results to use for building 3D structures. Affects the build process. Cannot be omitted unless build and its subtasks are not performed.
+    - Options: `[c1b, c12b, c123b, Ib, Icb]` (build from clean1, clean12, clean123, imputed pairs, imputed and cleaned pairs)
 
-#### 1.3 sample_table
+#### 1.3 Sample Table
 
-    指config/sample_table.csv，指定每个样品的基本信息。
+Refers to `config/sample_table.csv`, specifying basic information for each sample.
 
-    必须包含以下列：
-        sample_name: 
-            样品名。必须。
-        R1_file, R2_file:
-            样品的R1和R2文件。必须。
-    可选包含以下列：
-        mode:
-            逐个指定running mode。
-        ref：
-            逐个指定参考基因组。不指定则使用config里的global_ref。
+It must include the following columns:
+- `sample_name`: 
+    - Sample name. Required.
+- `R1_file`, `R2_file`:
+    - R1 and R2 files for the sample. Required.
+
+Optionally, it may include the following columns:
+- `mode`:
+    - Specifies the running mode for each sample.
+- `ref`:
+    - Specifies the reference genome for each sample. If not specified, it uses the `global_ref` defined in the config.
 
 ### 2. check Snakefile
 
@@ -131,8 +132,10 @@ meta = task_stat(ana_home)# ana_home refers to the analysis home directory
 ```
 to obtain detailed sample information.
 
-### notes
-1. conditional rules:  
-    sam2seg, using checkpoint sample_check to deduction ploidy and sex
-    build, using checkpoint sample_check to deduction ploidy  
-    当然理论上如果指定ploidy和sex就不需要deduction也不需要执行sample-check，但是为了实现deduction这种结构是必须的。
+### Notes
+
+1. Conditional rules:
+    - `sam2seg`: Uses the `sample_check` checkpoint to deduce ploidy and sex.
+    - `build`: Uses the `sample_check` checkpoint to deduce ploidy.
+    
+    In theory, if ploidy and sex are specified, deduction would not be necessary, and the `sample-check` step could be skipped. However, this structure is essential to implement the deduction functionality.
