@@ -1,3 +1,4 @@
+.vscode/*
 .snakemake/*
 tests/output/*
 tests/test_struct/output/*
