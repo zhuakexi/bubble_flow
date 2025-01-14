@@ -64,6 +64,8 @@ reference:
     ara: /share/Data/public/ref_genome/ara_ref_embl/Rawdata/Arabidopsis_thaliana.TAIR10.52.gtf
 cpu:
   bwa: 8
+  samsort: 4
+  bwa_samsort: 12 # bwa + samsort
   split: 8
   sam2seg: 4
   clean1: 8
@@ -79,10 +81,11 @@ mem_G:
   sort_count: 2
 partition:
   bwa: fatcomp
+  bwa_samsort: fatcomp
   star: fatcomp
   star_mapping_sort: fatcomp
   sort_count: fatcomp
-remove_id_suffix: false # do when fastq id is like "E250027995L1C010R03800251842/1", use bash true or false
+remove_id_suffix: false # Do when fastq id is like "E250027995L1C010R03800251842/1", use bash "true" or "false". Don't forget the "", otherwise it will be treated as a python True/False
 
 # change every time
 ## global_mode: ploidy_sex_snp_imputation_build

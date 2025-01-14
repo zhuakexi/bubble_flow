@@ -16,10 +16,10 @@ rule bwa_mem:
         #index = config["reference"]["bwa"][sample_table.loc[snakemake.wildcards.sample,"ref"]],
         extra = r"-R '@RG\tID:{sample}\tPL:ILLUMINA\tSM:{sample}'"
     threads: 
-        config["cpu"]["bwa"]
+        config["cpu"]["bwa_samsort"]
     resources:
-        nodes = config["cpu"]["bwa"],
-        partition = config["partition"]["bwa"]
+        nodes = config["cpu"]["bwa_samsort"],
+        partition = config["partition"]["bwa_samsort"]
     log:
         log_path("bwa.log")
     message:

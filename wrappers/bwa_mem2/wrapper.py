@@ -12,14 +12,16 @@ index = snakemake.input.index
 input = snakemake.input
 log = snakemake.log
 output = snakemake.output
+bwa_threads = snakemake.config["cpu"]["bwa"]
+samsort_threads = snakemake.config["cpu"]["samsort"]
 
 shell(
     " bwa-mem2 mem "
     " -5SP "
     " {extra} "
-    " -t {threads} "
+    " -t {bwa_threads} "
     " {index} "
     " {input.R1} {input.R2} " 
-    " | samtools sort -@{threads} -o {output} -O BAM - ; "
+    " | samtools sort -@{samsort_threads} -o {output} -O BAM - ; "
     " samtools index -@ {threads} {output} "
 )
