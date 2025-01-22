@@ -40,8 +40,9 @@ rule matrix_count:
         rules.sort_count.output
     output:
         os.path.join(ana_home, "count_matrix_{ref}", "counts.gene.tsv.gz")
+    # set --cell-tag-split "", otherwise "-" in cell name will still be split
     params:
-        r"--per-gene --per-cell --extract-umi-method=tag --umi-tag UB --cell-tag RG --gene-tag=XT --assigned-status-tag=XS --wide-format-cell-counts"
+        r'--per-gene --per-cell --extract-umi-method=tag --umi-tag UB --cell-tag RG --cell-tag-split "" --gene-tag=XT --assigned-status-tag=XS --wide-format-cell-counts'
     conda: "../../envs/rna_tools.yaml"
     shell:
         '''
