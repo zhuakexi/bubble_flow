@@ -73,6 +73,21 @@ rule cut_round3:
         """
         cutadapt -a CTGTCTCTTATA {input} -m 1 -j {threads} | sed 'N;N;N;/\\n\\n/d' | gzip > {output}
         """
+rule count_rna_c2_reads:
+    input:
+        rules.cut_round3.output
+    output:
+        os.path.join(ana_home, "info", "{sample}.rna_c2_reads.info")
+    threads: 1
+    resources: nodes = 1
+    message: "---> count_rna_c2_reads : {wildcards.sample} : {threads} cores"
+    conda: "../../envs/hires.yaml"
+    shell:
+        """
+        python {hires} gcount \
+        -f pe_fastq -rd {rd} -sa {wildcards.sample} -at rna_c2_reads {input} \
+        1> {output}
+        """
 rule fq2uBAM:
     input:
         rules.cut_round3.output

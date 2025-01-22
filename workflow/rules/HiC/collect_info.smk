@@ -49,7 +49,9 @@ rule collect_info:
         pairs_info = expand(rules.pairs_info.output, sample=sample_table.index), # this is the string content
         reads = expand(rules.count_reads.output, sample=sample_table.index),
         dna_reads = expand(rules.count_dna_reads.output, sample=sample_table.index),
-        rna_reads = expand(rules.count_rna_reads.output, sample=sample_table.index)
+        rna_reads = expand(rules.count_rna_reads.output, sample=sample_table.index),
+        rna_c1_reads = expand(rules.count_rna_c1_reads.output, sample=sample_table.index),
+        rna_c2_reads = expand(rules.count_rna_c2_reads.output, sample=sample_table.index),
     output:
         os.path.join(ana_home, "contacts_info.csv")
     threads: 1

@@ -21,11 +21,11 @@ include: "rules/HiC/seg2pairs.smk"
 include: "rules/HiC/clean_pairs.smk"
 include: "rules/HiC/impute.smk"
 include: "rules/HiC/build.smk"
-include: "rules/HiC/collect_info.smk"
 ## for RNA
 include: "rules/RNA/prepareRNA.smk"
 include: "rules/RNA/star_mapping.smk"
 include: "rules/RNA/feature_count.smk"
+include: "rules/HiC/collect_info.smk"
 ## debugging entries
 include: "rules/target_rules.smk"
 ## helper entries
@@ -46,7 +46,10 @@ rule run_struct:
         rules.collect_info.output
 rule run_RNA:
     input:
-        expand(rules.matrix_count.output, ref = sample_table["ref"].unique() if "ref" in sample_table.columns else config["global_ref"])
+        expand(rules.matrix_count.output, ref = sample_table["ref"].unique() if "ref" in sample_table.columns else config["global_ref"]),
+        expand(rules.count_rna_reads.output, sample=sample_table.index),
+        expand(rules.count_rna_c1_reads.output, sample=sample_table.index),
+        expand(rules.count_rna_c2_reads.output, sample=sample_table.index)
 rule All:
     input:
         expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"]),

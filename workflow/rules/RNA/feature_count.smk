@@ -40,11 +40,13 @@ rule matrix_count:
         rules.sort_count.output
     output:
         os.path.join(ana_home, "count_matrix_{ref}", "counts.gene.tsv.gz")
+    log:
+        os.path.join(ana_home, "logs", "count_matrix_{ref}.log")
     # set --cell-tag-split "", otherwise "-" in cell name will still be split
     params:
         r'--per-gene --per-cell --extract-umi-method=tag --umi-tag UB --cell-tag RG --cell-tag-split "" --gene-tag=XT --assigned-status-tag=XS --wide-format-cell-counts'
     conda: "../../envs/rna_tools.yaml"
     shell:
         '''
-        umi_tools count {params} -I {input} -S {output}
+        umi_tools count {params} -I {input} -S {output} >{log} 2>&1
         '''
