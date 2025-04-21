@@ -77,8 +77,9 @@ cpu:
   sortBAM: 64
 mem_G:
   star: 2
-  sortBAM: 2
-  sort_count: 2
+  sortBAM: 10
+  sort_count: 10
+  bwa_samsort: 4
 partition:
   bwa: fatcomp
   bwa_samsort: fatcomp
