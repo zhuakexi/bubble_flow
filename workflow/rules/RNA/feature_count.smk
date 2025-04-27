@@ -10,6 +10,7 @@ rule feature_count:
     output:
         gene_assigned = os.path.join(ana_home, "count_gene_{ref}", "gene_assigned"),
         bam = temp(os.path.join(ana_home, "count_gene_{ref}", "Aligned.out.sorted.bam.featureCounts.bam"))
+    params: gene_attribute = config["feature_count"]["gene_attribute"]
     log:
         result = os.path.join(ana_home, "logs", "count_{ref}.result"),
         log = os.path.join(ana_home, "logs", "count_{ref}.log")
@@ -17,7 +18,7 @@ rule feature_count:
     shell:
         """
         featureCounts -a {input.annotation} -o {output.gene_assigned} -R BAM {input.bam} \
-         -T 4 -Q 30 -t gene -g gene_name 2>{log.log} 1>{log.result}
+         -T 4 -Q 30 -t gene -g {params.gene_attribute} 2>{log.log} 1>{log.result}
         """
 rule sort_count:
     input: rules.feature_count.output.bam # this only for dependency keeping. use fC_bam_gene in fact
