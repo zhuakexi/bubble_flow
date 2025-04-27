@@ -19,6 +19,7 @@ reference:
     mm10_B6: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
     mm10_129_CAST: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
     ara: /share/Data/public/ref_genome/ara_ref_embl/bwamem2_index/genome.fa
+    bmo: /share/home/ychi/data/genome/Bmo/bwa_mem2_index/Bmo
   # if doesn't have snp.tsv file, give a nonsense 4 col tsv
   snp: 
     hg19: /share/Data/ychi/genome/GRCh37d5/GM12878.hg19.snp.tsv
@@ -33,6 +34,7 @@ reference:
     mm10_B6_DBA2: /share/home/ychi/data/genome/mouse_snp/B6_DBA2/B6_DBA2.phased.snp.withchr.tsv
     mm10_129_CAST: /share/home/ychi/data/genome/mouse_snp/129_CAST/129_CAST.phased.snp.withchr.tsv
     mm10_B6: /share/home/ychi/data/genome/mouse_snp/B6_DBA2/B6_DBA2.phased.snp.withchr.tsv
+    bmo: /share/home/ychi/data/genome/Bmo/no_snp.tsv
   par:
     hg19: /share/Data/ychi/genome/GRCh37d5/hg19.PAR.bed
     GRCh38: /share/Data/ychi/genome/GRCh38/GRCh38.PAR.bed
@@ -54,6 +56,7 @@ reference:
     mm10_B6: /share/home/ychi/data/genome/GRCm38/star_index
     mm10_129_CAST: /share/home/ychi/data/genome/GRCm38/star_index
     ara: /share/Data/public/ref_genome/ara_ref_embl/star_index
+    bmo: /share/home/ychi/data/genome/Bmo/star_index
   annotation: 
     hg19: /share/Data/ychi/genome/GRCh37d5/raw/gencode.v19.annotation.gtf
     GRCh38: /share/Data/public/ref_genome/GRCh38/raw_data/gencode.v33.primary_assembly.annotation.gtf
@@ -62,6 +65,9 @@ reference:
     mm10_B6: /share/home/ychi/data/genome/GRCm38/raw/gencode.vM25.annotation.gtf
     mm10_129_CAST: /share/home/ychi/data/genome/GRCm38/raw/gencode.vM25.annotation.gtf
     ara: /share/Data/public/ref_genome/ara_ref_embl/Rawdata/Arabidopsis_thaliana.TAIR10.52.gtf
+    bmo: /share/home/ychi/data/genome/Bmo/raw/Bmo_ref_qc.combined_V2.gtf
+feature_count:
+    gene_attribute: gene_name # some newly sequenced genome only got `gene_id`
 cpu:
   bwa: 8
   samsort: 4
