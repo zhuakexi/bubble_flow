@@ -20,7 +20,7 @@ reference:
     mm10_129_CAST: /share/home/ychi/data/genome/GRCm38/bwa_mem2_index/genome.fa
     ara: /share/Data/public/ref_genome/ara_ref_embl/bwamem2_index/genome.fa
     bmo: /share/home/ychi/data/genome/Bmo/bwa_mem2_index/Bmo
-  # if doesn't have snp.tsv file, give a nonsense 4 col tsv
+  # if doesn't have snp.tsv file, give a nonsense 4 col tsv (check ref_files/no_snp.tsv)
   snp: 
     hg19: /share/Data/ychi/genome/GRCh37d5/GM12878.hg19.snp.tsv
     GRCh38: /share/Data/public/ref_genome/human_ref/GRCh38/snp_file/gm12878/NA12878.phased_SNP.tsv
