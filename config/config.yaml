@@ -92,7 +92,7 @@ partition:
   star: fatcomp
   star_mapping_sort: fatcomp
   sort_count: fatcomp
-remove_id_suffix: false # Do when fastq id is like "E250027995L1C010R03800251842/1", use bash "true" or "false". Don't forget the "", otherwise it will be treated as a python True/False
+remove_id_suffix: "false" # Do when fastq id is like "E250027995L1C010R03800251842/1", use bash "true" or "false". Don't forget the "", otherwise it will be treated as a python True/False
 
 # change every time
 ## global_mode: ploidy_sex_snp_imputation_build
