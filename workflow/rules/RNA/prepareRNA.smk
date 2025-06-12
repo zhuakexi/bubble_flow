@@ -8,12 +8,15 @@ rule cut_round2:
         paired_output = os.path.join(ana_home, "RNA_c", "{sample}_R2.fq.gz")
     threads: config["cpu"]["cut_r2"]
     resources: nodes = config["cpu"]["cut_r2"]
+    # cutadapt parameters
+    # -G: trim R2, 5’ adapters
+    # "XNNNNNNNNTTTTTTTTTTTTTTT;o=18": Anchored 5’ adapters, muse have 8 umis + polyT tail
     params: adapter=' -G "XNNNNNNNNTTTTTTTTTTTTTTT;o=18" '
     log: log_path("cut_round2.config")
     message: "---> cut_round2 : {wildcards.sample} : {threads} cores"
     wrapper:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_2o"
-        "file:wrappers/cutadapt_pe_2o"
+        "file:wrappers/cutadapt_pe_2o" # action None, discard untrimmed reads
 rule count_rna_c1_reads:
     # warning: this rule is not used in the pipeline
     # TODO: adding count_c2_reads
@@ -69,6 +72,13 @@ rule cut_round3:
     log: log_path("cut_round3.log")
     message: "---> cut_round3 : {wildcards.sample} : {threads} cores"
     conda: "../../envs/rna_tools.yaml"
+    # CTGTCTCTTATA is nextera adapter
+    # -a: trim R1, 3’ adapters
+    # CTGTCTCTTATA: regular 3' adapter, that is can be in the middle of the read
+    # sed 'N;N;N;/\\n\\n/d':
+    #   Read four consecutive lines of content. If there are two consecutive newline characters (i.e., an empty line) among these four lines, 
+    #   delete all four lines; otherwise, output the four lines.
+    #   Some reads may have been trimmed to 0 length, so we need to remove the whole read for downstream processing.
     shell:
         """
         cutadapt -a CTGTCTCTTATA {input} -m 1 -j {threads} | sed 'N;N;N;/\\n\\n/d' | gzip > {output}
