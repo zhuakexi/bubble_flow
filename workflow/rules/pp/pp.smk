@@ -29,6 +29,8 @@ rule split:
     resources: nodes = config["cpu"]["split"] 
     params:
         # rna specific adapter
+        # -G: trim R2, 5’ adapters
+        # "XGGTTGAGGTAGTATTGCGCAATG;o=20": Anchored 5’ adapters (must be anchored to the 5’ end of the read), tolerance 3 mismatches
         adapter=' -G "XGGTTGAGGTAGTATTGCGCAATG;o=20" '
     log: log_path("split.log")
     message: "---> split : {wildcards.sample} : {threads} cores"
