@@ -82,10 +82,10 @@ cpu:
   star: 128
   sortBAM: 64
 mem_G:
-  star: 2
-  sortBAM: 10
-  sort_count: 10
-  bwa_samsort: 4
+  star: 2G
+  sortBAM: 10G
+  sort_count: 10G
+  bwa_samsort: 4G
 partition:
   bwa: fatcomp
   bwa_samsort: fatcomp
