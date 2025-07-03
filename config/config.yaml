@@ -87,11 +87,11 @@ mem_G:
   sort_count: 10G
   bwa_samsort: 4G
 partition:
-  bwa: fatcomp
-  bwa_samsort: fatcomp
-  star: fatcomp
-  star_mapping_sort: fatcomp
-  sort_count: fatcomp
+  bwa: fatcomp,comp
+  bwa_samsort: fatcomp,comp
+  star: fatcomp,comp
+  star_mapping_sort: fatcomp,comp
+  sort_count: fatcomp,comp
 remove_id_suffix: "false" # Do when fastq id is like "E250027995L1C010R03800251842/1", use bash "true" or "false". Don't forget the "", otherwise it will be treated as a python True/False
 
 # change every time
