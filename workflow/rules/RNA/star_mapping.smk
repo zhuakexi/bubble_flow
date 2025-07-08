@@ -73,6 +73,6 @@ rule star_mapping_sort:
     conda: "../../envs/rna_tools.yaml"
     shell:
         """
-        samtools sort -@ {threads} -m {resources.mem_per_cpu}G -T {params.sort_tmp_prefix} \
+        samtools sort -@ {threads} -T {params.sort_tmp_prefix} \
         -O BAM --write-index -o {output} {input}
         """
