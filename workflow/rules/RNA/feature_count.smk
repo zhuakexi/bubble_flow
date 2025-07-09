@@ -33,7 +33,7 @@ rule sort_count:
         partition = config["partition"]["sort_count"]
     shell:
         '''
-        samtools sort -@ {threads} -m {resources.mem_per_cpu}G -T {params.sort_tmp_prefix} \
+        samtools sort -@ {threads} -T {params.sort_tmp_prefix} \
         -O BAM --write-index -o {output} {input}
         '''
 rule matrix_count:
