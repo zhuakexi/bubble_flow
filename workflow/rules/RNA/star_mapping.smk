@@ -28,6 +28,8 @@ def star_mapping_input(wildcards):
         "index" : config["reference"]["star"][wildcards.ref] if wildcards.ref in config["reference"]["star"] else "NoSTARIndexFile.txt"
     }
 def star_mapping_params(wildcards):
+    # An empty last part will result in a path that ends with a separator
+    # essential for STAR!
     star_out_prefix = os.path.join(ana_home, "star_mapped_{ref}".format(ref = wildcards.ref), "")
     return {
         "star_out_prefix" : star_out_prefix
