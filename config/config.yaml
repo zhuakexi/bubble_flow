@@ -79,7 +79,7 @@ cpu:
   clean3: 8
   cut_r2: 8
   cut_r3: 8
-  star: 128
+  star: 36
   sortBAM: 64
 mem_G:
   star: 2G
