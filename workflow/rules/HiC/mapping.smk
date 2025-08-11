@@ -29,3 +29,14 @@ rule bwa_mem:
         # wrapper shipped with conda yaml
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/bwa_mem2"
         "file:wrappers/bwa_mem2"
+rule add_mapping_rate:
+    input:
+        bam = rules.bwa_mem.output
+    output:
+        json = os.path.join(ana_home, f"{rd}", "{sample}.mapping_rate.json")
+    conda:
+        "../../envs/hires.yaml"
+    threads: 1
+    message: " ---> add_mapping_rate : {wildcards.sample}"
+    script:
+        "../../scripts/mapping_rate.py"

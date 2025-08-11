@@ -47,11 +47,14 @@ rule collect_info:
     # TODO: separate reads info and pairs info(maybe)
     input: 
         pairs_info = expand(rules.pairs_info.output, sample=sample_table.index), # this is the string content
+        # results from rules below are stored in rd directory in json format. collect them with task_stat
         reads = expand(rules.count_reads.output, sample=sample_table.index),
         dna_reads = expand(rules.count_dna_reads.output, sample=sample_table.index),
         rna_reads = expand(rules.count_rna_reads.output, sample=sample_table.index),
         rna_c1_reads = expand(rules.count_rna_c1_reads.output, sample=sample_table.index),
         rna_c2_reads = expand(rules.count_rna_c2_reads.output, sample=sample_table.index),
+        raw_fq_path = expand(rules.store_raw_fq_path.output, sample=sample_table.index),
+        mapping_rate = expand(rules.add_mapping_rate.output.json, sample=sample_table.index)
     output:
         os.path.join(ana_home, "contacts_info.csv")
     threads: 1

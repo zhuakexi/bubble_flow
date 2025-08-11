@@ -17,6 +17,27 @@ rule count_reads:
         -sa {wildcards.sample} -at raw_reads \
         {input.R1} 1> {output}
         """
+rule store_raw_fq_path:
+    input:
+        unpack(get_raw_fq)
+    output:
+        os.path.join(ana_home,"rd","{sample}.raw_fq.json")
+    threads: 1
+    resources: nodes = 1
+    message: " ---> store_raw_fq_path : {wildcards.sample} : {threads} cores"
+    run:
+        import json
+        import os
+        raw_fq = {
+            "R1_file": input.R1,
+            "R2_file": input.R2
+        }
+        data = {
+            wildcards.sample: raw_fq
+        }
+        with open(output[0], 'w') as f:
+            json.dump(data, f, indent=4)
+        print(f"Raw fastq paths for {wildcards.sample} stored in {output[0]}")
 rule split:
     input:
         unpack(get_raw_fq)
