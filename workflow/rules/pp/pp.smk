@@ -29,8 +29,8 @@ rule store_raw_fq_path:
         import json
         import os
         raw_fq = {
-            "R1_file": input.R1,
-            "R2_file": input.R2
+            "R1_file": input.R1[0],
+            "R2_file": input.R2[0]
         }
         data = {
             wildcards.sample: raw_fq
