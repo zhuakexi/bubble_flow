@@ -80,7 +80,7 @@ cpu:
   cut_r2: 8
   cut_r3: 8
   star: 36
-  sortBAM: 64
+  sortBAM: 20
 mem_G:
   star: 2G
   sortBAM: 10G
