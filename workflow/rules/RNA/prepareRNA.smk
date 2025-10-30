@@ -18,7 +18,6 @@ rule cut_round2:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_2o"
         "file:wrappers/cutadapt_pe_2o" # action None, discard untrimmed reads
 rule count_rna_c1_reads:
-    # warning: this rule is not used in the pipeline
     # TODO: adding count_c2_reads
     input:
         # RNA_R1 after trim_cleaning
