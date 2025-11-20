@@ -66,6 +66,22 @@ reference:
     mm10_129_CAST: /share/home/ychi/data/genome/GRCm38/raw/gencode.vM25.annotation.gtf
     ara: /share/Data/public/ref_genome/ara_ref_embl/Rawdata/Arabidopsis_thaliana.TAIR10.52.gtf
     bmo: /share/home/ychi/data/genome/Bmo/raw/Bmo_ref_qc.combined_V2.gtf
+  chrom_regex:
+    hg19: ^(chr)?([0-9]+|[XY])$
+    GRCh38: ^(chr)?([0-9]+|[XY])$
+    GRCh38_noYpar: ^(chr)?([0-9]+|[XY])$
+    GRCh38_noY: ^(chr)?([0-9]+|[X])$
+    GRCh38_noX: ^(chr)?([0-9]+|[Y])$
+    mm10_B6_CAST: ^(chr)?([0-9]+|[XY])$
+    mm10_B6_CAST_noYpar: ^(chr)?([0-9]+|[XY])$
+    mm10_B6_CAST_noY: ^(chr)?([0-9]+|[X])$
+    mm10_B6_CAST_noX: ^(chr)?([0-9]+|[Y])$
+    mm10_B6_DBA2: ^(chr)?([0-9]+|[XY])$
+    mm10_129_CAST: ^(chr)?([0-9]+|[XY])$
+    mm10_B6: ^(chr)?([0-9]+|[XY])$
+    ara: ^Chr([0-9]+|C|M|X)$
+    bmo: ^Scaffold_([0-9]+)$
+    GRCh38_GRCm38_chimera: ^(?:[a-z]+_)?(?:chr)?([0-9]+|[XY])$
 feature_count:
     gene_attribute: gene_name # some newly sequenced genome only got `gene_id`
 cpu:
