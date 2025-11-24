@@ -79,8 +79,8 @@ reference:
     mm10_B6_DBA2: ^(chr)?([0-9]+|[XY])$
     mm10_129_CAST: ^(chr)?([0-9]+|[XY])$
     mm10_B6: ^(chr)?([0-9]+|[XY])$
-    ara: ^Chr([0-9]+|C|M|X)$
-    bmo: ^Scaffold_([0-9]+)$
+    ara: ^(Chr)?([1-5]|Mt|Pt)$
+    bmo: ^chr(2[0-8]|1\d|[1-9]|W|MIT)$
     GRCh38_GRCm38_chimera: ^(?:[a-z]+_)?(?:chr)?([0-9]+|[XY])$
 feature_count:
     gene_attribute: gene_name # some newly sequenced genome only got `gene_id`
