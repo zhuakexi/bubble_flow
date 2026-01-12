@@ -3,4 +3,5 @@
 tests/output/*
 tests/test_struct/output/*
 tests/test_hires/output/*
+tests/test_hires/work/*
 dev/*
