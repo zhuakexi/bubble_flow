@@ -37,6 +37,44 @@ rule pre_seg:
          | sed 's/-/+/g' \
          | gzip > {output}
         """
+def dedup_pre_seg_input(wildcards):
+    ref = sample_table.loc[wildcards.sample, "ref"] if "ref" in sample_table.columns else config["global_ref"]
+    return {
+        #"sam" : rules.bwa_mem.output.get(sample = wildcards.sample).output[0],
+        "sam" : rules.dedup_bwa_mem.output[0].format(sample = wildcards.sample),
+        "snp_file" : config["reference"]["snp"][ref] if ref in config["reference"]["snp"] else "NoSNPFile.txt",
+        "par_file" : config["reference"]["par"][ref] if ref in config["reference"]["par"] else "NoPARFile.txt"}
+def dedup_pre_seg_param(wildcards):
+    ref = sample_table.loc[wildcards.sample, "ref"] if "ref" in sample_table.columns else config["global_ref"]
+    return {
+        "tmp_dir" : os.path.join(ana_home, "tmp"),
+        "chrom_regex" : config["reference"]["chrom_regex"][ref]
+    }
+rule dedup_pre_seg:
+    # get snp annoted, chronly, par filtered
+    # .seg file for all input, even haploid
+    input: 
+        unpack(dedup_pre_seg_input)
+    output:
+        os.path.join(
+            ana_home, 
+            "dedup_pre_seg",
+            "{sample}.seg.gz")
+    params:
+        dedup_pre_seg_param
+    log:
+        log_path("dedup_pre_seg.log")
+    conda: "../../envs/samtools.yaml"
+    threads: 5
+    shell:
+        # "params[0]" to solve bug https://github.com/snakemake/snakemake/issues/1171
+        """ samtools sort -T {params[0][tmp_dir]}/{wildcards.sample}_dedup_preseg -n -@4 -O SAM {input.sam} \
+         | {k8} {js} sam2seg -v {input.snp_file} -d 0 - 2> {log} \
+         | {k8} {js} chronly -r "{params[0][chrom_regex]}" - \
+         | {k8} {js} bedflt {input.par_file} - \
+         | sed 's/-/+/g' \
+         | gzip > {output}
+        """
 checkpoint sample_check:
     input:
         rules.pre_seg.output
