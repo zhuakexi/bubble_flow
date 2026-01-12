@@ -84,34 +84,37 @@ git clone https://github.com/zhuakexi/hires-utils.git
 
 ### 2. 检查Snakefile
 
-In snakemake environment, execute snakemake in root dir of bubble_flow
+在 snakemake 环境中，在 bubble_flow 仓库根目录执行：
 
 ```
 cd bubble_flow
-snakemake -np All
+snakemake -np --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ All
 ```
 
 ### 3. 运行snakemake
 
-On local machine:
+本地运行：
 ```
-snakemake --cores $CHOOSE_THREADS --use_conda All
-```
-
-On cluster(slurm version):
-```
-snakemake --cluster "sbatch --cpus-per-task={threads}" --jobs $MAX_TASK_NUM --resources nodes=$MAX_CORE_NUM All
+snakemake --cores $CHOOSE_THREADS --use-conda --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ All
 ```
 
-Using "do_$RULE" to execute step by step
+集群（slurm）示例：
 ```
-snakemake --cores $CHOOSE_THREADS --use_conda do_$RULE
+snakemake --cluster "sbatch --cpus-per-task={threads}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --jobs $MAX_TASK_NUM --resources nodes=$MAX_CORE_NUM All
 ```
 
-A complete example：
+使用 `do_$RULE` 分步执行：
 ```
-snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs/ --cluster "sbatch --cpus-per-task={threads}  --job-name=em --partition={resources.partition} --mem-per-cpu={resources.mem_per_cpu}G  --output=slurm/%j.out --time={resources.runtime}" --cluster-cancel scancel --default-resources runtime=600 mem_per_cpu=2 partition=comp --rerun-incomplete --rerun-triggers mtime --latency-wait 400 --jobs=256 --keep-going All > 1215.log 2>&1
+snakemake --cores $CHOOSE_THREADS --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --use-conda do_$RULE
 ```
+
+完整示例（带 cluster-generic 提交）：
+```
+snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs/ --executor cluster-generic --cluster-generic-submit-cmd "sbatch --cpus-per-task={threads}  --job-name=em --partition={resources.partition} --mem-per-cpu={resources.mem_per_cpu}G  --output=slurm/%j.out --time={resources.runtime}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --default-resources runtime=600 'mem_per_cpu="3G"' partition=comp --rerun-incomplete --rerun-triggers mtime --latency-wait 400 --jobs=256 --keep-going All > 1215.log 2>&1
+```
+1. 测试使用 snakemake 9.14.3版本，旧版snakemake直接使用--cluster选项。
+2. 将 `ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR` 替换为仓库实际绝对路径。
+3. 运行前在当前工作目录创建 `slurm` 目录，否则 slurm 因缺少输出目录不会提交任务。
 ## 输出介绍
 所有输出都放在输出目录analysis home中，这个目录使用config.yaml的ana_home指定。包含以下子目录或者文件：   
   - 样品统计信息：contacts_info.csv   
