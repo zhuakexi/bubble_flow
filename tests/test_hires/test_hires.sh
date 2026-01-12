@@ -1,7 +1,7 @@
 #!/bin/bash
 # change according to your environment
 BASE_DIR=/share/home/ychi/dev/bubble_flow
-MODE=slurm # local or slurm
+MODE=local # local or slurm
 # usually no need to change below
 SAMPLE_TABLE=$BASE_DIR/tests/test_hires/sample_table.csv
 CONFIG=$BASE_DIR/config/config.yaml
