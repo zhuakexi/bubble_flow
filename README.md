@@ -113,8 +113,9 @@ A complete example：
 ```
 snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs/ --executor cluster-generic --cluster-generic-submit-cmd "sbatch --cpus-per-task={threads}  --job-name=em --partition={resources.partition} --mem-per-cpu={resources.mem_per_cpu}G  --output=slurm/%j.out --time={resources.runtime}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --default-resources runtime=600 'mem_per_cpu="3G"' partition=comp --rerun-incomplete --rerun-triggers mtime --latency-wait 400 --jobs=256 --keep-going All > 1215.log 2>&1
 ```
-1. Replace ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR with real path.
-2. Make a `slurm` dir in your cwd, otherwise slurm won't submit tasks.
+1. Test on snakemake 9.14.3
+2. Replace ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR with real path.
+3. Make a `slurm` dir in your cwd, otherwise slurm won't submit tasks for missing output dir.
 
 ## Output Introduction
 All outputs are placed in the analysis home directory, which is specified by `ana_home` in `config.yaml`. It includes the following subdirectories or files:
