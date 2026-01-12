@@ -50,6 +50,20 @@ rule run_RNA:
         expand(rules.count_rna_reads.output, sample=sample_table.index),
         expand(rules.count_rna_c1_reads.output, sample=sample_table.index),
         expand(rules.count_rna_c2_reads.output, sample=sample_table.index)
+rule run_RNA_WGS:
+    input:
+        expand(rules.count_reads.output, sample=sample_table.index),
+        expand(rules.count_dna_reads.output, sample=sample_table.index),
+        expand(rules.count_rna_reads.output, sample=sample_table.index),
+        expand(rules.count_rna_c1_reads.output, sample=sample_table.index),
+        expand(rules.count_rna_c2_reads.output, sample=sample_table.index),
+        expand(rules.store_raw_fq_path.output, sample=sample_table.index),
+        expand(rules.add_mapping_rate.output.json, sample=sample_table.index),
+        expand(rules.matrix_count.output, ref = sample_table["ref"].unique() if "ref" in sample_table.columns else config["global_ref"]),
+        expand(rules.count_rna_reads.output, sample=sample_table.index),
+        expand(rules.count_rna_c1_reads.output, sample=sample_table.index),
+        expand(rules.count_rna_c2_reads.output, sample=sample_table.index),
+        expand(rules.dedup_pre_seg.output, sample=sample_table.index)
 rule All:
     input:
         expand(rules.cif.output, sample = sample_table.index, rep=list(range(1,6)), reso=["4m","1m","200k","50k","20k"]),
