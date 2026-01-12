@@ -11,12 +11,13 @@ rule cut_round2:
     # cutadapt parameters
     # -G: trim R2, 5’ adapters
     # "XNNNNNNNNTTTTTTTTTTTTTTT;o=18": Anchored 5’ adapters, muse have 8 umis + polyT tail
-    params: adapter=' -G "XNNNNNNNNTTTTTTTTTTTTTTT;o=18" '
+    params:
+        adapter=' -G "XNNNNNNNNTTTTTTTTTTTTTTT;o=18" '
     log: log_path("cut_round2.config")
     message: "---> cut_round2 : {wildcards.sample} : {threads} cores"
     wrapper:
         #"https://gitee.com/zhuakexi/snakemake_wrappers/raw/v0.10/cutadapt_pe_2o"
-        "file:wrappers/cutadapt_pe_2o" # action None, discard untrimmed reads
+        "cutadapt_pe_2o" # action None, discard untrimmed reads
 rule count_rna_c1_reads:
     # TODO: adding count_c2_reads
     input:
