@@ -54,4 +54,4 @@ cpu:
 global_mode: 2C__SNP_c123i_Icb
 global_ref: hg19
 sample_table: /share/home/ychi/dev/bubble_flow/tests/test_hires/sample_table.csv
-ana_home: /share/home/ychi/dev/bubble_flow/tests/test_hires/output/files
+ana_home: /share/home/ychi/dev/bubble_flow/tests/test_hires/output/test
