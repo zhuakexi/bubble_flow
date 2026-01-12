@@ -89,30 +89,33 @@ In snakemake environment, execute snakemake in root dir of bubble_flow
 
 ```
 cd bubble_flow
-snakemake -np All
+snakemake -np --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ All
 ```
 
 ### 3. run snakemake
 
 On local machine:
 ```
-snakemake --cores $CHOOSE_THREADS --use_conda All
+snakemake --cores $CHOOSE_THREADS --use_conda --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ All
 ```
 
 On cluster(slurm version):
 ```
-snakemake --cluster "sbatch --cpus-per-task={threads}" --jobs $MAX_TASK_NUM --resources nodes=$MAX_CORE_NUM All
+snakemake --cluster "sbatch --cpus-per-task={threads}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --jobs $MAX_TASK_NUM --resources nodes=$MAX_CORE_NUM All
 ```
 
 Using "do_$RULE" to execute step by step
 ```
-snakemake --cores $CHOOSE_THREADS --use_conda do_$RULE
+snakemake --cores $CHOOSE_THREADS --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --use_conda do_$RULE
 ```
 
 A complete example：
 ```
-snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs/ --cluster "sbatch --cpus-per-task={threads}  --job-name=em --partition={resources.partition} --mem-per-cpu={resources.mem_per_cpu}G  --output=slurm/%j.out --time={resources.runtime}" --cluster-cancel scancel --default-resources runtime=600 mem_per_cpu=2 partition=comp --rerun-incomplete --rerun-triggers mtime --latency-wait 400 --jobs=256 --keep-going All > 1215.log 2>&1
+snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs/ --executor cluster-generic --cluster-generic-submit-cmd "sbatch --cpus-per-task={threads}  --job-name=em --partition={resources.partition} --mem-per-cpu={resources.mem_per_cpu}G  --output=slurm/%j.out --time={resources.runtime}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --default-resources runtime=600 'mem_per_cpu="3G"' partition=comp --rerun-incomplete --rerun-triggers mtime --latency-wait 400 --jobs=256 --keep-going All > 1215.log 2>&1
 ```
+1. Replace ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR with real path.
+2. Make a `slurm` dir in your cwd, otherwise slurm won't submit tasks.
+
 ## Output Introduction
 All outputs are placed in the analysis home directory, which is specified by `ana_home` in `config.yaml`. It includes the following subdirectories or files:
 
