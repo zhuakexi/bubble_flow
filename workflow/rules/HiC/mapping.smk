@@ -20,7 +20,8 @@ rule bwa_mem:
     resources:
         nodes = config["cpu"]["bwa_samsort"],
         partition = config["partition"]["bwa_samsort"],
-        mem_per_cpu = config["mem_G"]["bwa_samsort"]
+        mem_per_cpu = config["mem_G"]["bwa_samsort"],
+        io = config["io"]["bwa"]
     log:
         log_path("bwa.log")
     message:

@@ -67,6 +67,20 @@ git clone https://github.com/zhuakexi/hires-utils.git
             用什么pairs类结果build三维结构。影响build。除非不执行build及子任务不可以省略。
             [c1b, c12b, c123b， Ib, Icb] (build from clean1, clean12, clean123, imputated pairs, imputated and cleaned pairs)
 
+#### 1.2.1 IO 资源（I/O 限流）
+
+部分规则是 I/O heavy（例如 `gcount` 和 `cutadapt`）。工作流为这些规则分配 `io` 资源，并建议在 Snakemake 运行时设置全局 IO 上限。
+
+在 `config/config.yaml` 中：
+- `io.heavy`：I/O heavy 规则使用的 IO 槽位（默认 4）。
+- `io.bwa`：`bwa_mem` 比对规则使用的 IO 槽位（默认 2）。
+
+运行 Snakemake 时设置全局 IO 上限，例如：
+```
+--resources io=8
+```
+用来限制并发 IO 负载。
+
 #### 1.3 样品列表
 
     指config/sample_table.csv，指定每个样品的基本信息。
@@ -100,7 +114,7 @@ snakemake --cores $CHOOSE_THREADS --use-conda --wrapper-prefix $ABSOLUTE_PATH_TO
 
 集群（slurm）示例：
 ```
-snakemake --cluster "sbatch --cpus-per-task={threads}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --jobs $MAX_TASK_NUM --resources nodes=$MAX_CORE_NUM All
+snakemake --cluster "sbatch --cpus-per-task={threads}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --jobs $MAX_TASK_NUM --resources nodes=$MAX_CORE_NUM io=$IO_CAP All
 ```
 
 使用 `do_$RULE` 分步执行：
@@ -110,7 +124,7 @@ snakemake --cores $CHOOSE_THREADS --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow
 
 完整示例（带 cluster-generic 提交）：
 ```
-snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs/ --executor cluster-generic --cluster-generic-submit-cmd "sbatch --cpus-per-task={threads}  --job-name=em --partition={resources.partition} --mem-per-cpu={resources.mem_per_cpu}G  --output=slurm/%j.out --time={resources.runtime}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --default-resources runtime=600 'mem_per_cpu="3G"' partition=comp --rerun-incomplete --rerun-triggers mtime --latency-wait 400 --jobs=256 --keep-going All > 1215.log 2>&1
+snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs/ --executor cluster-generic --cluster-generic-submit-cmd "sbatch --cpus-per-task={threads}  --job-name=em --partition={resources.partition} --mem-per-cpu={resources.mem_per_cpu}G  --output=slurm/%j.out --time={resources.runtime}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --default-resources runtime=600 'mem_per_cpu="3G"' partition=comp --resources io=8 --rerun-incomplete --rerun-triggers mtime --latency-wait 400 --jobs=256 --keep-going All > 1215.log 2>&1
 ```
 1. 测试使用 snakemake 9.14.3版本，旧版snakemake直接使用--cluster选项。
 2. 将 `ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR` 替换为仓库实际绝对路径。

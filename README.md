@@ -67,6 +67,20 @@ This can be set globally in `global_mode` within `config/config.yaml`, or indivi
     - Which pairs results to use for building 3D structures. Affects the build process. Cannot be omitted unless build and its subtasks are not performed.
     - Options: `[c1b, c12b, c123b, Ib, Icb]` (build from clean1, clean12, clean123, imputed pairs, imputed and cleaned pairs)
 
+#### 1.2.1 IO resources (I/O throttling)
+
+Some rules are I/O heavy (e.g., `gcount` and `cutadapt`). The workflow assigns an `io` resource to those rules and expects a global cap from Snakemake.
+
+In `config/config.yaml`:
+- `io.heavy`: IO slots used by I/O-heavy rules (default is 4).
+- `io.bwa`: IO slots used by the `bwa_mem` mapping rule (default is 2).
+
+When running Snakemake, set a global IO cap, for example:
+```
+--resources io=8
+```
+This limits the total concurrent IO load across rules.
+
 #### 1.3 Sample Table
 
 Refers to `config/sample_table.csv`, specifying basic information for each sample.
@@ -101,7 +115,7 @@ snakemake --cores $CHOOSE_THREADS --use_conda --wrapper-prefix $ABSOLUTE_PATH_TO
 
 On cluster(slurm version):
 ```
-snakemake --cluster "sbatch --cpus-per-task={threads}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --jobs $MAX_TASK_NUM --resources nodes=$MAX_CORE_NUM All
+snakemake --cluster "sbatch --cpus-per-task={threads}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --jobs $MAX_TASK_NUM --resources nodes=$MAX_CORE_NUM io=$IO_CAP All
 ```
 
 Using "do_$RULE" to execute step by step
@@ -111,7 +125,7 @@ snakemake --cores $CHOOSE_THREADS --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow
 
 A complete example：
 ```
-snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs/ --executor cluster-generic --cluster-generic-submit-cmd "sbatch --cpus-per-task={threads}  --job-name=em --partition={resources.partition} --mem-per-cpu={resources.mem_per_cpu}G  --output=slurm/%j.out --time={resources.runtime}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --default-resources runtime=600 'mem_per_cpu="3G"' partition=comp --rerun-incomplete --rerun-triggers mtime --latency-wait 400 --jobs=256 --keep-going All > 1215.log 2>&1
+snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs/ --executor cluster-generic --cluster-generic-submit-cmd "sbatch --cpus-per-task={threads}  --job-name=em --partition={resources.partition} --mem-per-cpu={resources.mem_per_cpu}G  --output=slurm/%j.out --time={resources.runtime}" --wrapper-prefix $ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR/wrappers/ --default-resources runtime=600 'mem_per_cpu="3G"' partition=comp --resources io=8 --rerun-incomplete --rerun-triggers mtime --latency-wait 400 --jobs=256 --keep-going All > 1215.log 2>&1
 ```
 1. Test on snakemake 9.14.3
 2. Replace ABSOLUTE_PATH_TO_bubble_flow_ROOT_DIR with real path.

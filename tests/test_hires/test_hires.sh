@@ -2,6 +2,8 @@
 # change according to your environment
 BASE_DIR=/share/home/ychi/dev/bubble_flow
 MODE=local # local or slurm
+# io slots for IO-heavy rules
+IO=8
 # usually no need to change below
 SAMPLE_TABLE=$BASE_DIR/tests/test_hires/sample_table.csv
 CONFIG=$BASE_DIR/config/config.yaml
@@ -19,6 +21,7 @@ if [ "$MODE" == "slurm" ]; then
     --output=${BASE_DIR}/tests/test_hires/work/slurm/%j.out --mem-per-cpu={resources.mem_per_cpu}" \
     --cluster-generic-cancel-cmd 'scancel {jobid}' \
     --default-resources runtime=600 'mem_per_cpu="3G"' partition=fatcomp,comp \
+    --resources io=${IO} \
     --rerun-incomplete --rerun-triggers mtime --latency-wait 120 \
     --jobs=8 \
     --configfile $CONFIG \
@@ -32,6 +35,7 @@ else
     snakemake --use-conda --conda-prefix /shareb/ychi/ana/envs \
     -c 1 \
     --keep-going --rerun-incomplete --latency-wait 120 \
+    --resources io=${IO} \
     --configfile $CONFIG \
     --wrapper-prefix $BASE_DIR/wrappers/ \
     --config sample_table=$SAMPLE_TABLE ana_home=$ANA_HOME global_mode=2C__SNP_c123i_Icb global_ref=hg19 \

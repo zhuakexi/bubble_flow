@@ -97,6 +97,9 @@ cpu:
   cut_r3: 8
   star: 36
   sortBAM: 20
+io:
+  heavy: 4
+  bwa: 2
 mem_G:
   star: 2G
   sortBAM: 10G

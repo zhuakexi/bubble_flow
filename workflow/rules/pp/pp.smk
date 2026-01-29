@@ -6,7 +6,8 @@ rule count_reads:
         os.path.join(ana_home,"info","{sample}.reads.info")
     threads: 1
     resources: 
-        nodes = 1
+        nodes = 1,
+        io = config["io"]["heavy"],
     message:
         " ---> count_reads :{wildcards.sample} : {threads} cores"
     conda:"../../envs/hires.yaml"
@@ -23,7 +24,7 @@ rule store_raw_fq_path:
     output:
         os.path.join(ana_home,"rd","{sample}.raw_fq.json")
     threads: 1
-    resources: nodes = 1
+    resources: nodes = 1,
     message: " ---> store_raw_fq_path : {wildcards.sample} : {threads} cores"
     run:
         import json
@@ -47,7 +48,9 @@ rule split:
         output = os.path.join(ana_home, "RNA", "{sample}_R1.fq.gz"),
         paired_output = os.path.join(ana_home, "RNA", "{sample}_R2.fq.gz")
     threads: config["cpu"]["split"]
-    resources: nodes = config["cpu"]["split"] 
+    resources:
+        nodes = config["cpu"]["split"],
+        io = config["io"]["heavy"],
     params:
         # rna specific adapter
         # -G: trim R2, 5’ adapters
@@ -66,7 +69,8 @@ rule count_dna_reads:
         os.path.join(ana_home,"info","{sample}.dna_reads.info")
     threads: 1
     resources:
-        nodes = 1
+        nodes = 1,
+        io = config["io"]["heavy"],
     message:
         " ---> count_dna_reads : {wildcards.sample} :{threads} cores"
     conda:"../../envs/hires.yaml"
@@ -84,7 +88,8 @@ rule count_rna_reads:
         os.path.join(ana_home,"info","{sample}.rna_reads.info")
     threads: 1
     resources:
-        nodes = 1
+        nodes = 1,
+        io = config["io"]["heavy"],
     message:
         " ---> count_rna_reads : {wildcards.sample} :{threads} cores"
     conda:"../../envs/hires.yaml"

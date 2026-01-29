@@ -7,7 +7,9 @@ rule cut_round2:
         output = os.path.join(ana_home, "RNA_c", "{sample}_R1.fq.gz"),
         paired_output = os.path.join(ana_home, "RNA_c", "{sample}_R2.fq.gz")
     threads: config["cpu"]["cut_r2"]
-    resources: nodes = config["cpu"]["cut_r2"]
+    resources:
+        nodes = config["cpu"]["cut_r2"],
+        io = config["io"]["heavy"],
     # cutadapt parameters
     # -G: trim R2, 5’ adapters
     # "XNNNNNNNNTTTTTTTTTTTTTTT;o=18": Anchored 5’ adapters, muse have 8 umis + polyT tail
@@ -27,7 +29,8 @@ rule count_rna_c1_reads:
         os.path.join(ana_home,"info","{sample}.rna_c1_reads.info")
     threads: 1
     resources:
-        nodes = 1
+        nodes = 1,
+        io = config["io"]["heavy"],
     message:
         " ---> count_rna_reads : {wildcards.sample} :{threads} cores"
     conda:"../../envs/hires.yaml"
@@ -45,7 +48,8 @@ rule extract_umi:
         umi1 = temp(os.path.join(ana_home, "umi", "umi.{sample}.rna.R1.fq.gz")),
         umi2 = temp(os.path.join(ana_home, "umi", "umi.{sample}.rna.R2.fq.gz"))
     resources:
-        nodes = 1
+        nodes = 1,
+        io = config["io"]["heavy"]
     params:
         # umi pattern
         pattern = r"NNNNNNNN"
@@ -68,7 +72,9 @@ rule cut_round3:
     output:
         temp(os.path.join(ana_home, "RNA_cc", "{sample}_R1.fq.gz")),
     threads: config["cpu"]["cut_r3"]
-    resources: nodes = config["cpu"]["cut_r3"]
+    resources:
+        nodes = config["cpu"]["cut_r3"],
+        io = config["io"]["heavy"],
     log: log_path("cut_round3.log")
     message: "---> cut_round3 : {wildcards.sample} : {threads} cores"
     conda: "../../envs/rna_tools.yaml"
@@ -89,7 +95,9 @@ rule count_rna_c2_reads:
     output:
         os.path.join(ana_home, "info", "{sample}.rna_c2_reads.info")
     threads: 1
-    resources: nodes = 1
+    resources:
+        nodes = 1,
+        io = config["io"]["heavy"],
     message: "---> count_rna_c2_reads : {wildcards.sample} : {threads} cores"
     conda: "../../envs/hires.yaml"
     shell:
@@ -104,7 +112,7 @@ rule fq2uBAM:
     output:
         temp(os.path.join(ana_home, "uBAM", "{sample}_R1.bam"))
     threads: 1
-    resources: nodes = 1
+    resources: nodes = 1,
     log: log_path("fq2uBAM.log")
     #message: "---> fq2uBAM : {wildcards.sample} : {threads} cores"
     conda: "../../envs/rna_tools.yaml"
@@ -127,7 +135,7 @@ rule mend_umi:
     output:
         os.path.join(ana_home, "umi_uBAM", "{sample}.bam")
     threads: 5
-    resources: nodes = 5
+    resources: nodes = 5,
     log: log_path("mend_umi.log")
     message: "---> mend_umi : {wildcards.sample} : {threads} cores"
     conda: "../../envs/hires.yaml"
