@@ -52,6 +52,7 @@ rule run_RNA:
         expand(rules.count_rna_c2_reads.output, sample=sample_table.index)
 rule run_RNA_WGS:
     input:
+        expand(rules.sample_check.output, sample= sample_table.index),
         expand(rules.count_reads.output, sample=sample_table.index),
         expand(rules.count_dna_reads.output, sample=sample_table.index),
         expand(rules.count_rna_reads.output, sample=sample_table.index),
